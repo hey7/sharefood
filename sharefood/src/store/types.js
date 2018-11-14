@@ -1,0 +1,7 @@
+const SHOW_HEADER="SHOW_HEADER"
+const HIDE_HEADER="HIDE_HEADER"
+
+export default {
+	SHOW_HEADER,
+	HIDE_HEADER
+}
