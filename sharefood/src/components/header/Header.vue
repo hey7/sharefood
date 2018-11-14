@@ -1,18 +1,18 @@
 <template>
     <div class="header">
         <div class="context">ShareFood</div>
-        <div class="login">
-          <router-link to="/login">登录</router-link>
-        </div>
-        <div class="register">
-          <router-link to="/register">注册</router-link>
+        <div v-if="">
+          <div class="login">
+            <router-link to="/login">登录</router-link>
+          </div>
+          <div class="register">
+            <router-link to="/register">注册</router-link>
+          </div>
         </div>
     </div>
 </template>
 <script>
-export default {
- 
-};
+export default {};
 </script>
 <style lang="less" scoped>
 .header {

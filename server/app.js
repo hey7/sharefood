@@ -27,7 +27,11 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
-app.use(cookieParser());
+//这里传入了一个密钥加session id
+app.use(cookieParser('heyi'));
+//使用靠就这个中间件
+app.use(session({ secret: 'heyi'}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 

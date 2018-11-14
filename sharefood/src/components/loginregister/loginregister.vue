@@ -84,17 +84,26 @@ export default {
         this.imgSrc = this.imgSrcArray[this.i];
         this.i++;
       }, "4000");
+
+    //点击登录，显示登录；点击注册，显示注册
+    if (this.$route.path == "/login") {
+      this.activeName = "first";
+    }
+    if (this.$route.path == "/register") {
+      this.activeName = "second";
+    }
   },
+
   methods: {
-    //Tabs 标签页
+    //Tabs 标签页 切换，清空错误提示
     handleClick(tab, event) {
-      // console.log(tab, event);
       this.login.error = "";
       this.register.error = "";
     },
 
     //登录按钮
     loginClick() {
+      //判空
       if (this.login.username.split(" ").join("").length == 0) {
         this.login.error = "请输入用户名";
         return;
@@ -104,6 +113,30 @@ export default {
         return;
       }
       this.login.error = "";
+
+      //登录
+      var data = this.qs.stringify({
+        username: this.login.username,
+        password: this.login.password
+      });
+      this.axios
+        .post(config.SREVER_HTTP + "/loginRegister/login", data)
+        .then(res => {
+          if (res.data.code == 103) {
+            //用户不存在
+            this.login.error = res.data.msg;
+          }
+          if (res.data.code == 104) {
+            //用户名或密码有误
+            this.login.error = res.data.msg;
+          }
+          if (res.data.code == 105) {
+            //登录成功
+            this.$router.replace("index"); //跳转(无历史)
+          }
+
+          console.log(res);
+        });
     },
 
     //注册按钮
@@ -133,14 +166,15 @@ export default {
         username: this.register.username,
         password: this.register.password
       });
-
       this.axios
         .post(config.SREVER_HTTP + "/loginRegister/register", data)
         .then(res => {
           if (res.data.code == 101) {
+            //用户名已存在
             this.register.error = res.data.msg;
           }
           if (res.data.code == 102) {
+            //注册成功，请登录
             this.register.error = res.data.msg;
           }
         });

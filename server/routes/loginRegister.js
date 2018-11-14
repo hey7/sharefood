@@ -7,6 +7,9 @@ var express = require('express'),
 //100:其他错
 //101:用户名已存在
 //102:注册成功，请登录
+//103：用户不存在
+//104：用户名或密码有误
+//105：登录成功
 router.post('/register', function (req, res) {
     var username = req.body['username'],
         password = req.body['password'],
@@ -52,6 +55,40 @@ router.post('/register', function (req, res) {
 
         });
 
+    });
+});
+
+router.post('/login', function (req, res) {
+    var username = req.body['username'],
+        password = req.body['password']
+
+    //解密
+    var md5 = crypto.createHash('md5');
+    password = md5.update(password).digest('hex');
+
+
+    //检查用户名是否已经存在
+    User.getUserByUserName(username, function (err, results) {
+        if (err) {
+            res.json({code:100,data: '',msg: err})
+            return;
+        } 
+        if(results == '')
+        {
+            res.json({code:103,data: '',msg: '用户不存在'})
+            return;
+        }
+        if(results[0].username != username || results[0].password != password)
+         {
+             console.log(results[0].password,"==",password)
+             res.json({code:104,data: '',msg: '用户名或密码有误'})
+             return;
+         }
+
+         req.session.username = username;
+         req.session.user_id = results[0].user_id;
+
+         res.json({code:105,data: '',msg: '登录成功'})
     });
 });
 
