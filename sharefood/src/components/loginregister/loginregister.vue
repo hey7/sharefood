@@ -104,18 +104,11 @@ export default {
         return;
       }
       this.login.error = "";
-
-      var data = this.qs.stringify({
-        username: this.login.username,
-        password: this.login.password
-      });
-      this.axios.post(config.SREVER_HTTP + "/login", data).then(res => {
-        console.log(res);
-      });
     },
 
     //注册按钮
     registerClick() {
+      //判空
       if (this.register.username.split(" ").join("").length == 0) {
         this.register.error = "请输入用户名";
         return;
@@ -134,6 +127,23 @@ export default {
       }
 
       this.register.error = "";
+
+      //注册
+      var data = this.qs.stringify({
+        username: this.register.username,
+        password: this.register.password
+      });
+
+      this.axios
+        .post(config.SREVER_HTTP + "/loginRegister/register", data)
+        .then(res => {
+          if (res.data.code == 101) {
+            this.register.error = res.data.msg;
+          }
+          if (res.data.code == 102) {
+            this.register.error = res.data.msg;
+          }
+        });
     }
   }
 };

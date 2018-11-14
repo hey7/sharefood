@@ -42,7 +42,11 @@ module.exports.first = function (sql, params, cb) {
         }
         connection.query(sql, params, function (error, res) {
             connection.release();
-            cb(error, res);
+            if (error) {
+                cb(error, null)
+                return;
+            }
+            cb(null, res);
         });
     });
 }

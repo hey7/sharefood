@@ -30,11 +30,13 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 //自定义模块
-var login = require('./routes/login');
+var loginRegister = require('./routes/loginRegister');
 
 //暴露API接口
-app.use('/login', login);
+app.use('/loginRegister', loginRegister);
 
 
 // catch 404 and forward to error handler
