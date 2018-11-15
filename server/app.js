@@ -3,8 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-//引入session
-var session = require('express-session');
+
 //跨域
 var cors = require('cors');
 
@@ -12,8 +11,8 @@ var app = express();
 
 //跨域
 app.use(cors({
-  //origin: config.fe_http, //允许这个域的访问
-  origin: ['http://localhost:8080'],
+  origin: ['http://localhost:8080','http://127.0.0.1:8080'],
+  credentials: true,  //允许跨域携带cookie
   methods: ['GET', 'POST'], //只允许GET和Post请求
   alloweHeaders: ['Conten-Type', 'Authorization'] //只允许带着两种头的连接访问
 }));
@@ -27,10 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
-//这里传入了一个密钥加session id
-app.use(cookieParser('heyi'));
-//使用靠就这个中间件
-app.use(session({ secret: 'heyi'}));
+
+app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 

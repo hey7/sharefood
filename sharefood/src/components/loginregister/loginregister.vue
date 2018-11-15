@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import config from "../../util/config.js";
 export default {
   data() {
     return {
@@ -120,22 +119,21 @@ export default {
         password: this.login.password
       });
       this.axios
-        .post(config.SREVER_HTTP + "/loginRegister/login", data)
+        .post(this.config.SREVER_HTTP + "/loginRegister/login", data)
         .then(res => {
-          if (res.data.code == 103) {
-            //用户不存在
+          if (res.data.code == 103) { //用户不存在
             this.login.error = res.data.msg;
           }
-          if (res.data.code == 104) {
-            //用户名或密码有误
+          if (res.data.code == 104) {//用户名或密码有误
             this.login.error = res.data.msg;
           }
-          if (res.data.code == 105) {
-            //登录成功
+          if (res.data.code == 105) {//登录成功
+
+            this.$store.dispatch('getUser',res.data.data.username);  //存入vuex
+            
             this.$router.replace("index"); //跳转(无历史)
           }
 
-          console.log(res);
         });
     },
 
@@ -167,7 +165,7 @@ export default {
         password: this.register.password
       });
       this.axios
-        .post(config.SREVER_HTTP + "/loginRegister/register", data)
+        .post(this.config.SREVER_HTTP + "/loginRegister/register", data)
         .then(res => {
           if (res.data.code == 101) {
             //用户名已存在

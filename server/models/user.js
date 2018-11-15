@@ -15,8 +15,8 @@ function User(user) {
 
 //保存用户
 User.prototype.save = function save(callback) {
-    var sql = "INSERT INTO user(user_id,username,password,state,create_time,modified_time) VALUES(0,?,?,?,?,?)";
-    let params = [this.username, this.password,this.state,this.create_time,this.modified_time]
+    var sql = "INSERT INTO user(user_id,username,password,photo,state,create_time,modified_time) VALUES(0,?,?,?,?,?,?)";
+    let params = [this.username, this.password,this.photo,this.state,this.create_time,this.modified_time]
     mysqlHelper.execute(sql, params, function (err, result) {
         callback(err, result);
     })
@@ -26,7 +26,7 @@ User.prototype.save = function save(callback) {
 User.getUserNumByName = function getUserNumByName(username, callback) {
     var sql = "SELECT COUNT(1) AS num FROM user WHERE username = ?";
     let params = [username]
-    mysqlHelper.row(sql, params, function (err, result) {
+    mysqlHelper.single(sql, params, function (err, result) {
         callback(err, result);
     })
 }
@@ -35,7 +35,7 @@ User.getUserNumByName = function getUserNumByName(username, callback) {
 User.getUserByUserName = function getUserByUserName(username, callback) {
     let sql = "SELECT * FROM user WHERE username = ?";
     let params = [username]
-    mysqlHelper.row(sql, params, function (err, result) {
+    mysqlHelper.single(sql, params, function (err, result) {
         callback(err, result);
     })
 }

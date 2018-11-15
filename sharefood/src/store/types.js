@@ -1,7 +1,5 @@
-const SHOW_HEADER="SHOW_HEADER"
-const HIDE_HEADER="HIDE_HEADER"
+const GET_USER="GET_USER"
 
 export default {
-	SHOW_HEADER,
-	HIDE_HEADER
+	GET_USER
 }

@@ -16,40 +16,40 @@ pool.on('connection', function (connection) {
     connection.query('SET SESSION auto_increment_increment=1');
 });
 
-//将结果已对象数组返回
-module.exports.row = function (sql, params, cb) {
-    pool.getConnection(function (err, connection) {
-        if (err) {
-            cb(err, null)
-            return;
-        }
-        connection.query(sql, params, function (error, res) {
-            connection.release();
-            if (error) {
-                cb(error, null)
-                return;
-            }
-            cb(null, res)
-        });
-    });
-}
-//返回一个对象
-module.exports.first = function (sql, params, cb) {
-    pool.getConnection(function (err, connection) {
-        if (err) {
-            cb(err, null)
-            return;
-        }
-        connection.query(sql, params, function (error, res) {
-            connection.release();
-            if (error) {
-                cb(error, null)
-                return;
-            }
-            cb(null, res);
-        });
-    });
-}
+// //将结果已对象数组返回
+// module.exports.row = function (sql, params, cb) {
+//     pool.getConnection(function (err, connection) {
+//         if (err) {
+//             cb(err, null)
+//             return;
+//         }
+//         connection.query(sql, params, function (error, res) {
+//             connection.release();
+//             if (error) {
+//                 cb(error, null)
+//                 return;
+//             }
+//             cb(null, res)
+//         });
+//     });
+// }
+// //返回一个对象
+// module.exports.first = function (sql, params, cb) {
+//     pool.getConnection(function (err, connection) {
+//         if (err) {
+//             cb(err, null)
+//             return;
+//         }
+//         connection.query(sql, params, function (error, res) {
+//             connection.release();
+//             if (error) {
+//                 cb(error, null)
+//                 return;
+//             }
+//             cb(null, res);
+//         });
+//     });
+// }
 
 //返回单个查询结果
 module.exports.single = (sql, params, cb) => {
