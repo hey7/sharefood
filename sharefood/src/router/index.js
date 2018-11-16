@@ -19,5 +19,6 @@ export default new Router({
       path: '/register',
       component: aa
     }
-  ]
+  ],
+  linkActiveClass:'active'
 })

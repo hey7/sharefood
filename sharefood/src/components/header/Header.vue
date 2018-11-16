@@ -56,8 +56,12 @@ export default {
 .header {
   width: 100%;
   height: 40px;
+  min-width: 1170px;
   background-color: #333333;
-  position: relative;
+  position: sticky;
+	left: 0;
+  top: 0px;
+  z-index: 100;
   .context {
     font-size: 20px;
     color: #ff6767;
