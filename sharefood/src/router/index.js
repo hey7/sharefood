@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '../components/index/index.vue'
-import aa from '../components/loginregister/loginregister.vue'
+import loginRegister from '../components/loginRegister/loginRegister.vue'
+import personalCenter from '../components/personalCenter/personalCenter.vue'
+import menu from '../components/personalCenter/comp/menu.vue'
+import aa from '../components/personalCenter/comp/aa.vue'
 
 Vue.use(Router)
 
@@ -13,11 +16,22 @@ export default new Router({
     },
     {
       path: '/login',
-      component: aa
+      component: loginRegister
     },
     {
       path: '/register',
-      component: aa
+      component: loginRegister
+    },
+    {
+      path: '/personalCenter',
+      component: personalCenter,
+      children:[{
+        path:'menu',
+        component:menu
+      },{
+        path:'aa',
+        component:aa
+      }]
     }
   ],
   linkActiveClass:'active'

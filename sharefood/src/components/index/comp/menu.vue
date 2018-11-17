@@ -25,14 +25,16 @@ export default {
       activeIndex: '1',
       
       //展示的数据
-      menu:[{pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
+      menu:[
       {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
       {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
       {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
       {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
       {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
       {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'}]
+      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
+      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'}
+      ]
     };
   },
   methods: {

@@ -1,6 +1,7 @@
 <template>
     <div class="header">
         <div class="context">ShareFood</div>
+
         <div v-if="!isLogin">
           <div class="login">
             <router-link to="/login" tag="span">登录</router-link>
@@ -11,12 +12,18 @@
         </div>
 
         <div v-if="isLogin">
-          <div class="user">
+          <div class="user" @mouseover="showAlert" @mouseout="hideAlert">
             <img :src="photo" alt="">
             <div>{{user.username}}</div>
           </div>
           <div class="logout">
             <div @click="logout">退出</div>
+          </div>
+          <div class="alert" v-if="isAlert" @mouseover="showAlert" @mouseout="hideAlert">
+              <ul>
+                <router-link to="/personalCenter/menu" tag="span" ><li>个人中心</li></router-link>
+                <li>我的空间</li>
+              </ul>
           </div>
         </div>
 
@@ -27,13 +34,13 @@ import { mapGetters } from "vuex";
 export default {
   data(){
     return{
+      isAlert:false   //弹窗显示
     }
   },
   computed: {
     ...mapGetters(["user"]),
     isLogin() {   //是否登录
-      if (this.$cookies.isKey("username") && this.$cookies.isKey("user_id")) {
-        //没过时
+      if (this.$cookies.isKey("username") && this.$cookies.isKey("user_id")) {//没过时
         this.$store.dispatch("getUser", this.$cookies.get("username")); //存vuex
       } else {
         this.$store.dispatch("getUser", null); //过时清空
@@ -44,7 +51,13 @@ export default {
       return this.config.SREVER_HTTP+this.$store.getters.user.photo}
     },
   methods:{
-    logout(){
+    showAlert(){  //显示弹窗
+      this.isAlert=true;
+    },
+    hideAlert(){  //隐藏弹窗
+      this.isAlert=false;
+    },
+    logout(){     //退出
       this.$cookies.remove("username")
       this.$cookies.remove("user_id")
       this.$store.dispatch("getUser", null); //清空
@@ -98,6 +111,26 @@ export default {
       line-height: 40px;
       text-overflow: ellipsis;
       margin-left: 6px;
+    }
+  }
+  .alert{
+    width: 100px;
+    position: absolute;
+    right: 200px;
+    top:40px;
+    box-shadow: 0 0 10px gray;
+    border-radius: 0 0 5px 5px;
+    font-size: 14px;
+    background-color: white;
+    li{
+      height: 30px;
+      width: 100px;
+      text-align: center;
+      line-height: 30px;
+      cursor: pointer;
+      &:hover{
+        color: #ff6767;
+      }
     }
   }
   .register,

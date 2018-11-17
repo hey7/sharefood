@@ -15,9 +15,9 @@ export default {
     return {
       lunbo: [
         'static/images/index/lunbo1.jpg',
-         'static/images/index/lunbo2.jpg',
-          'static/images/index/lunbo3.jpg',
-           'static/images/index/lunbo4.jpg'
+        'static/images/index/lunbo2.jpg',
+        'static/images/index/lunbo3.jpg',
+        'static/images/index/lunbo4.jpg'
       ]
     };
   }

@@ -1,5 +1,5 @@
 <template>
- <div class="loginregister">
+ <div class="loginRegister">
      <!-- 背景 -->
      <img :src="imgSrc" :height="screenHeight" :width="screenWidth">
      <!-- 大标题 -->
@@ -181,7 +181,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.loginregister {
+.loginRegister {
   position: relative;
   .title {
     width: 400px;
