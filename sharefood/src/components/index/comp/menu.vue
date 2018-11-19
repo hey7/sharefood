@@ -1,7 +1,7 @@
 <template>
     <div class="menu">
         <div class="content">
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" active-text-color="#ff6767">
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-menu-item index="1" class="font">新秀</el-menu-item>
                 <el-menu-item index="2" class="font">一周热门</el-menu-item> 
                 <el-menu-item index="3" class="font">最受欢迎</el-menu-item>     
@@ -10,7 +10,7 @@
             <div class="show-menu">
                 <div class="show-menu-item" v-for="(item,index) in menu" :key="index">
                     <div class="img"><img :src="item.pic" alt=""></div>
-                    <div class="title">{{item.title}}</div>
+                    <div class="title">{{item.name}}</div>
                     <div class="username">{{item.username}}</div>
                 </div>
             </div>
@@ -26,14 +26,14 @@ export default {
       
       //展示的数据
       menu:[
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'},
-      {pic:'static/images/index/shiwu.jpg',title:'西红柿炒鸡蛋',username:'heyi'}
+      {pic:'static/images/index/shiwu.jpg',name:'西红柿炒鸡蛋',username:'heyi'},
+      {pic:'static/images/index/shiwu.jpg',name:'西红柿炒鸡蛋',username:'heyi'},
+      {pic:'static/images/index/shiwu.jpg',name:'西红柿炒鸡蛋',username:'heyi'},
+      {pic:'static/images/index/shiwu.jpg',name:'西红柿炒鸡蛋',username:'heyi'},
+      {pic:'static/images/index/shiwu.jpg',name:'西红柿炒鸡蛋',username:'heyi'},
+      {pic:'static/images/index/shiwu.jpg',name:'西红柿炒鸡蛋',username:'heyi'},
+      {pic:'static/images/index/shiwu.jpg',name:'西红柿炒鸡蛋',username:'heyi'},
+      {pic:'static/images/index/shiwu.jpg',name:'西红柿炒鸡蛋',username:'heyi'}
       ]
     };
   },

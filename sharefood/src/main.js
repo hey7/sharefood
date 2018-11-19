@@ -8,7 +8,8 @@ import router from './router' //使用路由
 import store from './store/index' //使用vuex
 
 import ElementUI from 'element-ui';//使用element-ui组件库
-import 'element-ui/lib/theme-chalk/index.css';
+//import 'element-ui/lib/theme-chalk/index.css';
+import '../theme/index.css';
 Vue.use(ElementUI)
 
 import axios from 'axios'  //使用axios

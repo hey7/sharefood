@@ -119,7 +119,7 @@ export default {
         password: this.login.password
       });
       this.axios
-        .post(this.config.SREVER_HTTP + "/loginRegister/login", data)
+        .post(this.config.SREVER_HTTP + "/user/login", data)
         .then(res => {
           if (res.data.code == 103) { //用户不存在
             this.login.error = res.data.msg;
@@ -165,7 +165,7 @@ export default {
         password: this.register.password
       });
       this.axios
-        .post(this.config.SREVER_HTTP + "/loginRegister/register", data)
+        .post(this.config.SREVER_HTTP + "/user/register", data)
         .then(res => {
           if (res.data.code == 101) {
             //用户名已存在

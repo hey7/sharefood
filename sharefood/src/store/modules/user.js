@@ -19,7 +19,7 @@ const getters = {
 const actions = {
   getUser({commit}, username) {
       if (username != null) {
-            axios.post(config.SREVER_HTTP + "/loginRegister/getUser", 'username=' + username)
+            axios.post(config.SREVER_HTTP + "/user/getUser", 'username=' + username)
               .then(res => {
                 if (res.data.code == 106) { //获得用户成功
                   commit(types.GET_USER, res.data.data);

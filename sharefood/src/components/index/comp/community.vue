@@ -1,7 +1,7 @@
 <template>
     <div class="community">
         <div class="content">
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" active-text-color="#ff6767">
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-menu-item index="1" class="font">热门话题</el-menu-item>
                 <el-menu-item index="2" class="font">精华日志</el-menu-item>
             </el-menu>

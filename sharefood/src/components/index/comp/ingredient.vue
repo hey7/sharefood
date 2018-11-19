@@ -1,7 +1,7 @@
 <template>
     <div class="ingredient">
         <div class="content">
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" active-text-color="#ff6767">
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-menu-item index="1" class="font">时令食材</el-menu-item>
             </el-menu>
             <div class="right">食材首页</div>

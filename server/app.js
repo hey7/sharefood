@@ -34,10 +34,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //自定义模块
-var loginRegister = require('./routes/loginRegister');
+var user = require('./routes/user');
+var menu = require('./routes/menu');
 
 //暴露API接口
-app.use('/loginRegister', loginRegister);
+app.use('/user', user);
+app.use('/menu',menu);
 
 
 // catch 404 and forward to error handler

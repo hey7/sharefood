@@ -1,7 +1,7 @@
 <template>
   <div class="personalCenter">
   <c-header></c-header>
-  
+  <div class="content">
   <div class="nav">
       <el-menu
       :default-active="$route.path"
@@ -15,10 +15,11 @@
         <span slot="title"><router-link to="/personalCenter/aa" tag="div">aa</router-link></span>
       </el-menu-item>
     </el-menu>
-
-    <router-view class="show"></router-view>
-  </div>
-
+</div>
+<div class="show">
+    <router-view ></router-view>
+</div>
+</div>
   </div>
 </template>
 
@@ -44,15 +45,22 @@ export default {
 };
 
 </script>
-
-<style>
-.nav{
-    width: 200px;
-    position: relative;
-}
-.show{
-    position: absolute;
-    left:200px;
-    top: 0;
+<style lang="less" scoped>
+.personalCenter{
+  width: 100%;
+  min-width: 1170px;
+  position: relative;
+  .content{
+    margin-right: 100px;
+    .nav{
+        width: 200px;
+    }
+    .show{
+        position: absolute;
+        left:200px;
+        top: 40px;
+        right: 100px;
+    }
+  }
 }
 </style>
