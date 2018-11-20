@@ -23,12 +23,10 @@ Vue.prototype.qs=qs;  //因为不是全局插件，所以可以添加在vue原�
 import config from './util/config'  //自定义公用
 Vue.prototype.config=config;
 
-import VueCookies from 'vue-cookies' 
+import VueCookies from 'vue-cookies' //使用cookie
 Vue.use(VueCookies)
 
 Vue.config.productionTip = false
-
-
 
 /* eslint-disable no-new */
 new Vue({

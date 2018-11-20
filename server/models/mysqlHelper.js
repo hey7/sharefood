@@ -85,3 +85,21 @@ module.exports.execute = (sql, params, cb) => {
         });
     });
 }
+
+module.exports.execute = (sql, params, cb) => {
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            cb(err, null)
+            return;
+        }
+        connection.query(sql, params, function (error, res) {
+            connection.release();
+            if (error) {
+                cb(error, null)
+                return;
+            }
+            cb(null, res);
+        });
+    });
+}
+
