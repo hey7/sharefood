@@ -1,4 +1,4 @@
-var mysqlHelper = require("./mysqlHelper");
+var mysqlHelper = require("../mysqlHelper");
 
 function Menu(menu) {
     this.menu_id = menu.menu_id;

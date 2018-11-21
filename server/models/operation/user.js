@@ -1,4 +1,4 @@
-var mysqlHelper = require("./mysqlHelper");
+var mysqlHelper = require("../mysqlHelper");
 
 function User(user) {
     this.user_id = user.user_id;
@@ -15,8 +15,8 @@ function User(user) {
 
 //保存用户
 User.prototype.save = function save(callback) {
-    var sql = "INSERT INTO user(user_id,username,password,photo,state,create_time,modified_time) VALUES(0,?,?,?,?,?,?)";
-    let params = [this.username, this.password,this.photo,this.state,this.create_time,this.modified_time]
+    var sql = "INSERT INTO user(user_id,username,password,phone,photo,sex,signature,state,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?)";
+    let params = [this.username, this.password,this.phone,this.photo,this.sex,this.signature,this.state,this.create_time,this.modified_time]
     mysqlHelper.execute(sql, params, function (err, result) {
         callback(err, result);
     })

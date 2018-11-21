@@ -1,9 +1,10 @@
 var express = require('express'),
     router = express.Router(),
-    User = require('../models/user.js'),
     util = require('../util/util'), //公共函数
     config = require('../util/config'),//公共配置
-    crypto = require('crypto') //加密
+    crypto = require('crypto'), //加密
+
+    User = require('../models/operation/user')
 
 //100:其他错
 //101:用户名已存在

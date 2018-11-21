@@ -82,12 +82,12 @@
     <el-button type="primary" size="mini" @click="dialogVisible1 = true">添加分组</el-button><br>
 
     <div v-for="(item1, index1) in groups" :key="index1">
-      <span>{{item1.group}}</span>
+      <span>{{item1.groupname}}</span>
       <el-button type="primary" size="mini" @click="addIngredient(index1)">添加食材</el-button>
       <el-button type="primary" size="mini" @click="delGroup(index1)">删除分组</el-button>
 
       <div v-for="(item2, index2) in item1.ingredient" :key="index2">
-        <el-input v-model="item2.name" placeholder="食材名" size="small" style="width:300px"></el-input>
+        <el-input v-model="item2.ingredientname" placeholder="食材名" size="small" style="width:300px"></el-input>
         <el-input v-model="item2.amount" placeholder="用量" size="small" style="width:150px"></el-input>
         <el-button type="primary" size="mini" @click="delIngredient(index1,index2)">删除食材</el-button>
       </div>
@@ -110,10 +110,10 @@
         type="textarea"
         :rows="4"
         :placeholder="(index3+1)+'、请输入做法说明菜谱描述，最多输入200字'"
-        v-model="item3.explain"
+        v-model="item3.descript"
         style="width:400px;position: absolute;right:0;top:0;">
       </el-input>
-      <el-button type="primary" size="mini" @click="delIngredient(index1,index2)">删除食材</el-button>
+      <el-button type="primary" size="mini" @click="delSteps(index3)">删除步骤</el-button>
     </div>
 
     <!-- 小窍门 -->
@@ -192,11 +192,10 @@ export default {
         chujv:[],       //厨具
       },
       groups:[        //食材组
-        {group:'主料',ingredient:[{name:'',amount:''}]}
+        {groupname:'主料',ingredient:[{ingredientname:'',amount:''}]}
       ],
       steps:[       //步骤
-        {path:'',explain:''},
-        {path:'',explain:''}
+        {path:'',descript:''}
       ],
       trick:'', //小窍门
       iscreate:'', //是否原创
@@ -226,14 +225,14 @@ export default {
       //食材明细
       addGroup(){     //添加食材组
         this.dialogVisible1 = false   //关闭弹窗
-        this.groups.push({group:this.shicaizuming,ingredient:[]})   //添加食材组名
+        this.groups.push({groupname:this.shicaizuming,ingredient:[]})   //添加食材组名
         this.shicaizuming=''      //清空数据
       },
       delGroup(index1){    //删除食材组
         this.groups.splice(index1,1);
       },
       addIngredient(index1){  //添加食材
-        this.groups[index1].ingredient.push({name:'',amount:''})
+        this.groups[index1].ingredient.push({ingredientname:'',amount:''})
       },   
       delIngredient(index1,index2){ //删除食材
         this.groups[index1].ingredient.splice(index2,1);
@@ -245,8 +244,11 @@ export default {
           this.steps[index3].path = res.data.uploadPath
       },
       addSteps(){//  添加步骤
-        this.steps.push({path:'',explain:''})
+        this.steps.push({path:'',descript:''})
       }, 
+      delSteps(index3){//删除步骤
+        this.steps.splice(index3,1);
+      },
 
 
       addMenu(){
