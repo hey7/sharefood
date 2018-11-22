@@ -48,8 +48,9 @@ export default {
       return this.$store.getters.islogin;
     },
     photo(){    //照片
-      return this.config.SREVER_HTTP+this.$store.getters.user.photo}
-    },
+      return this.config.SREVER_HTTP+this.$store.getters.user.photo
+    }
+  },
   methods:{
     showAlert(){  //显示弹窗
       this.isAlert=true;

@@ -3,10 +3,55 @@
 
   <div class="title">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="我的菜谱" name="first">我的菜谱</el-tab-pane>
-      <el-tab-pane label="待审核" name="second">待审核</el-tab-pane>
-      <el-tab-pane label="退稿箱" name="third">退稿箱</el-tab-pane>
-      <el-tab-pane label="草稿箱" name="fourth">草稿箱</el-tab-pane>
+      <el-tab-pane label="我的菜谱" name="first">
+        <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==3">
+          <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
+          <div class="menuname">{{menu.menuname}}</div>
+          <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
+          <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
+          <div class="time">{{menu.modified_time1}}</div>
+          <el-button type="primary" size="mini" class="detail">详情</el-button>
+          <el-button type="primary" size="mini" class="update">修改</el-button>
+          <el-button type="primary" size="mini" class="delete" @click="deleteMenu(menu.menu_id,index)">删除</el-button>
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane label="待审核" name="second">
+        <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==1">
+          <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
+          <div class="menuname">{{menu.menuname}}</div>
+          <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
+          <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
+          <div class="time">{{menu.modified_time1}}</div>
+          <el-button type="primary" size="mini" class="detail">详情</el-button>
+          <el-button type="primary" size="mini" class="update">修改</el-button>
+          <el-button type="primary" size="mini" class="delete" @click="deleteMenu(menu.menu_id,index)">删除</el-button>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="退稿箱" name="third">
+        <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==2">
+          <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
+          <div class="menuname">{{menu.menuname}}</div>
+          <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
+          <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
+          <div class="time">{{menu.modified_time1}}</div>
+          <el-button type="primary" size="mini" class="detail">详情</el-button>
+          <el-button type="primary" size="mini" class="update">修改</el-button>
+          <el-button type="primary" size="mini" class="delete" @click="deleteMenu(menu.menu_id,index)">删除</el-button>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="草稿箱" name="fourth">
+        <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==0">
+          <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
+          <div class="menuname">{{menu.menuname}}</div>
+          <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
+          <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
+          <div class="time">{{menu.modified_time1}}</div>
+          <el-button type="primary" size="mini" class="detail">详情</el-button>
+          <el-button type="primary" size="mini" class="update">修改</el-button>
+          <el-button type="primary" size="mini" class="delete" @click="deleteMenu(menu.menu_id,index)">删除</el-button>
+        </div>
+      </el-tab-pane>
     </el-tabs>
      <div class="button"><el-button type="primary" size="small" @click="toCreateMenu">发布新菜谱</el-button></div>
     
@@ -21,8 +66,16 @@
     data() {
       return {
         //Tabs 标签页 选中哪个
-        activeName: 'first'
+        activeName: 'first',
+
+        //获取到的该用户的所有menu
+        menus:[]
       };
+    },
+    computed: {
+      SREVER_HTTP(){
+        return this.config.SREVER_HTTP
+      }
     },
     methods: {
        //Tabs 标签页 切换，清空错误提示
@@ -30,10 +83,41 @@
         //console.log(tab, event);
       },
       toCreateMenu(){
-       //this.router.push({path:'/personalCenter/createMenu'})
        this.$router.push({path:'/personalCenter/createMenu'})
+      },
+      deleteMenu(menu_id,index){
+        this.$confirm('此操作将永久删除该菜谱, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.axios
+          .post(this.config.SREVER_HTTP + '/menu/deleteMenu', 'menu_id='+menu_id)
+          .then(res => {
+            if(res.data.code == 203){
+                this.menus.splice(index,1)
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+              }
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
       }
 
+    },
+    created(){
+       this.axios
+        .post(this.config.SREVER_HTTP + "/menu/getMenu", '')
+        .then(res => {
+          console.log('res',res.data.data)
+          this.menus = res.data.data
+        });
     }
   };
 </script>
@@ -45,6 +129,69 @@
     position: absolute;
     right: 10px;
     top: 5px;
+  }
+  .content{
+    height: 150px;
+    border: 1px solid #e4e7ed;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+    &:hover{
+      background-color: #f5f0f0;
+    }
+
+    .menupic{
+      height: 120px;
+      width: 120px;
+      margin-left: 15px;
+    }
+    .menuname{
+      margin-left: 20px;
+      width: 200px;
+      text-align: center;
+    }
+    .love{
+     margin-left: 20px;
+     width: 100px;
+     text-align: center;
+     img{
+       width: 25px;
+       height: 25px;
+     }
+    }
+    .collection{
+     margin-left: 20px;
+     width: 100px;
+     text-align: center;
+     img{
+       width: 22px;
+       height: 22px;
+     }
+    }
+    .time{
+     margin-left: 25px;
+      width: 100px;
+      text-align: center;
+
+    }
+    .detail{
+      position: absolute;
+      right: 15px;
+      top: 60px;
+    }
+    .update{
+      position: absolute;
+      right: 85px;
+      top: 60px;
+    }
+    .delete{
+      position: absolute;
+      right: 155px;
+      top: 60px;
+    }
   }
 }
 </style>

@@ -56,6 +56,7 @@ export default {
         width: 200px;
     }
     .show{
+      height: auto;
         position: absolute;
         left:200px;
         top: 40px;

@@ -6,11 +6,15 @@ var express = require('express'),
 
     Menu = require('../models/operation/menu'),
     Menu_pic = require('../models/operation/menu_pic'),
-    Ingredient = require('../models/operation/ingredient')
-Menu_ingredient = require('../models/operation/menu_ingredient')
+    Ingredient = require('../models/operation/ingredient'),
+    Menu_ingredient = require('../models/operation/menu_ingredient'),
+    Menu_type = require('../models/operation/menu_type')
+
 //200 其他错
 //201 上传图片成功
 //202 保存菜单成功
+//203 获得菜谱成功
+//204 删除菜谱成功
 
 //上传图片
 router.post('/imgUpload', function (req, res) {
@@ -35,6 +39,7 @@ router.post('/imgUpload', function (req, res) {
     });
 });
 
+//保存菜谱
 router.post('/createMenu', function (req, res) {
     var menuname = req.body['menuname'],
         chengpintu = JSON.parse(req.body['chengpintu']),
@@ -52,6 +57,16 @@ router.post('/createMenu', function (req, res) {
         weekcollection = 0,
         create_time = util.getNowFormatDate(),
         modified_time = util.getNowFormatDate()
+
+
+    var dictionary_ids = [];
+    for (let item in type) {
+        if (type[item] instanceof Array) {
+            dictionary_ids = dictionary_ids.concat(type[item])
+        } else {
+            dictionary_ids.push(type[item])
+        }
+    }
 
     var menu = new Menu({
         user_id: user_id,
@@ -127,8 +142,7 @@ router.post('/createMenu', function (req, res) {
             })
         }
 
-        //保存食材
-        for (let group of groups) {
+        for (let [index, group] of groups.entries()) { //保存食材
             for (let ingredient of group.ingredient) {
                 new Promise(function (resolve, reject) { //食材中有没有，没有存，有取，取ingredient_id
                     Ingredient.getIngredientByIngredientName(ingredient.ingredientname, function (err, result) {
@@ -140,7 +154,7 @@ router.post('/createMenu', function (req, res) {
                             })
                             return;
                         }
-                        
+
                         if (!result) { //食材中没有，存
                             var ingredient1 = new Ingredient({
                                 ingredientname: ingredient.ingredientname,
@@ -170,6 +184,7 @@ router.post('/createMenu', function (req, res) {
                         menu_id: menu_id,
                         ingredient_id: ingredient_id,
                         groupname: group.groupname,
+                        groupnum: index,
                         amount: ingredient.amount
                     })
                     menu_ingredient.save(function (err, result) {
@@ -189,12 +204,72 @@ router.post('/createMenu', function (req, res) {
             }
         }
 
+        for (let dictionary_id of dictionary_ids) { //保存分类
+            var menu_type = new Menu_type({
+                menu_id: menu_id,
+                dictionary_id: dictionary_id
+            })
+            menu_type.save(function (err, result) {
+                if (err) {
+                    res.json({
+                        code: 200,
+                        data: '',
+                        msg: err
+                    })
+                    return;
+                }
+                if (result.insertId > 0) {
+                    return;
+                }
+            })
 
-
+        }
     })
 
 
 
 
 });
+
+//获得用户的菜谱(第一张成品图、点赞、收藏、修改日期)
+router.post('/getMenu', function (req, res) {
+    var user_id = req.cookies.user_id
+    Menu.getMenuByUserId(user_id, function (err, results) {
+        if (err) {
+            res.json({
+                code: 100,
+                data: '',
+                msg: err
+            })
+            return;
+        }
+        res.json({
+            code: 203,
+            data: results,
+            msg: '获得菜谱成功'
+        })
+    });
+});
+
+//删除用户的菜谱
+router.post('/deleteMenu', function (req, res) {
+    var menu_id = req.body['menu_id']
+    console.log('menu_id',menu_id)
+    Menu.deleteMenuByMenuId(menu_id, function (err, results) {
+        if (err) {
+            res.json({
+                code: 200,
+                data: '',
+                msg: err
+            })
+            return;
+        }
+        res.json({
+            code: 203,
+            data: '',
+            msg: '删除菜谱成功'
+        })
+    });
+});
+
 module.exports = router;
