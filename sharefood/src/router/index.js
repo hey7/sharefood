@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import index from '../components/index/index.vue'
 import loginRegister from '../components/loginRegister/loginRegister.vue'
 import personalCenter from '../components/personalCenter/personalCenter.vue'
-import menu from '../components/personalCenter/comp/menu.vue'
-import createMenu from '../components/personalCenter/comp/createMenu.vue'
+import menu from '../components/menu/menu.vue'
+import createMenu from '../components/menu/createMenu.vue'
 import aa from '../components/personalCenter/comp/aa.vue'
 
 Vue.use(Router)
