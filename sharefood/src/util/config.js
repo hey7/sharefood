@@ -1,4 +1,4 @@
-const SREVER_HTTP="http://127.0.0.1:3000"
+const SREVER_HTTP="http://127.0.0.1:3000"		//后端端口
 
 Array.prototype.indexOf = function (val) {
 	for (var i = 0; i < this.length; i++) {

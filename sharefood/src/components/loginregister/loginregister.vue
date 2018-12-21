@@ -128,9 +128,7 @@ export default {
             this.login.error = res.data.msg;
           }
           if (res.data.code == 105) {//登录成功
-
             this.$store.dispatch('getUser',res.data.data.username);  //存入vuex
-            
             this.$router.replace("index"); //跳转(无历史)
           }
 

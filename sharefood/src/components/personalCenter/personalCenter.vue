@@ -1,26 +1,26 @@
 <template>
   <div class="personalCenter">
-  <c-header></c-header>
-  <div class="content">
-  <div class="nav">
-      <el-menu
-      :default-active="$route.path"
-      class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose">
-      <el-menu-item index="/personalCenter/menu">
-        <span slot="title"><router-link to="/personalCenter/menu" tag="div">菜谱</router-link></span>
-      </el-menu-item>
-      <el-menu-item index="/personalCenter/aa">
-        <span slot="title"><router-link to="/personalCenter/aa" tag="div">aa</router-link></span>
-      </el-menu-item>
-    </el-menu>
-</div>
-<div class="show">
-    <router-view ></router-view>
-</div>
-</div>
-  </div>
+    <c-header></c-header>
+    <div class="content">
+      <div class="nav">
+          <el-menu
+          :default-active="$route.path"
+          class="el-menu-vertical-demo"
+          @open="handleOpen"
+          @close="handleClose">
+          <el-menu-item index="/personalCenter/menu">
+            <span slot="title"><router-link to="/personalCenter/menu" tag="div">菜谱</router-link></span>
+          </el-menu-item>
+          <el-menu-item index="/personalCenter/aa">
+            <span slot="title"><router-link to="/personalCenter/aa" tag="div">aa</router-link></span>
+          </el-menu-item>
+        </el-menu>
+      </div>
+
+      <div class="show"><router-view class="view"></router-view> </div>
+    </div>
+  </div> 
+  
 </template>
 
 <script>
@@ -34,14 +34,14 @@ export default {
   components: {
     'c-header': Header, //头
   },
-   methods: {
+  methods: {
       handleOpen(key, keyPath) {
         // console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         // console.log(key, keyPath);
       }
-    },
+  }
 };
 
 </script>
@@ -53,15 +53,29 @@ export default {
   .content{
     margin-right: 100px;
     .nav{
-        width: 200px;
+      width:210px;
+      position: fixed;
+      top:40px;
+      bottom: 0;
+      overflow: auto;
     }
     .show{
-      height: auto;
+      position: fixed;
+      top:40px;
+      left:210px;
+      right: 0;
+      bottom: 0;
+      overflow: auto;
+      .view{
         position: absolute;
-        left:200px;
-        top: 40px;
+        top:0;
+        left:0;
         right: 100px;
+      }
     }
   }
 }
+
+  
+
 </style>

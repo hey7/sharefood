@@ -5,7 +5,7 @@ import App from './App'
 
 import router from './router' //使用路由
 
-import store from './store/index' //使用vuex
+import store from './store' //使用vuex
 
 import ElementUI from 'element-ui';//使用element-ui组件库
 //import 'element-ui/lib/theme-chalk/index.css';

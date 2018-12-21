@@ -272,4 +272,10 @@ router.post('/deleteMenu', function (req, res) {
     });
 });
 
+//获取详细菜谱()
+router.post('/getdetailMenu', function (req, res) {
+    var user_id = req.cookies.user_id
+    var menu_id = req.body['menu_id'];
+    console.log(user_id,menu_id)
+});
 module.exports = router;

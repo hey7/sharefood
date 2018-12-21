@@ -1,6 +1,5 @@
 <template>
 <div class="menu">
-
   <div class="title">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="我的菜谱" name="first">
@@ -15,7 +14,6 @@
           <el-button type="primary" size="mini" class="delete" @click="deleteMenu(menu.menu_id,index)">删除</el-button>
         </div>
       </el-tab-pane>
-
       <el-tab-pane label="待审核" name="second">
         <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==1">
           <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
@@ -23,7 +21,7 @@
           <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
           <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
           <div class="time">{{menu.modified_time1}}</div>
-          <el-button type="primary" size="mini" class="detail">详情</el-button>
+          <el-button type="primary" size="mini" class="detail" @click="detailMenu(menu.menu_id)">详情</el-button>
           <el-button type="primary" size="mini" class="update">修改</el-button>
           <el-button type="primary" size="mini" class="delete" @click="deleteMenu(menu.menu_id,index)">删除</el-button>
         </div>
@@ -56,9 +54,6 @@
      <div class="button"><el-button type="primary" size="small" @click="toCreateMenu">发布新菜谱</el-button></div>
     
   </div>
-
-  
-
 </div>
 </template>
 <script>
@@ -82,10 +77,10 @@
       handleClick(tab, event) {
         //console.log(tab, event);
       },
-      toCreateMenu(){
+      toCreateMenu(){   //发布新菜谱
        this.$router.push({path:'/personalCenter/createMenu'})
       },
-      deleteMenu(menu_id,index){
+      deleteMenu(menu_id,index){  //删除
         this.$confirm('此操作将永久删除该菜谱, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -108,6 +103,9 @@
             message: '已取消删除'
           });          
         });
+      },
+      detailMenu(menu_id){  //详情
+        this.$router.push({path: `/personalCenter/detailMenu/${menu_id}` })
       }
 
     },

@@ -40,11 +40,7 @@ export default {
   computed: {
     ...mapGetters(["user"]),
     isLogin() {   //是否登录
-      if (this.$cookies.isKey("username") && this.$cookies.isKey("user_id")) {//没过时
-        this.$store.dispatch("getUser", this.$cookies.get("username")); //存vuex
-      } else {
-        this.$store.dispatch("getUser", null); //过时清空
-      }
+    console.log('aaaaaaaa')
       return this.$store.getters.islogin;
     },
     photo(){    //照片
@@ -61,7 +57,8 @@ export default {
     logout(){     //退出
       this.$cookies.remove("username")
       this.$cookies.remove("user_id")
-      this.$store.dispatch("getUser", null); //清空
+      this.$store.dispatch("getUser", null)
+      this.$router.replace("/index");   //跳转(无历史))
     }
   }
 };

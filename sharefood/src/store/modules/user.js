@@ -34,11 +34,15 @@ const actions = {
 const mutations = {
   [types.GET_USER](state, user) {
     if (user != null) {
+      console.log('修改中有。。')
       state.user = user
       state.islogin = true
+      localStorage.setItem("user",JSON.stringify(state))
     } else {
+      console.log('修改中null。。')
       state.user = {}
       state.islogin = false
+      localStorage.setItem("user",JSON.stringify(state))
     }
   }
 }
