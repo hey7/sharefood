@@ -9,12 +9,21 @@ function Menu_pic(menu_pic) {
 };
 
 //保存菜谱图
-Menu_pic.prototype.save = function save(callback) {
+Menu_pic.prototype.save = function save() {
     var sql = "INSERT INTO menu_pic(menu_pic_id,menu_id,path,step,descript) VALUES(0,?,?,?,?)";
     let params = [this.menu_id, this.path,this.step,this.descript]
-    mysqlHelper.execute(sql, params, function (err, result) {
-        callback(err, result);
-    })
+    return mysqlHelper.execute1(sql, params)
 }
+
+// //保存菜谱图
+// Menu_pic.prototype.save = function save(callback) {
+//     var sql = "INSERT INTO menu_pic(menu_pic_id,menu_id,path,step,descript) VALUES(0,?,?,?,?)";
+//     let params = [this.menu_id, this.path,this.step,this.descript]
+//     mysqlHelper.execute(sql, params, function (err, result) {
+//         callback(err, result);
+//     })
+// }
+
+
 
 module.exports = Menu_pic;

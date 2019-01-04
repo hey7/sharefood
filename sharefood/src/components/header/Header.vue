@@ -1,64 +1,71 @@
 <template>
-    <div class="header">
-        <div class="context">ShareFood</div>
+  <div class="header">
+    <div class="context">ShareFood</div>
 
-        <div v-if="!isLogin">
-          <div class="login">
-            <router-link to="/login" tag="span">登录</router-link>
-          </div>
-          <div class="register">
-            <router-link to="/register" tag="span">注册</router-link>
-          </div>
-        </div>
-
-        <div v-if="isLogin">
-          <div class="user" @mouseover="showAlert" @mouseout="hideAlert">
-            <img :src="photo" alt="">
-            <div>{{user.username}}</div>
-          </div>
-          <div class="logout">
-            <div @click="logout">退出</div>
-          </div>
-          <div class="alert" v-if="isAlert" @mouseover="showAlert" @mouseout="hideAlert">
-              <ul>
-                <router-link to="/personalCenter/menu" tag="span" ><li>个人中心</li></router-link>
-                <li>我的空间</li>
-              </ul>
-          </div>
-        </div>
-
+    <div v-if="!isLogin">
+      <div class="login">
+        <router-link to="/login" tag="span">登录</router-link>
+      </div>
+      <div class="register">
+        <router-link to="/register" tag="span">注册</router-link>
+      </div>
     </div>
+
+    <div v-if="isLogin">
+      <div class="user" @mouseover="showAlert" @mouseout="hideAlert">
+        <img :src="photo" alt>
+        <div>{{user.username}}</div>
+      </div>
+      <div class="logout">
+        <div @click="logout">退出</div>
+      </div>
+      <div class="alert" v-if="isAlert" @mouseover="showAlert" @mouseout="hideAlert">
+        <ul>
+          <router-link to="/personalCenter/menu" tag="span">
+            <li>个人中心</li>
+          </router-link>
+          <li>我的空间</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
 export default {
-  data(){
-    return{
-      isAlert:false   //弹窗显示
-    }
+  data() {
+    return {
+      isAlert: false //弹窗显示
+    };
   },
   computed: {
     ...mapGetters(["user"]),
-    isLogin() {   //是否登录
-    console.log('aaaaaaaa')
-      return this.$store.getters.islogin;
+    isLogin() {
+      //是否登录
+      if (this.user) {
+        return true;
+      } else {
+        return false;
+      }
     },
-    photo(){    //照片
-      return this.config.SREVER_HTTP+this.$store.getters.user.photo
+    photo() {
+      //照片
+      return this.config.SREVER_HTTP + this.user.photo;
     }
   },
-  methods:{
-    showAlert(){  //显示弹窗
-      this.isAlert=true;
+  methods: {
+    showAlert() {
+      //显示弹窗
+      this.isAlert = true;
     },
-    hideAlert(){  //隐藏弹窗
-      this.isAlert=false;
+    hideAlert() {
+      //隐藏弹窗
+      this.isAlert = false;
     },
-    logout(){     //退出
-      this.$cookies.remove("username")
-      this.$cookies.remove("user_id")
-      this.$store.dispatch("getUser", null)
-      this.$router.replace("/index");   //跳转(无历史))
+    logout() {
+      //退出
+      this.$store.dispatch('setUser','');  //存入vuex
+      this.$router.push("/index"); 
     }
   }
 };
@@ -70,7 +77,7 @@ export default {
   min-width: 1170px;
   background-color: #333333;
   position: sticky;
-	left: 0;
+  left: 0;
   top: 0px;
   z-index: 100;
   .context {
@@ -111,22 +118,22 @@ export default {
       margin-left: 6px;
     }
   }
-  .alert{
+  .alert {
     width: 100px;
     position: absolute;
     right: 200px;
-    top:40px;
+    top: 40px;
     box-shadow: 0 0 10px gray;
     border-radius: 0 0 5px 5px;
     font-size: 14px;
     background-color: white;
-    li{
+    li {
       height: 30px;
       width: 100px;
       text-align: center;
       line-height: 30px;
       cursor: pointer;
-      &:hover{
+      &:hover {
         color: #ff6767;
       }
     }

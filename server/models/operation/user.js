@@ -13,31 +13,56 @@ function User(user) {
     this.modified_time = user.modified_time;
 };
 
-//保存用户
-User.prototype.save = function save(callback) {
-    var sql = "INSERT INTO user(user_id,username,password,phone,photo,sex,signature,state,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?)";
-    let params = [this.username, this.password,this.phone,this.photo,this.sex,this.signature,this.state,this.create_time,this.modified_time]
-    mysqlHelper.execute(sql, params, function (err, result) {
-        callback(err, result);
-    })
-}
-
 //查询username为xxx的有多少个
-User.getUserNumByName = function getUserNumByName(username, callback) {
+User.getUserNumByName = function getUserNumByName(username) {
     var sql = "SELECT COUNT(1) AS num FROM user WHERE username = ?";
     let params = [username]
-    mysqlHelper.single(sql, params, function (err, result) {
-        callback(err, result);
-    })
+    return mysqlHelper.single1(sql, params)
+}
+
+//保存用户
+User.prototype.save = function save() {
+    var sql = "INSERT INTO user(user_id,username,password,phone,photo,sex,signature,state,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?)";
+    let params = [this.username, this.password,this.phone,this.photo,this.sex,this.signature,this.state,this.create_time,this.modified_time]
+    return mysqlHelper.execute1(sql, params)
 }
 
 //根据UserName查询User
-User.getUserByUserName = function getUserByUserName(username, callback) {
+User.getUserByUserName = function getUserByUserName(username) {
     let sql = "SELECT * FROM user WHERE username = ?";
     let params = [username]
-    mysqlHelper.single(sql, params, function (err, result) {
-        callback(err, result);
-    })
+    return mysqlHelper.single1(sql, params)
 }
+
+
+// //保存用户
+// User.prototype.save = function save(callback) {
+//     var sql = "INSERT INTO user(user_id,username,password,phone,photo,sex,signature,state,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?)";
+//     let params = [this.username, this.password,this.phone,this.photo,this.sex,this.signature,this.state,this.create_time,this.modified_time]
+//     mysqlHelper.execute(sql, params, function (err, result) {
+//         callback(err, result);
+//     })
+// }
+
+// //查询username为xxx的有多少个
+// User.getUserNumByName = function getUserNumByName(username, callback) {
+//     var sql = "SELECT COUNT(1) AS num FROM user WHERE username = ?";
+//     let params = [username]
+//     mysqlHelper.single(sql, params, function (err, result) {
+//         callback(err, result);
+//     })
+// }
+
+// //根据UserName查询User
+// User.getUserByUserName = function getUserByUserName(username, callback) {
+//     let sql = "SELECT * FROM user WHERE username = ?";
+//     let params = [username]
+//     mysqlHelper.single(sql, params, function (err, result) {
+//         callback(err, result);
+//     })
+// }
+
+
+
 
 module.exports = User;

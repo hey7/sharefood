@@ -63,8 +63,8 @@
         //Tabs 标签页 选中哪个
         activeName: 'first',
 
-        //获取到的该用户的所有menu
-        menus:[]
+        //数据
+        menus:[]//获取到的该用户的所有menu
       };
     },
     computed: {
@@ -73,7 +73,7 @@
       }
     },
     methods: {
-       //Tabs 标签页 切换，清空错误提示
+      //Tabs 标签页 切换，清空错误提示
       handleClick(tab, event) {
         //console.log(tab, event);
       },
@@ -89,14 +89,15 @@
           this.axios
           .post(this.config.SREVER_HTTP + '/menu/deleteMenu', 'menu_id='+menu_id)
           .then(res => {
-            if(res.data.code == 203){
+            if(res.data.code == 999){
                 this.menus.splice(index,1)
                 this.$message({
                   type: 'success',
-                  message: '删除成功!'
+                  message: res.data.msg
                 });
               }
           });
+         
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -105,7 +106,7 @@
         });
       },
       detailMenu(menu_id){  //详情
-        this.$router.push({path: `/personalCenter/detailMenu/${menu_id}` })
+        this.$router.push({path: '/personalCenter/detailMenu',query:{menu_id:menu_id}}); 
       }
 
     },
@@ -113,7 +114,6 @@
        this.axios
         .post(this.config.SREVER_HTTP + "/menu/getMenu", '')
         .then(res => {
-          console.log('res',res.data.data)
           this.menus = res.data.data
         });
     }

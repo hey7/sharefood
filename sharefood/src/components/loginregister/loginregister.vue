@@ -127,9 +127,11 @@ export default {
           if (res.data.code == 104) {//用户名或密码有误
             this.login.error = res.data.msg;
           }
-          if (res.data.code == 105) {//登录成功
-            this.$store.dispatch('getUser',res.data.data.username);  //存入vuex
-            this.$router.replace("index"); //跳转(无历史)
+          if (res.data.code == 999) {//登录成功
+            this.$store.dispatch('setUser',res.data.data);  //存入vuex
+            this.$router.push({
+                path: this.$route.query.redirect || '/index'
+            })
           }
 
         });
@@ -169,7 +171,7 @@ export default {
             //用户名已存在
             this.register.error = res.data.msg;
           }
-          if (res.data.code == 102) {
+          if (res.data.code == 999) {
             //注册成功，请登录
             this.register.error = res.data.msg;
           }

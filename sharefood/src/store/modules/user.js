@@ -1,49 +1,27 @@
-import types from '../types.js'
-import config from '../../util/config'
-import axios from 'axios'
+// import config from '../../util/config'
+// import axios from 'axios'
+import { getCookie,setCookie } from '@/util/auth'
 
 const state = {
-  user: {},
-  islogin: false
+  user: getCookie('user')
 }
 
 const getters = {
   user(state) {
     return state.user;
-  },
-  islogin(state) {
-    return state.islogin;
   }
 }
 
 const actions = {
-  getUser({commit}, username) {
-      if (username != null) {
-            axios.post(config.SREVER_HTTP + "/user/getUser", 'username=' + username)
-              .then(res => {
-                if (res.data.code == 106) { //获得用户成功
-                  commit(types.GET_USER, res.data.data);
-                }
-              });
-      }else{
-        commit(types.GET_USER, null);
-      }
+  setUser({commit},param) {
+    commit('SET_USER', param);
   }
 }
 
 const mutations = {
-  [types.GET_USER](state, user) {
-    if (user != null) {
-      console.log('修改中有。。')
-      state.user = user
-      state.islogin = true
-      localStorage.setItem("user",JSON.stringify(state))
-    } else {
-      console.log('修改中null。。')
-      state.user = {}
-      state.islogin = false
-      localStorage.setItem("user",JSON.stringify(state))
-    }
+  SET_USER(state, user) {
+    state.user = user
+    setCookie('user', user)
   }
 }
 

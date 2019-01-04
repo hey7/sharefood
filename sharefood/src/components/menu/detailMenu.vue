@@ -31,13 +31,13 @@ export default {
   },
   created(){
     var data = this.qs.stringify({
-        menu_id: this.$route.params.menu_id
+        menu_id: this.$route.query.menu_id
     });
     this.axios
         .post(this.config.SREVER_HTTP + "/menu/getdetailMenu", data)
         .then(res => {
           console.log('res',res.data.data)
-        });
+    });
   }
 }
 
