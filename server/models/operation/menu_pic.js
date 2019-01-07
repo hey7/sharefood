@@ -15,7 +15,21 @@ Menu_pic.prototype.save = function save() {
     return mysqlHelper.execute1(sql, params)
 }
 
-// //保存菜谱图
+//根据MenuId查询菜谱图（成品）
+Menu_pic.getMenuPicByMenuId = function getMenuPicByMenuId(menu_id) {
+    var sql = "SELECT path FROM menu_pic WHERE step = 0 AND menu_id = ?";
+    let params = [menu_id]
+    return mysqlHelper.execute1(sql, params)
+}
+
+//根据MenuId查询菜谱步骤
+Menu_pic.getMenuStepByMenuId = function getMenuStepByMenuId(menu_id) {
+    var sql = "SELECT path,descript FROM menu_pic WHERE menu_id = ? AND step <> 0 ORDER BY step ";
+    let params = [menu_id]
+    return mysqlHelper.execute1(sql, params)
+}
+
+// //根据MenuId查询食材
 // Menu_pic.prototype.save = function save(callback) {
 //     var sql = "INSERT INTO menu_pic(menu_pic_id,menu_id,path,step,descript) VALUES(0,?,?,?,?)";
 //     let params = [this.menu_id, this.path,this.step,this.descript]

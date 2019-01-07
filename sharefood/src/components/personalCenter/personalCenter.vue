@@ -12,7 +12,16 @@
             <span slot="title"><router-link to="/personalCenter/menu" tag="div">菜谱</router-link></span>
           </el-menu-item>
           <el-menu-item index="/personalCenter/aa">
-            <span slot="title"><router-link to="/personalCenter/aa" tag="div">aa</router-link></span>
+            <span slot="title"><router-link to="/personalCenter/aa" tag="div">收藏</router-link></span>
+          </el-menu-item>
+          <el-menu-item index="/personalCenter/aa">
+            <span slot="title">社区</span>
+          </el-menu-item>
+          <el-menu-item index="/personalCenter/aa">
+            <span slot="title">私信</span>
+          </el-menu-item>
+           <el-menu-item index="/personalCenter/aa">
+            <span slot="title">账户设置</span>
           </el-menu-item>
         </el-menu>
       </div>
@@ -67,6 +76,7 @@ export default {
       bottom: 0;
       overflow: auto;
       .view{
+        min-width: 1070px;
         position: absolute;
         top:0;
         left:0;
@@ -75,7 +85,9 @@ export default {
     }
   }
 }
-
+.el-menu{
+  height: 100%;
+}
   
 
 </style>

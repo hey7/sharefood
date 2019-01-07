@@ -64,8 +64,8 @@ export default {
     },
     logout() {
       //退出
-      this.$store.dispatch('setUser','');  //存入vuex
-      this.$router.push("/index"); 
+      this.$store.dispatch("setUser", ""); //存入vuex
+      this.$router.push("/index");
     }
   }
 };

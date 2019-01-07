@@ -11,7 +11,7 @@
        <!-- Element标签页 -->
       <el-tabs v-model="activeName" @tab-click="handleClick" :stretch="true" class="el-tabs">
         <el-tab-pane label="登录" name="first">
-            <div class="error">{{login.error}}</div>
+            <div class="form">
             <div class="item item1">
               <img src="static/images/loginregister/username.png" alt="" class="image">
               <el-input v-model="login.username" placeholder="请输入用户名" class="input"></el-input>
@@ -21,10 +21,11 @@
               <el-input v-model="login.password" placeholder="请输入密码" class="input" type="password"></el-input>
             </div>
             <el-button type="primary" class="button" @click="loginClick">登录</el-button>
+            </div>
         </el-tab-pane>
 
         <el-tab-pane label="注册" name="second">
-          <div class="error">{{register.error}}</div>
+          <div class="form">
             <div class="item item2">
               <img src="static/images/loginregister/username.png" alt="" class="image">
               <el-input v-model="register.username" placeholder="请输入用户名" class="input"></el-input>
@@ -37,6 +38,7 @@
               <el-input v-model="register.confirmPassword" placeholder="请输入确认密码" class="input" type="password"></el-input>
             </div>
             <el-button type="primary" class="button" @click="registerClick">注册</el-button>
+          </div>
         </el-tab-pane>
       </el-tabs>
     </div> 
@@ -65,7 +67,7 @@ export default {
       activeName: "first",
 
       //业务数据
-      login: { username: "", password: "", error: "" },
+      login: { username: "", password: ""},
       register: { username: "", password: "", confirmPassword: "", error: "" }
     };
   },
@@ -104,14 +106,13 @@ export default {
     loginClick() {
       //判空
       if (this.login.username.split(" ").join("").length == 0) {
-        this.login.error = "请输入用户名";
+        this.$message.error('请输入用户名');       
         return;
       }
       if (this.login.password.split(" ").join("").length == 0) {
-        this.login.error = "请输入密码";
+        this.$message.error('请输入密码');    
         return;
       }
-      this.login.error = "";
 
       //登录
       var data = this.qs.stringify({
@@ -122,10 +123,10 @@ export default {
         .post(this.config.SREVER_HTTP + "/user/login", data)
         .then(res => {
           if (res.data.code == 103) { //用户不存在
-            this.login.error = res.data.msg;
+            this.$message.error(res.data.msg);       
           }
           if (res.data.code == 104) {//用户名或密码有误
-            this.login.error = res.data.msg;
+            this.$message.error(res.data.msg);  
           }
           if (res.data.code == 999) {//登录成功
             this.$store.dispatch('setUser',res.data.data);  //存入vuex
@@ -141,23 +142,21 @@ export default {
     registerClick() {
       //判空
       if (this.register.username.split(" ").join("").length == 0) {
-        this.register.error = "请输入用户名";
+        this.$message.error('请输入用户名');       
         return;
       }
       if (this.register.password.split(" ").join("").length == 0) {
-        this.register.error = "请输入密码";
+        this.$message.error('请输入密码');
         return;
       }
       if (this.register.confirmPassword.split(" ").join("").length == 0) {
-        this.register.error = "请输入确认密码";
+        this.$message.error('请输入确认密码');
         return;
       }
       if (this.register.password != this.register.confirmPassword) {
-        this.register.error = "密码不一致";
+        this.$message.error('密码不一致');
         return;
       }
-
-      this.register.error = "";
 
       //注册
       var data = this.qs.stringify({
@@ -169,11 +168,11 @@ export default {
         .then(res => {
           if (res.data.code == 101) {
             //用户名已存在
-            this.register.error = res.data.msg;
+            this.$message.error(res.data.msg);  
           }
           if (res.data.code == 999) {
             //注册成功，请登录
-            this.register.error = res.data.msg;
+            this.$message.success(res.data.msg);  
           }
         });
     }
@@ -210,32 +209,27 @@ export default {
     bottom: 0;
     margin: auto;
     border-radius: 20px;
-    .error {
-      font-size: 16px;
-      height: 25px;
-      width: 350px;
-      margin: 0 auto 10px;
-      color: red;
-      text-align: center;
-    }
-    .item {
-      width: 350px;
-      height: 40px;
-      position: relative;
-      margin: 0 auto 10px;
-      .image {
-        width: 32px;
-        height: 32px;
+    .form {
+      margin-top: 20px;
+      .item {
+        width: 350px;
+        height: 40px;
+        position: relative;
+        margin: 0 auto 10px;
+        .image {
+          width: 32px;
+          height: 32px;
+        }
+        .input {
+          width: 300px;
+          position: absolute;
+          left: 50px;
+        }
       }
-      .input {
-        width: 300px;
-        position: absolute;
-        left: 50px;
+      .button {
+        width: 350px;
+        margin: 10px 25px;
       }
-    }
-    .button {
-      width: 350px;
-      margin: 10px 25px;
     }
   }
 }

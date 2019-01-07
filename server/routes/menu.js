@@ -39,26 +39,27 @@ router.post('/imgUpload', function (req, res) {
         })
     });
 });
+
 //获取详细菜谱
 router.post('/getdetailMenu', async function (req, res) {
-    var user_id = JSON.parse(req.cookies.user).user_id
     var menu_id = req.body['menu_id'];
 
     var data = {
-        menuname: '', //
+        menuname: '', 
         chengpintu: [],
-        descript: '', //
+        descript: '', 
         type: {},
         groups: {},
         steps: [],
-        trick: '', //
-        iscreate: '', //
-        state: '' //
+        trick: '', 
+        iscreate: '', 
+        state: ''
     }
 
     try {
         var result;
 
+        //获取菜谱
         result = await Menu.getMenuByMenuId(menu_id)
         data.menuname = result.menuname
         data.descript = result.descript
@@ -66,39 +67,63 @@ router.post('/getdetailMenu', async function (req, res) {
         data.iscreate = result.iscreate
         data.state = result.state
 
+        //获取菜谱分类
         result = await Menu_type.getMenuTypeByMenuId(menu_id)
-        console.log(result)
         for (var row of result) {
             if (data.type[row.top_id]) {
                 if (data.type[row.top_id] instanceof Array) {
-                    data.type[row.top_id].push({groupname: row.type,ingredientname: row.name})
+                    data.type[row.top_id].push({type: row.type,name: row.name})
                 } else {
                     var aar = [];
                     aar.push(data.type[row.top_id])
-                    aar.push({groupname: row.type,ingredientname: row.name})
+                    aar.push({type: row.type,name: row.name})
                     data.type[row.top_id] = aar
                 }
             } else {
-                data.type[row.top_id] = [{groupname: row.type,ingredientname: row.name}]
+                data.type[row.top_id] = [{type: row.type,name: row.name}]
             }
         }
-        result = await Menu_ingredient.getMenuIngredientByMenuId(menu_id)
         
+        
+
+        //获取菜谱食材
+        result = await Menu_ingredient.getMenuIngredientByMenuId(menu_id)
         for (var row of result) {
-            if (data.groups[row.groupnum]) {
-                if (data.groups[row.groupnum] instanceof Array) {
-                    data.groups[row.groupnum].push({groupname: row.groupname,ingredientname: row.ingredientname, amount: row.amount})
+            if (data.groups[row.groupname]) {
+                if (data.groups[row.groupname] instanceof Array) {
+                    data.groups[row.groupname].push({ingredientname: row.ingredientname, amount: row.amount})
                 } else {
                     var aar = [];
-                    aar.push(data.groups[row.groupnum])
-                    aar.push({groupname: row.groupname,ingredientname: row.ingredientname, amount: row.amount})
-                    data.groups[row.groupnum] = aar
+                    aar.push(data.groups[row.groupname])
+                    aar.push({ingredientname: row.ingredientname, amount: row.amount})
+                    data.groups[row.groupname] = aar
                 }
             } else {
-                data.groups[row.groupnum] = [{groupname: row.groupname,ingredientname: row.ingredientname, amount: row.amount}]
+                data.groups[row.groupname] = [{ingredientname: row.ingredientname, amount: row.amount}]
             }
         }
-        console.log(data.groups)
+
+        var arr = []
+        for (var i in data.groups) {
+            arr.push({
+                groupname:i,
+                ingredient:data.groups[i]
+            })
+        }
+        data.groups = arr;
+
+        //获取菜谱成品图
+        result = await Menu_pic.getMenuPicByMenuId(menu_id);
+        for (var row of result) {
+           data.chengpintu.push(row.path)
+        }
+
+        //获取菜谱步骤
+        result = await Menu_pic.getMenuStepByMenuId(menu_id);
+        for (var row of result) {
+            data.steps.push({path:row.path,descript:row.descript})
+        }
+
         res.json({
             code: 999,
             data: data,
@@ -146,25 +171,25 @@ router.post('/createMenu', async function (req, res) {
         }
     }
 
-    var menu = new Menu({
-        user_id: user_id,
-        menuname: menuname,
-        iscreate: iscreate,
-        love: love,
-        trick: trick,
-        descript: descript,
-        state: state,
-        collection: collection,
-        weekcollection: weekcollection,
-        create_time: create_time,
-        modified_time: modified_time,
-    });
     try {
         var result;
         var menu_id;
         var ingredient_id;
 
         //保存菜谱
+        var menu = new Menu({
+            user_id: user_id,
+            menuname: menuname,
+            iscreate: iscreate,
+            love: love,
+            trick: trick,
+            descript: descript,
+            state: state,
+            collection: collection,
+            weekcollection: weekcollection,
+            create_time: create_time,
+            modified_time: modified_time,
+        });
         result = await menu.save()
         if (result.insertId > 0) {
             menu_id = result.insertId

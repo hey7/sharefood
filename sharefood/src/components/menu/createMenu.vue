@@ -255,8 +255,7 @@ export default {
         haoshi: "", //耗时
         chujv: [] //厨具
       },
-      groups: [
-        //食材组
+      groups: [//食材组
         { groupname: "主料", ingredient: [{ ingredientname: "", amount: "" }] }
       ],
       steps: [
@@ -366,7 +365,7 @@ export default {
 
 <style lang="less" scoped>
 .createMenu {
-  margin: 10px 0 0 10px;
+  margin: 10px 0 0 20px;
   position: relative;
   .caipu-input {
     width: 400px;
