@@ -259,7 +259,7 @@ router.post('/createMenu', async function (req, res) {
         res.json({
             code: 999,
             data: '',
-            msg: '保存菜谱成功'
+            msg: '发布菜谱成功'
         })
 
     } catch (err) {

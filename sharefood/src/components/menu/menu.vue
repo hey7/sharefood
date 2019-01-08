@@ -9,7 +9,7 @@
           <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
           <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
           <div class="time">{{menu.modified_time1}}</div>
-          <el-button type="primary" size="mini" class="detail">详情</el-button>
+          <el-button type="primary" size="mini" class="detail" @click="detailMenu(menu.menu_id)">详情</el-button>
           <el-button type="primary" size="mini" class="update">修改</el-button>
           <el-button type="primary" size="mini" class="delete" @click="deleteMenu(menu.menu_id,index)">删除</el-button>
         </div>
@@ -45,7 +45,7 @@
           <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
           <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
           <div class="time">{{menu.modified_time1}}</div>
-          <el-button type="primary" size="mini" class="detail">详情</el-button>
+          <el-button type="primary" size="mini" class="detail" @click="detailMenu(menu.menu_id)">详情</el-button>
           <el-button type="primary" size="mini" class="update">修改</el-button>
           <el-button type="primary" size="mini" class="delete" @click="deleteMenu(menu.menu_id,index)">删除</el-button>
         </div>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store'
+import { Message } from 'element-ui'
 
 Vue.use(Router)
 
@@ -56,6 +57,7 @@ router.beforeEach((to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
     } else {
+      Message.warning('请先登录'); 
       next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
     }
   }

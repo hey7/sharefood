@@ -129,6 +129,7 @@ export default {
             this.$message.error(res.data.msg);  
           }
           if (res.data.code == 999) {//登录成功
+            this.$message.success(res.data.msg); 
             this.$store.dispatch('setUser',res.data.data);  //存入vuex
             this.$router.push({
                 path: this.$route.query.redirect || '/index'

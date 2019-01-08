@@ -214,19 +214,30 @@ export default {
       dectionary1: [
         {
           dictionary_id: "6",
-          name: "咸"
+          name: "咸",
+        },
+        {
+          dictionary_id: "16",
+          name: "甜",
         }
       ],
       dectionary2: [
         {
           dictionary_id: "8",
           name: "煮"
+        },{
+          dictionary_id: "15",
+          name: "烘焙"
         }
       ],
       dectionary3: [
         {
           dictionary_id: "10",
           name: "半小时"
+        },
+        {
+          dictionary_id: "17",
+          name: "三刻钟"
         }
       ],
       dectionary4: [
@@ -345,7 +356,14 @@ export default {
       this.axios
         .post(this.config.SREVER_HTTP + "/menu/createMenu", data)
         .then(res => {
-          console.log("res", res);
+          // if (res.data.code == 999) {
+          // // this.$message.success(res.data.msg); 
+          this.$message.success('发布菜谱成功'); 
+          this.$router.push('/personalCenter/menu')
+          // }
+          // else{
+          // this.$message.error('请输入完整菜谱'); 
+          // }
         });
     },
 
