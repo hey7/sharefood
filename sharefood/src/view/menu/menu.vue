@@ -4,7 +4,7 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="我的菜谱" name="first">
         <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==3">
-          <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
+          <img :src="'/api'+menu.path" alt="" class="menupic">
           <div class="menuname">{{menu.menuname}}</div>
           <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
           <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
@@ -16,7 +16,7 @@
       </el-tab-pane>
       <el-tab-pane label="待审核" name="second">
         <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==1">
-          <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
+          <img :src="'/api'+menu.path" alt="" class="menupic">
           <div class="menuname">{{menu.menuname}}</div>
           <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
           <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
@@ -28,7 +28,7 @@
       </el-tab-pane>
       <el-tab-pane label="退稿箱" name="third">
         <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==2">
-          <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
+          <img :src="'/api'+menu.path" alt="" class="menupic">
           <div class="menuname">{{menu.menuname}}</div>
           <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
           <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
@@ -40,7 +40,7 @@
       </el-tab-pane>
       <el-tab-pane label="草稿箱" name="fourth">
         <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==0">
-          <img :src="SREVER_HTTP+menu.path" alt="" class="menupic">
+          <img :src="'/api'+menu.path" alt="" class="menupic">
           <div class="menuname">{{menu.menuname}}</div>
           <div class="love"><img src="/static/images/menu/love.png" alt="">{{menu.love}}</div>
           <div class="collection"><img src="/static/images/menu/collection.png" alt="">{{menu.collection}}</div>
@@ -67,11 +67,6 @@
         menus:[]//获取到的该用户的所有menu
       };
     },
-    computed: {
-      SREVER_HTTP(){
-        return this.config.SREVER_HTTP
-      }
-    },
     methods: {
       //Tabs 标签页 切换，清空错误提示
       handleClick(tab, event) {
@@ -87,7 +82,7 @@
           type: 'warning'
         }).then(() => {
           this.axios
-          .post(this.config.SREVER_HTTP + '/menu/deleteMenu', 'menu_id='+menu_id)
+          .post('/api/menu/deleteMenu', 'menu_id='+menu_id)
           .then(res => {
             if(res.data.code == 999){
                 this.menus.splice(index,1)
@@ -112,7 +107,7 @@
     },
     created(){
        this.axios
-        .post(this.config.SREVER_HTTP + "/menu/getMenu", '')
+        .post("/api/menu/getMenu", '')
         .then(res => {
           this.menus = res.data.data
         });

@@ -9,11 +9,11 @@ import Cookies from 'js-cookie'
 // }
 
 // export function removeCookie (name) {
-//   return Cookies.remove(window.btoa(name))
+//   return Cookies.(window.btoa(name))
 // }
 
 export function getCookie(name) { 
-  if(Cookies.get(name)&&name=='user'){
+  if(typeof Cookies.get(name)==='string'){
     return JSON.parse(Cookies.get(name)) //因为存的对象
   }
   return Cookies.get(name)

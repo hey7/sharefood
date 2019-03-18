@@ -13,7 +13,7 @@
       <span class="xing">*</span>:
     </div>
     <el-upload
-      :action="config.SREVER_HTTP + '/menu/imgUpload'"
+      :action="'/api/menu/imgUpload'"
       list-type="picture-card"
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
@@ -127,11 +127,11 @@
     <div v-for="(item3, index3) in steps" class="buzhou">
       <el-upload
         class="avatar-uploader"
-        :action="config.SREVER_HTTP + '/menu/imgUpload'"
+        :action="'/api/menu/imgUpload'"
         :show-file-list="false"
         :on-success="((i)=>{handleAvatarSuccess(i,index3)})"
       >
-        <img v-if="item3.path" :src="config.SREVER_HTTP +item3.path" class="avatar">
+        <img v-if="item3.path" :src="'/api' +item3.path" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
 
@@ -280,10 +280,11 @@ export default {
   },
   methods: {
     //成品图片
-    handleRemove(file, fileList) {
-      //删除
-      // this.chengpintu = fileList;   //赋值
-      this.chengpintu.remove(file.response.data.uploadPath);
+    handleRemove(file, fileList) {//删除
+      var index = this.chengpintu.indexOf(file.response.data.uploadPath);
+      if (index > -1) {
+        this.chengpintu.splice(index, 1);
+      }
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -354,7 +355,7 @@ export default {
       });
 
       this.axios
-        .post(this.config.SREVER_HTTP + "/menu/createMenu", data)
+        .post("/api/menu/createMenu", data)
         .then(res => {
           // if (res.data.code == 999) {
           // // this.$message.success(res.data.msg); 

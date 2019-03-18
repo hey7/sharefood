@@ -14,7 +14,7 @@
       <div class="block content">
         <el-carousel height="400px">
           <el-carousel-item v-for="item in chengpintu" :key="item">
-            <img :src="config.SREVER_HTTP+item" alt>
+            <img :src="'/api'+item" alt>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -64,7 +64,7 @@
     <div class="steps" v-for="(item5, index5) in steps" :key="'5-'+index5">
       <el-row type="flex" justify="space-between">
         <el-col :span="4">
-          <img :src="config.SREVER_HTTP+item5.path" alt width="100%">
+          <img :src="'/api'+item5.path" alt width="100%">
         </el-col>
         <el-col :span="19">
           <div class="recipeStep_num">{{index5+1}}</div>
@@ -106,7 +106,7 @@ export default {
       menu_id: this.$route.query.menu_id
     });
     this.axios
-      .post(this.config.SREVER_HTTP + "/menu/getdetailMenu", data)
+      .post("/api/menu/getdetailMenu", data)
       .then(res => {
         if (res.data.code == 999) {
           var data = res.data.data;

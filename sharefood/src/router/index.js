@@ -6,46 +6,46 @@ import { Message } from 'element-ui'
 Vue.use(Router)
 
 const router = new Router({
-  routes: [{
+  routes: [
+    {
+      path: '/',
+      component: () => import('@/view/index/index.vue'),
+      redirect: '/index',
+    },{
       path: '/index',
-      component: () => import('@/components/index/index.vue'),
+      component: () => import('@/view/index/index.vue'),
     },
     {
       path: '/login',
-      component: () => import('@/components/loginRegister/loginRegister.vue'),
+      component: () => import('@/view/loginRegister/loginRegister.vue'),
     },
     {
       path: '/register',
-      component: () => import('@/components/loginRegister/loginRegister.vue'),
+      component: () => import('@/view/loginRegister/loginRegister.vue'),
     },
     {
       path: '/personalCenter',
-      component: () => import('@/components/personalCenter/personalCenter.vue'),
+      component: () => import('@/view/personalCenter/personalCenter.vue'),
       children: [{
         path: '/personalCenter/menu',
-        component: () => import('@/components/menu/menu.vue'),
+        component: () => import('@/view/menu/menu.vue'),
       }, {
         path: '/personalCenter/createMenu',
-        component: () => import('@/components/menu/createMenu.vue'),
+        component: () => import('@/view/menu/createMenu.vue'),
       }, {
         path: '/personalCenter/aa',
-        component: () => import('@/components/personalCenter/comp/aa.vue'),
+        component: () => import('@/view/personalCenter/comp/aa.vue'),
       }, {
         path: '/personalCenter/detailMenu',
-        component: () => import('@/components/menu/detailMenu.vue'),
+        component: () => import('@/view/menu/detailMenu.vue'),
       }]
     }
   ],
   linkActiveClass: 'active'
 })
 
+//导航守卫
 const whiteList = ['/login', '/index', '/register']
-
-//以前写的
-// console.log('cookie', router.app.$cookies.isKey("username"))
-// console.log('vue状态', router.app.$store.getters.islogin, router.app.$store.state.user.islogin)
-// store.dispatch("getUser", null); //清空
-
 router.beforeEach((to, from, next) => {
   if (store.getters['user']) { // 判断是否登录
     if (to.path === '/login') { // 如果是登录页留在登陆页

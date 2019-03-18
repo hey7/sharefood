@@ -1,3 +1,4 @@
+<!--登录注册页-->
 <template>
  <div class="loginRegister">
      <!-- 背景 -->
@@ -120,7 +121,7 @@ export default {
         password: this.login.password
       });
       this.axios
-        .post(this.config.SREVER_HTTP + "/user/login", data)
+        .post("/api/user/login", data)
         .then(res => {
           if (res.data.code == 103) { //用户不存在
             this.$message.error(res.data.msg);       
@@ -165,7 +166,7 @@ export default {
         password: this.register.password
       });
       this.axios
-        .post(this.config.SREVER_HTTP + "/user/register", data)
+        .post("/api/user/register", data)
         .then(res => {
           if (res.data.code == 101) {
             //用户名已存在

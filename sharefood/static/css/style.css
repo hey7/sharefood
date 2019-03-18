@@ -1,0 +1,22 @@
+@import "./reset.css";
+
+::-webkit-input-placeholder { /* WebKit browsers */ 
+    color: #c0c0c0;
+    font-size: 12px;
+    font-family: "Helvetica, Pingfang SC, Microsoft YaHei, STHeiti, Verdana, Arial,Tahoma, sans-serif";
+  }
+  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */  
+    color: #c0c0c0;
+    font-size: 12px;
+    font-family: "Helvetica, Pingfang SC, Microsoft YaHei, STHeiti, Verdana, Arial,Tahoma, sans-serif";
+  }
+  ::-moz-placeholder { /* Mozilla Firefox 19+ */  
+    color: #c0c0c0;
+    font-size: 12px;
+    font-family: "Helvetica, Pingfang SC, Microsoft YaHei, STHeiti, Verdana, Arial,Tahoma, sans-serif";
+  }
+  :-ms-input-placeholder { /* Internet Explorer 10+ */  
+    color: #c0c0c0;
+    font-size: 12px;
+    font-family: "Helvetica, Pingfang SC, Microsoft YaHei, STHeiti, Verdana, Arial,Tahoma, sans-serif";
+  }

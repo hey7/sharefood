@@ -20,11 +20,13 @@ Vue.prototype.axios=axios;    //因为axios不是全局插件，所以可以添�
 import qs from 'qs';    //不用额外安装，axios自带，用于axios.post对数据的处理，处理成：username=1&password=1
 Vue.prototype.qs=qs;  //因为不是全局插件，所以可以添加在vue原型中,使用时：this.qs
 
-import config from './util/config'  //自定义公用
-Vue.prototype.config=config;
-
 import VueCookies from 'vue-cookies' //使用cookie
 Vue.use(VueCookies)
+
+
+// 引入样式
+import '../static/css/style.css'
+
 
 Vue.config.productionTip = false
 

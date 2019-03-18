@@ -4,6 +4,6 @@ module.exports = {
         port: '3306',  
         db: 'sharefood',   
         user: 'root',
-        pwd: '123456',
+        pwd: 'root',
     },
 }

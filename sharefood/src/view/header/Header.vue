@@ -1,6 +1,8 @@
 <template>
   <div class="header">
-    <div class="context">ShareFood</div>
+    <div class="context">
+      <router-link to="/index" tag="span">ShareFood</router-link>
+    </div>
 
     <div v-if="!isLogin">
       <div class="login">
@@ -50,7 +52,7 @@ export default {
     },
     photo() {
       //照片
-      return this.config.SREVER_HTTP + this.user.photo;
+      return '/api' + this.user.photo;
     }
   },
   methods: {
@@ -86,6 +88,7 @@ export default {
     position: absolute;
     left: 100px;
     line-height: 40px;
+    cursor: pointer;
   }
   .login {
     font-size: 14px;
