@@ -1,17 +1,16 @@
+<!--编辑菜谱-->
 <template>
   <div class="createMenu">
     <!-- 菜谱名称 -->
-    <div class="jiange">
-      菜谱名称
-      <span class="xing">*</span>：
-      <el-input v-model="menuname" placeholder="请输入菜谱名称" size="small" class="caipu-input"></el-input>
-      <br>
-    </div>
+    菜谱名称
+    <span class="xing">*</span>：
+    <el-input v-model="menuname" placeholder="请输入菜谱名称" size="small" class="caipu-input"></el-input>
+    <br>
+    <div class="jiange"></div>
     <!-- 成品图片 -->
-    <div class="jiange">
-      成品图片（最多3张）
-      <span class="xing">*</span>:
-    </div>
+    成品图片（最多3张）
+    <span class="xing">*</span>:
+    <div class="jiange"></div>
     <el-upload
       :action="'/api/menu/imgUpload'"
       list-type="picture-card"
@@ -20,6 +19,7 @@
       :on-exceed="onExceed"
       :limit="3"
       :on-success="onSuccess"
+      :file-list="chengpintuShow"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -38,11 +38,10 @@
     <br>
     <div class="jiange"></div>
     <!-- 基本参数（难度、口味、工艺、耗时、厨具） -->
-    <div class="jiange">
-      基本参数
-      <span class="xing">*</span>:
-      <br>
-    </div>
+    基本参数
+    <span class="xing">*</span>:
+    <br>
+    <div class="jiange"></div>
     <el-select v-model="type.nandu" placeholder="难度" size="mini">
       <el-option
         v-for="item in dectionary"
@@ -93,11 +92,10 @@
     <div class="jiange"></div>
 
     <!-- 食材明细 -->
-    <div class="jiange">
-      食材明细
-      <span class="xing">*</span>:
-      <el-button type="primary" size="mini" @click="dialogVisible1 = true">添加分组</el-button>
-    </div>
+    食材明细
+    <span class="xing">*</span>:
+    <el-button type="primary" size="mini" @click="dialogVisible1 = true">添加分组</el-button>
+    <div class="jiange"></div>
 
     <div v-for="(item1, index1) in groups" :key="index1" class="biankuang">
       <span>{{item1.groupname}}</span>
@@ -119,11 +117,11 @@
     </div>
 
     <!-- 做法步骤 -->
-    <div class="jiange">
-      做法步骤
-      <span class="xing">*</span>:
-      <el-button type="primary" size="mini" @click="addSteps()">添加步骤</el-button>
-    </div>
+    做法步骤
+    <span class="xing">*</span>:
+    <el-button type="primary" size="mini" @click="addSteps()">添加步骤</el-button>
+    <div class="jiange"></div>
+
     <div v-for="(item3, index3) in steps" class="buzhou">
       <el-upload
         class="avatar-uploader"
@@ -147,11 +145,10 @@
     <div class="jiange"></div>
 
     <!-- 小窍门 -->
-    <div class="jiange">
-      小窍门
-      <span class="xing">*</span>:
-      <br>
-    </div>
+    小窍门:
+    <br>
+    <div class="jiange"></div>
+
     <el-input type="textarea" :rows="4" placeholder="最多输入200字" v-model="trick" style="width:600px"></el-input>
     <br>
     <div class="jiange"></div>
@@ -162,10 +159,12 @@
         <span class="xing">*</span>:
         <br>
       </div>
+
       <el-radio-group v-model="iscreate" size="small">
         <el-radio label="0" border>原创</el-radio>
         <el-radio label="1" border>非原创</el-radio>
       </el-radio-group>
+
       <br>
       <div class="jiange"></div>
       <el-button type="primary" @click="addMenu1">发布菜谱</el-button>
@@ -173,7 +172,12 @@
     </div>
 
     <!--食材明细（添加分组的弹窗）-->
-    <el-dialog title="编辑组名" :visible.sync="dialogVisible1" width="30%">
+    <el-dialog
+      title="编辑组名"
+      :visible.sync="dialogVisible1"
+      width="30%"
+      :modal-append-to-body="false"
+    >
       <span>食材组名：</span>
       <el-input v-model="shicaizuming" placeholder="请输入内容" size="small" style="width:200px"></el-input>
       <span slot="footer" class="dialog-footer">
@@ -191,65 +195,14 @@ export default {
       //成品图
       dialogImageUrl: "",
       dialogVisible: false,
+      chengpintuShow:[],
 
       //基本参数
-      dectionary: [
-        {
-          dictionary_id: "1",
-          name: "简单"
-        },
-        {
-          dictionary_id: "2",
-          name: "普通"
-        },
-        {
-          dictionary_id: "3",
-          name: "高级"
-        },
-        {
-          dictionary_id: "4",
-          name: "神级"
-        }
-      ],
-      dectionary1: [
-        {
-          dictionary_id: "6",
-          name: "咸",
-        },
-        {
-          dictionary_id: "16",
-          name: "甜",
-        }
-      ],
-      dectionary2: [
-        {
-          dictionary_id: "8",
-          name: "煮"
-        },{
-          dictionary_id: "15",
-          name: "烘焙"
-        }
-      ],
-      dectionary3: [
-        {
-          dictionary_id: "10",
-          name: "半小时"
-        },
-        {
-          dictionary_id: "17",
-          name: "三刻钟"
-        }
-      ],
-      dectionary4: [
-        {
-          dictionary_id: "12",
-          name: "平底锅"
-        },
-        {
-          dictionary_id: "13",
-          name: "烤箱"
-        }
-      ],
+      dectionary: [],
+      dectionary1: [],
+      dectionary2: [],
+      dectionary3: [],
+      dectionary4: [],
 
       //添加分组(弹窗)
       dialogVisible1: false,
@@ -257,7 +210,7 @@ export default {
 
       //数据
       menuname: "", //菜谱名称
-      chengpintu: [], //成品图
+      chengpintu:[],//成品图
       descript: "", //描述
       type: {
         nandu: "", //难度
@@ -266,25 +219,59 @@ export default {
         haoshi: "", //耗时
         chujv: [] //厨具
       },
-      groups: [//食材组
-        { groupname: "主料", ingredient: [{ ingredientname: "", amount: "" }] }
-      ],
-      steps: [
-        //步骤
-        { path: "", descript: "" }
-      ],
+      groups: [],
+      steps: [],
       trick: "", //小窍门
       iscreate: "", //是否原创
       state: "" //菜谱状态
     };
   },
+  created() {
+    var data = this.qs.stringify({
+      nameArr: ["难度", "口味", "工艺", "耗时", "厨具"]
+    },{arrayFormat: 'brackets'});
+    this.axios
+      .post("/api/dictionary/getAlldictionaryByName", data)
+      .then(res => {
+       this.dectionary = res.data.data['难度']
+       this.dectionary1 = res.data.data['口味']
+       this.dectionary2 = res.data.data['工艺']
+       this.dectionary3 = res.data.data['耗时']
+       this.dectionary4 = res.data.data['厨具']
+      });
+    
+    var data1 = this.qs.stringify({
+      menu_id: this.$route.query.menu_id
+    });
+    this.axios.post('/api/menu/getdetailMenuByedit',data1).then(res => {
+      this.menuname = res.data.data.menuname
+      this.chengpintu = res.data.data.chengpintu
+      this.descript = res.data.data.descript
+      this.type = res.data.data.type
+      this.groups = res.data.data.groups
+      this.steps = res.data.data.steps
+      this.trick = res.data.data.trick
+      this.iscreate = res.data.data.iscreate.toString()
+
+      for(let item of res.data.data.chengpintu){
+        this.chengpintuShow.push({url:'/api' + item.url})
+      }
+      
+    });
+    
+  },
   methods: {
     //成品图片
-    handleRemove(file, fileList) {//删除
-      var index = this.chengpintu.indexOf(file.response.data.uploadPath);
-      if (index > -1) {
-        this.chengpintu.splice(index, 1);
+    handleRemove(file, fileList) {
+      var arr=[]
+      for(let item of fileList){
+        if(item.response){    //刚传入的
+          arr.push({url: item.response.data.uploadPath})
+        }else{              //原先的
+          arr.push({url: item.url.slice(4)})
+        }
       }
+      this.chengpintu = arr
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -298,18 +285,23 @@ export default {
     },
     onSuccess(response, file, fileList) {
       //上传成功
-      this.chengpintu.push(file.response.data.uploadPath);
+      this.chengpintu.push({ url :file.response.data.uploadPath});
     },
 
     //食材明细
     addGroup() {
       //添加食材组
-      this.dialogVisible1 = false; //关闭弹窗
-      this.groups.push({
-        groupname: this.shicaizuming,
-        ingredient: [{ ingredientname: "", amount: "" }]
-      }); //添加食材组名
-      this.shicaizuming = ""; //清空数据
+      if(this.shicaizuming.split(" ").join("").length==0){
+        this.$message.error('请输入食材组名称')
+        this.shicaizuming = ""; //清空数据
+      }else{
+        this.dialogVisible1 = false; //关闭弹窗
+        this.groups.push({
+          groupname: this.shicaizuming,
+          ingredient: [{ ingredientname: "", amount: "" }]
+        }); //添加食材组名
+        this.shicaizuming = ""; //清空数据
+      }
     },
     delGroup(index1) {
       //删除食材组
@@ -342,7 +334,22 @@ export default {
     },
 
     addMenu() {
+      if(this.menuname.split(" ").join("").length == 0
+      ||this.chengpintu.length==0
+      ||this.type.nandu==''
+      ||this.type.kouwei==''
+      ||this.type.gongyi==''
+      ||this.type.haoshi==''
+      ||this.type.chujv.length==0
+      ||this.groups[0].ingredient[0].ingredientname.split(" ").join("").length== 0
+      ||this.steps[0].descript.split(" ").join("").length== 0
+      ||this.iscreate == ''
+      ){
+        this.$message.error('请输入完整菜谱');
+        return false
+      }
       var data = this.qs.stringify({
+        menu_id: this.$route.query.menu_id,
         menuname: this.menuname,
         chengpintu: JSON.stringify(this.chengpintu),
         descript: this.descript,
@@ -354,18 +361,15 @@ export default {
         state: this.state
       });
 
-      this.axios
-        .post("/api/menu/createMenu", data)
-        .then(res => {
-          // if (res.data.code == 999) {
-          // // this.$message.success(res.data.msg); 
-          this.$message.success('发布菜谱成功'); 
-          this.$router.push('/personalCenter/menu')
-          // }
-          // else{
-          // this.$message.error('请输入完整菜谱'); 
-          // }
-        });
+      this.axios.post("/api/menu/editMenu", data).then(res => {
+        if (res.data.code == 999) {
+          this.$message.success(res.data.msg);
+          this.$router.push("/personalCenter/menu");
+        }
+        else{
+          this.$message.error('请输入完整菜谱');
+        }
+      });
     },
 
     //发布菜谱
@@ -430,8 +434,8 @@ export default {
   }
   .youbian {
     position: fixed;
-    right: 150px;
     top: 50px;
+    left: 1000px;
   }
 }
 

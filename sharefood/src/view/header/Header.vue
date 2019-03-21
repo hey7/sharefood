@@ -76,7 +76,6 @@ export default {
 .header {
   width: 100%;
   height: 40px;
-  min-width: 1170px;
   background-color: #333333;
   position: sticky;
   left: 0;

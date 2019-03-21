@@ -2,10 +2,10 @@
   <div class="detailMenu">
     <div class="name">
       <span class="menuname">{{menuname}}</span>
-      <span v-if="state==0">
+      <span v-if="iscreate==0">
         <el-tag>原创</el-tag>
       </span>
-      <span v-if="state==1">
+      <span v-if="iscreate==1">
         <el-tag>非原创</el-tag>
       </span>
     </div>
@@ -13,8 +13,8 @@
     <div class="carousel">
       <div class="block content">
         <el-carousel height="400px">
-          <el-carousel-item v-for="item in chengpintu" :key="item">
-            <img :src="'/api'+item" alt>
+          <el-carousel-item v-for="(item, index) in chengpintu" :key="'0-'+index">
+            <img :src="'/api'+item.url" alt>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -82,7 +82,7 @@
 
     <div class="button">
       <el-button @click="$router.back(-1)">关闭</el-button>
-    </div>
+    </div> 
   </div>
 </template>
 

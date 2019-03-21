@@ -29,6 +29,13 @@ Menu_pic.getMenuStepByMenuId = function getMenuStepByMenuId(menu_id) {
     return mysqlHelper.execute1(sql, params)
 }
 
+//删除菜谱图
+Menu_pic.deleteMenuPicByMenuId = function deleteMenuPicByMenuId(menu_id) {
+    var sql = "DELETE FROM menu_pic WHERE menu_id = ? ";
+    let params = [menu_id]
+    return mysqlHelper.execute1(sql, params)
+}
+
 // //根据MenuId查询食材
 // Menu_pic.prototype.save = function save(callback) {
 //     var sql = "INSERT INTO menu_pic(menu_pic_id,menu_id,path,step,descript) VALUES(0,?,?,?,?)";

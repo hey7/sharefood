@@ -23,6 +23,13 @@ Menu_ingredient.getMenuIngredientByMenuId = function getMenuByMenuId(menu_id) {
     return mysqlHelper.execute1(sql, params)
 }
 
+//删除食材
+Menu_ingredient.deleteMenuIngredientByMenuId = function deleteMenuIngredientByMenuId(menu_id) {
+    let sql = "DELETE FROM menu_ingredient WHERE menu_id = ?";
+    let params = [menu_id]
+    return mysqlHelper.execute1(sql, params)
+}
+
 // //保存菜谱食材
 // Menu_ingredient.prototype.save = function save(callback) {
 //     var sql = "INSERT INTO menu_ingredient(menu_ingredient_id,menu_id,ingredient_id,groupname,groupnum,amount) VALUES(0,?,?,?,?,?)";

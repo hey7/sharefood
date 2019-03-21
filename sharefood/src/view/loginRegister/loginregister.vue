@@ -1,54 +1,63 @@
 <!--登录注册页-->
 <template>
- <div class="loginRegister">
-     <!-- 背景 -->
-     <img :src="imgSrc" :height="screenHeight" :width="screenWidth">
-     <!-- 大标题 -->
-     <div class="title">ShareFood</div>
+  <div class="loginRegister">
+    <!-- 背景 -->
+    <img :src="imgSrc" :height="screenHeight" :width="screenWidth">
+    <!-- 大标题 -->
+    <div class="title">ShareFood</div>
 
-      <!-- 白框 -->
-     <div class="content">
-       
-       <!-- Element标签页 -->
+    <!-- 白框 -->
+    <div class="content">
+      <!-- Element标签页 -->
       <el-tabs v-model="activeName" @tab-click="handleClick" :stretch="true" class="el-tabs">
         <el-tab-pane label="登录" name="first">
-            <div class="form">
+          <div class="form">
             <div class="item item1">
-              <img src="static/images/loginregister/username.png" alt="" class="image">
+              <img src="static/images/loginregister/username.png" alt class="image">
               <el-input v-model="login.username" placeholder="请输入用户名" class="input"></el-input>
             </div>
             <div class="item item1">
-              <img src="static/images/loginregister/password.png" alt="" class="image">
+              <img src="static/images/loginregister/password.png" alt class="image">
               <el-input v-model="login.password" placeholder="请输入密码" class="input" type="password"></el-input>
             </div>
             <el-button type="primary" class="button" @click="loginClick">登录</el-button>
-            </div>
+          </div>
         </el-tab-pane>
 
         <el-tab-pane label="注册" name="second">
           <div class="form">
             <div class="item item2">
-              <img src="static/images/loginregister/username.png" alt="" class="image">
+              <img src="static/images/loginregister/username.png" alt class="image">
               <el-input v-model="register.username" placeholder="请输入用户名" class="input"></el-input>
             </div>
             <div class="item item2">
-              <img src="static/images/loginregister/password.png" alt="" class="image">
-              <el-input v-model="register.password" placeholder="请输入密码" class="input" type="password"></el-input>
+              <img src="static/images/loginregister/password.png" alt class="image">
+              <el-input
+                v-model="register.password"
+                placeholder="请输入密码"
+                class="input"
+                type="password"
+              ></el-input>
             </div>
             <div class="item item2">
-              <el-input v-model="register.confirmPassword" placeholder="请输入确认密码" class="input" type="password"></el-input>
+              <el-input
+                v-model="register.confirmPassword"
+                placeholder="请输入确认密码"
+                class="input"
+                type="password"
+              ></el-input>
             </div>
             <el-button type="primary" class="button" @click="registerClick">注册</el-button>
           </div>
         </el-tab-pane>
       </el-tabs>
-    </div> 
-
- </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
+  inject:['reload'],
   data() {
     return {
       //图片随窗口变化自适应
@@ -68,7 +77,7 @@ export default {
       activeName: "first",
 
       //业务数据
-      login: { username: "", password: ""},
+      login: { username: "", password: "" },
       register: { username: "", password: "", confirmPassword: "", error: "" }
     };
   },
@@ -99,19 +108,24 @@ export default {
   methods: {
     //Tabs 标签页 切换，清空错误提示
     handleClick(tab, event) {
-      this.login.error = "";
-      this.register.error = "";
+      if(tab.name ===  "first"){
+         this.$router.push("/login");
+      }
+      if(tab.name ===  "second"){
+         this.$router.push("/register");
+      }
+      this.reload()
     },
 
     //登录按钮
     loginClick() {
       //判空
       if (this.login.username.split(" ").join("").length == 0) {
-        this.$message.error('请输入用户名');       
+        this.$message.error("请输入用户名");
         return;
       }
       if (this.login.password.split(" ").join("").length == 0) {
-        this.$message.error('请输入密码');    
+        this.$message.error("请输入密码");
         return;
       }
 
@@ -120,43 +134,43 @@ export default {
         username: this.login.username,
         password: this.login.password
       });
-      this.axios
-        .post("/api/user/login", data)
-        .then(res => {
-          if (res.data.code == 103) { //用户不存在
-            this.$message.error(res.data.msg);       
-          }
-          if (res.data.code == 104) {//用户名或密码有误
-            this.$message.error(res.data.msg);  
-          }
-          if (res.data.code == 999) {//登录成功
-            this.$message.success(res.data.msg); 
-            this.$store.dispatch('setUser',res.data.data);  //存入vuex
-            this.$router.push({
-                path: this.$route.query.redirect || '/index'
-            })
-          }
-
-        });
+      this.axios.post("/api/user/login", data).then(res => {
+        if (res.data.code == 103) {
+          //用户不存在
+          this.$message.error(res.data.msg);
+        }
+        if (res.data.code == 104) {
+          //用户名或密码有误
+          this.$message.error(res.data.msg);
+        }
+        if (res.data.code == 999) {
+          //登录成功
+          this.$message.success(res.data.msg);
+          this.$store.dispatch("setUser", res.data.data); //存入vuex
+          this.$router.push({
+            path: this.$route.query.redirect || "/index"
+          });
+        }
+      });
     },
 
     //注册按钮
     registerClick() {
       //判空
       if (this.register.username.split(" ").join("").length == 0) {
-        this.$message.error('请输入用户名');       
+        this.$message.error("请输入用户名");
         return;
       }
       if (this.register.password.split(" ").join("").length == 0) {
-        this.$message.error('请输入密码');
+        this.$message.error("请输入密码");
         return;
       }
       if (this.register.confirmPassword.split(" ").join("").length == 0) {
-        this.$message.error('请输入确认密码');
+        this.$message.error("请输入确认密码");
         return;
       }
       if (this.register.password != this.register.confirmPassword) {
-        this.$message.error('密码不一致');
+        this.$message.error("密码不一致");
         return;
       }
 
@@ -165,18 +179,18 @@ export default {
         username: this.register.username,
         password: this.register.password
       });
-      this.axios
-        .post("/api/user/register", data)
-        .then(res => {
-          if (res.data.code == 101) {
-            //用户名已存在
-            this.$message.error(res.data.msg);  
-          }
-          if (res.data.code == 999) {
-            //注册成功，请登录
-            this.$message.success(res.data.msg);  
-          }
-        });
+      this.axios.post("/api/user/register", data).then(res => {
+        if (res.data.code == 101) {
+          //用户名已存在
+          this.$message.error(res.data.msg);
+        }
+        if (res.data.code == 999) {
+          //注册成功，请登录
+          this.$message.success(res.data.msg);
+          this.$router.push("/login");
+          this.reload()
+        }
+      });
     }
   }
 };
