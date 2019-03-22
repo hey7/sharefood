@@ -1,5 +1,6 @@
 var express = require('express'),
     router = express.Router(),
+    uploadModel = require('../models/uploadModel'), //上传model
     util = require('../util/util'), //公共函数
     config = require('../util/config'), //公共配置
     crypto = require('crypto'), //加密
@@ -11,8 +12,34 @@ var express = require('express'),
 //999: 注册成功，请登录
 //103：用户不存在
 //104：用户名或密码有误
+//105：密码错误
+//999：上传图片成功
 //999：登录成功
 //999：获得用户成功
+//999：修改信息成功
+
+//上传图片
+router.post('/imgUpload', function (req, res) {
+    //uploadModel.uploadPhoto(req, 'upload/menu', function (err, fields, uploadPath) {
+    uploadModel.uploadPhoto(req, config.upload_user_photo_path, function (err, fields, uploadPath) {
+        if (err) {
+            res.json({
+                code: 200,
+                data: '',
+                msg: err
+            })
+            return;
+        }
+        res.json({
+            code: 999,
+            data: {
+                fields: fields, //表单中字段信息
+                uploadPath: uploadPath //上传图片的相对路径
+            },
+            msg: '上传图片成功'
+        })
+    });
+});
 
 //注册
 router.post('/register', async function (req, res) {
@@ -118,6 +145,89 @@ router.post('/login', async function (req, res) {
     }
 });
 
+//更新用户信息
+router.post('/editUser', async function (req, res) {
+
+    var user_id = JSON.parse(req.cookies.user).user_id,
+        photo = req.body['photo'],
+        sex = req.body['sex'],
+        phone = req.body['phone'],
+        signature = req.body['signature'],
+        modified_time = util.getNowFormatDate()
+
+    var user = new User({
+        user_id: user_id,
+        phone: phone,
+        sex: sex,
+        photo: photo,
+        signature: signature,
+        modified_time: modified_time
+    });
+
+    try {
+        var result;
+        result = await user.updateUserByUserId()
+        result = await User.getUserByUserId(user_id)
+        res.json({
+            code: 999,
+            data: result,
+            msg: '修改信息成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 100,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
+//更改密码
+router.post('/updataPassword', async function (req, res) {
+    var user_id = JSON.parse(req.cookies.user).user_id,
+        currentPassword = req.body['currentPassword'],
+        password = req.body['password'],
+        modified_time = util.getNowFormatDate(),
+        currentPassword = crypto.createHash('md5').update(currentPassword).digest('hex'),
+        password = crypto.createHash('md5').update(password).digest('hex');
+
+    var user = new User({
+        user_id: user_id,
+        password: password,
+        modified_time: modified_time
+    });
+
+    try {
+        if (currentPassword != JSON.parse(req.cookies.user).password) {
+            res.json({
+                code: 105,
+                data: '',
+                msg: '密码有误'
+            })
+            return;
+        }
+
+        var result;
+        result = await user.updataPassword()
+        result = await User.getUserByUserId(user_id)
+
+        res.json({
+            code: 999,
+            data: result,
+            msg: '修改密码成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 100,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
 
 // //注册
 // router.post('/register', function (req, res) {

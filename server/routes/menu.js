@@ -157,7 +157,6 @@ router.post('/createMenu', async function (req, res) {
         user_id = JSON.parse(req.cookies.user).user_id,
         love = 0,
         collection = 0,
-        weekcollection = 0,
         create_time = util.getNowFormatDate(),
         modified_time = util.getNowFormatDate()
 
@@ -186,7 +185,6 @@ router.post('/createMenu', async function (req, res) {
             descript: descript,
             state: state,
             collection: collection,
-            weekcollection: weekcollection,
             create_time: create_time,
             modified_time: modified_time,
         });
@@ -451,7 +449,6 @@ router.post('/editMenu', async function (req, res) {
         user_id = JSON.parse(req.cookies.user).user_id,
         love = 0,
         collection = 0,
-        weekcollection = 0,
         modified_time = util.getNowFormatDate()
 
 
@@ -478,7 +475,6 @@ router.post('/editMenu', async function (req, res) {
             descript: descript,
             state: state,
             collection: collection,
-            weekcollection: weekcollection,
             modified_time: modified_time,
         });
         result = await menu.update()

@@ -1,4 +1,4 @@
-<!--登录注册页-->
+<!--登录注册-->
 <template>
   <div class="loginRegister">
     <!-- 背景 -->
@@ -14,11 +14,11 @@
           <div class="form">
             <div class="item item1">
               <img src="static/images/loginregister/username.png" alt class="image">
-              <el-input v-model="login.username" placeholder="请输入用户名" class="input"></el-input>
+              <el-input v-model="login.username" placeholder="请输入用户名" class="input" maxlength="20"></el-input>
             </div>
             <div class="item item1">
               <img src="static/images/loginregister/password.png" alt class="image">
-              <el-input v-model="login.password" placeholder="请输入密码" class="input" type="password"></el-input>
+              <el-input v-model="login.password" placeholder="请输入密码" class="input" type="password" maxlength="20"></el-input>
             </div>
             <el-button type="primary" class="button" @click="loginClick">登录</el-button>
           </div>

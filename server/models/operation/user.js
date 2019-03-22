@@ -34,6 +34,26 @@ User.getUserByUserName = function getUserByUserName(username) {
     return mysqlHelper.single1(sql, params)
 }
 
+//根据UserId查询User
+User.getUserByUserId = function getUserByUserId(user_id) {
+    let sql = "SELECT * FROM user WHERE user_id = ?";
+    let params = [user_id]
+    return mysqlHelper.single1(sql, params)
+}
+
+//更新User
+User.prototype.updateUserByUserId = function updateUserByUserId() {
+    let sql = "UPDATE user SET phone = ?,photo = ?,sex = ?,signature = ?,modified_time = ? WHERE user_id = ?";
+    let params = [this.phone,this.photo,this.sex,this.signature,this.modified_time,this.user_id]
+    return mysqlHelper.execute1(sql, params)
+}
+
+//修改密码
+User.prototype.updataPassword = function updataPassword() {
+    let sql = "UPDATE user SET password = ?,modified_time = ? WHERE user_id = ?";
+    let params = [this.password,this.modified_time,this.user_id]
+    return mysqlHelper.execute1(sql, params)
+}
 
 // //保存用户
 // User.prototype.save = function save(callback) {

@@ -10,21 +10,20 @@ function Menu(menu) {
     this.descript = menu.descript;
     this.state = menu.state;
     this.collection = menu.collection;
-    this.weekcollection = menu.weekcollection;
     this.create_time = menu.create_time;
     this.modified_time = menu.modified_time;
 };
 
 //保存菜谱
 Menu.prototype.save = function save() {
-    var sql = "INSERT INTO menu(menu_id,user_id,menuname,iscreate,love,trick,descript,state,collection,weekcollection,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?,?,?)";
-    let params = [this.user_id, this.menuname,this.iscreate,this.love,this.trick, this.descript,this.state,this.collection,this.weekcollection,this.create_time,this.modified_time]
+    var sql = "INSERT INTO menu(menu_id,user_id,menuname,iscreate,love,trick,descript,state,collection,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?,?)";
+    let params = [this.user_id, this.menuname,this.iscreate,this.love,this.trick, this.descript,this.state,this.collection,this.create_time,this.modified_time]
     return mysqlHelper.execute1(sql, params)
 }
 //修改菜谱
 Menu.prototype.update = function update() {
-    var sql = "UPDATE menu SET menuname = ?,iscreate = ?,love = ?,trick = ?,descript = ?,state = ?,collection = ?,weekcollection = ?,modified_time = ? WHERE menu_id = ?";
-    let params = [this.menuname,this.iscreate,this.love,this.trick, this.descript,this.state,this.collection,this.weekcollection,this.modified_time,this.menu_id]
+    var sql = "UPDATE menu SET menuname = ?,iscreate = ?,love = ?,trick = ?,descript = ?,state = ?,collection = ?,modified_time = ? WHERE menu_id = ?";
+    let params = [this.menuname,this.iscreate,this.love,this.trick, this.descript,this.state,this.collection,this.modified_time,this.menu_id]
     return mysqlHelper.execute1(sql, params)
 }
 //根据menu_id删除菜谱

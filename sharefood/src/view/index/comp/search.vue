@@ -1,16 +1,28 @@
 <template>
-    <div class="search">
-   <div class="img"><img src="static/images/index/logo.jpg" alt=""></div>
-   <div class="navigation">
-       <ul>
-           <li><router-link to="/login" tag="div" style="color:#ff6767">首页</router-link></li>
-           <li><router-link to="/index" tag="div">菜谱</router-link></li>
-           <li><router-link to="/index" tag="div">食材</router-link></li>
-           <li><router-link to="/index" tag="div">健康</router-link></li>
-           <li><router-link to="/index" tag="div">社区</router-link></li>
-       </ul>
-   </div>
+  <div class="search">
+    <div class="img">
+      <img src="static/images/index/logo.jpg" alt>
     </div>
+    <div class="navigation">
+      <el-row  type="flex" justify="center">
+        <el-col :span="4">
+          <div><router-link to="/index" tag="li" style="color:#ff6767">首页</router-link></div>
+        </el-col>
+        <el-col :span="4">
+          <div><router-link to="/index" tag="li">菜谱</router-link></div>
+        </el-col>
+        <el-col :span="4">
+          <div><router-link to="/index" tag="li">食材</router-link></div>
+        </el-col>
+         <el-col :span="4">
+          <div><router-link to="/index" tag="li">社区</router-link></div>
+        </el-col>
+         <el-col :span="4">
+          <div><router-link to="/index" tag="li">个人中心</router-link></div>
+        </el-col>
+      </el-row>
+    </div>
+  </div>
 </template>
 <script>
 export default {};
@@ -34,19 +46,18 @@ export default {};
     }
   }
   .navigation {
-    height: 25px;
-    width: 500px;
-    background-color: white;
-    overflow: hidden;
+    // height: 25px;
+    width: 600px;
+    text-align: center;
+    active:hover {
+        color: #ff6767;
+      }
+    // overflow: hidden;
     li {
-      float: left;
-      text-align: center;
-      width: 100px;
       cursor: pointer;
       font-size: 20px;
-      line-height: 25px;
-      &:hover{
-          color: #ff6767;
+      &:hover {
+        color: #ff6767;
       }
     }
   }

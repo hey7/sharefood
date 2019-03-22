@@ -1,3 +1,4 @@
+<!--菜谱详情-->
 <template>
   <div class="detailMenu">
     <div class="name">
