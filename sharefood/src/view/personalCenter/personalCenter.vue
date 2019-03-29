@@ -21,9 +21,6 @@
             </span>
           </el-menu-item>
           <el-menu-item index="/personalCenter/aa">
-            <span slot="title">社区</span>
-          </el-menu-item>
-          <el-menu-item index="/personalCenter/aa">
             <span slot="title">私信</span>
           </el-menu-item>
           <el-menu-item index="/personalCenter/aa">

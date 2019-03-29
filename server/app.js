@@ -36,12 +36,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 //自定义模块
 var user = require('./routes/user');
 var menu = require('./routes/menu');
-var dictionary = require('./routes/dictionary')
+var dictionary = require('./routes/dictionary');
+var comment = require('./routes/comment')
+var collection = require('./routes/collection')
+var love = require('./routes/love')
+var reports = require('./routes/reports')
 
 //暴露API接口
 app.use('/user', user);
 app.use('/menu',menu);
-app.use('/dictionary',dictionary)
+app.use('/dictionary',dictionary);
+app.use('/comment',comment);
+app.use('/collection',collection);
+app.use('/love',love);
+app.use('/reports',reports);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

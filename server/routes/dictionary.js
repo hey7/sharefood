@@ -3,7 +3,7 @@ var express = require('express'),
 
     Dictionary = require('../models/operation/dictionary')
 
-//200 其他错
+//300 其他错
 //999 查询字典成功
 
 //根据一堆name，获取每个top的孩子
@@ -26,7 +26,7 @@ router.post('/getAlldictionaryByName', async function (req, res) {
 
     } catch (err) {
         res.json({
-            code: 200,
+            code: 300,
             data: '',
             msg: err
         })

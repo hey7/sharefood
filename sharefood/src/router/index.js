@@ -13,19 +13,23 @@ const router = new Router({
       component: () => import('@/view/index/index.vue'),
       redirect: '/index',
     }, {
-      path: '/index',
+      path: '/index',   //首页
       component: () => import('@/view/index/index.vue'),
     },
     {
-      path: '/login',
+      path: '/login',   //登录
       component: () => import('@/view/loginRegister/loginRegister.vue'),
     },
     {
-      path: '/register',
+      path: '/register',  //注册
       component: () => import('@/view/loginRegister/loginRegister.vue'),
     },
     {
-      path: '/personalCenter',
+      path: '/detailMenu',  //菜谱详情
+      component: () => import('@/view/menu/detailMenu.vue'),
+    },
+    {
+      path: '/personalCenter',    //个人中心
       component: () => import('@/view/personalCenter/personalCenter.vue'),
       children: [{
         //菜谱
@@ -43,6 +47,7 @@ const router = new Router({
           path: '/personalCenter/detailMenu',
           component: () => import('@/view/personalCenter/menu/detailMenu.vue'),
         },
+        
         //账户设置
         {
           path: '/personalCenter/mySetting',
