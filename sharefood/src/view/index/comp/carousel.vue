@@ -1,3 +1,4 @@
+<!--首页：轮播图-->
 <template>
     <div class="carousel">
         <div class="block content">

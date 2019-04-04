@@ -9,6 +9,7 @@ function User(user) {
     this.sex = user.sex;
     this.signature = user.signature;
     this.state = user.state;
+    this.ban = user.ban;
     this.create_time = user.create_time;
     this.modified_time = user.modified_time;
 };
@@ -22,8 +23,8 @@ User.getUserNumByName = function getUserNumByName(username) {
 
 //保存用户
 User.prototype.save = function save() {
-    var sql = "INSERT INTO user(user_id,username,password,phone,photo,sex,signature,state,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?)";
-    let params = [this.username, this.password,this.phone,this.photo,this.sex,this.signature,this.state,this.create_time,this.modified_time]
+    var sql = "INSERT INTO user(user_id,username,password,phone,photo,sex,signature,state,ban,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?,?)";
+    let params = [this.username, this.password,this.phone,this.photo,this.sex,this.signature,this.state,this.ban,this.create_time,this.modified_time]
     return mysqlHelper.execute1(sql, params)
 }
 

@@ -187,6 +187,7 @@ router.post('/createMenu', async function (req, res) {
 
 
     var dictionary_ids = [];
+    
     for (let item in type) {
         if (type[item] instanceof Array) {
             dictionary_ids = dictionary_ids.concat(type[item])
@@ -244,12 +245,17 @@ router.post('/createMenu', async function (req, res) {
                 result = await Ingredient.getIngredientByIngredientName(ingredient.ingredientname)
                 var ingredient_id
 
+                
                 if (!result) { //食材中没有，存
                     var ingredient1 = new Ingredient({
                         ingredientname: ingredient.ingredientname,
-                        state: 0
+                        state: 0,
+                        create_time: util.getNowFormatDate(),
+                        modified_time: util.getNowFormatDate()
                     })
                     result = await ingredient1.save();
+                    console.log('type=',result)
+
                     if (result.insertId > 0) {
                         ingredient_id = result.insertId
                     }

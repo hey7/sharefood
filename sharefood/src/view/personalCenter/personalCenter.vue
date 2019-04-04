@@ -9,16 +9,13 @@
           class="el-menu-vertical-demo"
           @open="handleOpen"
           @close="handleClose"
+          router
         >
           <el-menu-item index="/personalCenter/menu">
-            <span slot="title">
-              <router-link to="/personalCenter/menu" tag="div">菜谱</router-link>
-            </span>
+            <span slot="title">菜谱</span>
           </el-menu-item>
           <el-menu-item index="/personalCenter/aa">
-            <span slot="title">
-              <router-link to="/personalCenter/aa" tag="div">收藏</router-link>
-            </span>
+            <span slot="title">收藏</span>
           </el-menu-item>
           <el-menu-item index="/personalCenter/aa">
             <span slot="title">私信</span>
@@ -27,9 +24,7 @@
             <span slot="title">通知</span>
           </el-menu-item>
           <el-menu-item index="/personalCenter/mySetting">
-            <span slot="title">
-              <router-link to="/personalCenter/mySetting" tag="div">账户设置</router-link>
-            </span>
+            <span slot="title">账户设置</span>
           </el-menu-item>
         </el-menu>
       </div>

@@ -41,6 +41,7 @@ var comment = require('./routes/comment')
 var collection = require('./routes/collection')
 var love = require('./routes/love')
 var reports = require('./routes/reports')
+var exhibition = require('./routes/exhibition')
 
 //暴露API接口
 app.use('/user', user);
@@ -50,6 +51,7 @@ app.use('/comment',comment);
 app.use('/collection',collection);
 app.use('/love',love);
 app.use('/reports',reports);
+app.use('/exhibition',exhibition);
 
 
 // catch 404 and forward to error handler

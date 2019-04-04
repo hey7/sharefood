@@ -4,6 +4,14 @@ function Ingredient(ingredient) {
     this.ingredient_id = ingredient.ingredient_id;
     this.ingredientname = ingredient.ingredientname;
     this.state = ingredient.state;
+    this.introduction = ingredient.introduction;
+    this.nutrition = ingredient.nutrition;
+    this.effect = ingredient.effect;
+    this.apply = ingredient.apply;
+    this.taboo = ingredient.taboo;
+    this.path = ingredient.path;
+    this.create_time = ingredient.create_time;
+    this.modified_time = ingredient.modified_time;
 };
 
 //根据IngredientName查询Ingredient
@@ -15,8 +23,8 @@ Ingredient.getIngredientByIngredientName = function getIngredientByIngredientNam
 
 //保存食材
 Ingredient.prototype.save = function save() {
-    var sql = "INSERT INTO ingredient(ingredient_id,ingredientname,state) VALUES(0,?,?)";
-    let params = [this.ingredientname,this.state]
+    var sql = "INSERT INTO ingredient(ingredient_id,ingredientname,state,introduction,nutrition,effect,apply,taboo,path,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?,?)";
+    let params = [this.ingredientname,this.state,this.introduction,this.nutrition,this.effect,this.apply,this.taboo,this.path,this.create_time,this.modified_time]
     return mysqlHelper.execute1(sql, params)
 }
 

@@ -15,14 +15,14 @@
     </div>
 
     <div v-if="isLogin">
-      <div class="user" @mouseover="showAlert" @mouseout="hideAlert">
+      <div class="user" @mouseover="isAlert = true" @mouseout="isAlert = false">
         <img :src="photo" alt>
         <div>{{user.username}}</div>
       </div>
       <div class="logout">
         <div @click="logout">退出</div>
       </div>
-      <div class="alert" v-if="isAlert" @mouseover="showAlert" @mouseout="hideAlert">
+      <div class="alert" v-if="isAlert" @mouseover="isAlert = true" @mouseout="isAlert = false">
         <ul>
           <router-link to="/personalCenter/menu" tag="span">
             <li>个人中心</li>
@@ -53,18 +53,10 @@ export default {
     },
     photo() {
       //照片
-      return '/api' + this.user.photo;
+      return "/api" + this.user.photo;
     }
   },
   methods: {
-    showAlert() {
-      //显示弹窗
-      this.isAlert = true;
-    },
-    hideAlert() {
-      //隐藏弹窗
-      this.isAlert = false;
-    },
     logout() {
       //退出
       this.$store.dispatch("setUser", ""); //存入vuex

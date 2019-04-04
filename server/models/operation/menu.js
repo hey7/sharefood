@@ -26,7 +26,7 @@ Menu.prototype.update = function update() {
 }
 //根据menu_id删除菜谱
 Menu.deleteMenuByMenuId = function deleteMenuByMenuId(menu_id) {
-    let sql = "UPDATE menu SET menu.state = 4 WHERE menu_id = ?";
+    let sql = "UPDATE menu SET menu.state = 6 WHERE menu_id = ?";
     let params = [menu_id]
     return mysqlHelper.execute1(sql, params)
 }
@@ -46,7 +46,7 @@ Menu.getMenuByMenuId = function getMenuByMenuId(menu_id) {
 
 //查8个最新菜谱
 Menu.getNewMenu = function getNewMenu() {
-    let sql = "SELECT menu.menu_id,menu.menuname, menu_pic.path,`user`.username FROM menu LEFT JOIN menu_pic ON menu.menu_id = menu_pic.menu_id LEFT JOIN `user` ON menu.user_id = `user`.user_id WHERE menu_pic.step = 0 AND menu.state = 3 ORDER BY menu.modified_time DESC LIMIT 8";
+    let sql = "SELECT menu.menu_id,menu.menuname, menu_pic.path,`user`.username FROM menu LEFT JOIN menu_pic ON menu.menu_id = menu_pic.menu_id LEFT JOIN `user` ON menu.user_id = `user`.user_id WHERE menu_pic.step = 0 AND (menu.state = 4 OR menu.state = 5) ORDER BY menu.modified_time DESC LIMIT 8";
     let params = []
     return mysqlHelper.execute1(sql, params)
 }
@@ -56,7 +56,7 @@ Menu.getOneWeekMenu = function getOneWeekMenu() {
     let sql = "SELECT menu.menu_id,menu_pic.path, menu.menuname, `user`.username FROM collection LEFT JOIN menu ON any_id = menu.menu_id " +
         "LEFT JOIN `user` ON menu.user_id = `user`.user_id LEFT JOIN menu_pic ON any_id = menu_pic.menu_id " +
         "WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= collection.create_time AND collection.state = 0 " +
-        "AND menu.state = 3 AND menu_pic.step = 0 GROUP BY any_id ORDER BY COUNT(any_id) DESC, menu.modified_time DESC LIMIT 8"
+        "AND (menu.state = 4 OR menu.state = 5) AND menu_pic.step = 0 GROUP BY any_id ORDER BY COUNT(any_id) DESC, menu.modified_time DESC LIMIT 8"
     let params = []
     return mysqlHelper.execute1(sql, params)
 }
@@ -65,7 +65,7 @@ Menu.getOneWeekMenu = function getOneWeekMenu() {
 Menu.getPopularMenu = function getPopularMenu() {
     let sql = "SELECT menu.menu_id,menu_pic.path, menu.menuname, `user`.username FROM collection LEFT JOIN menu ON any_id = menu.menu_id " +
     "LEFT JOIN `user` ON menu.user_id = `user`.user_id LEFT JOIN menu_pic ON any_id = menu_pic.menu_id " +
-    "WHERE collection.state = 0 AND menu.state = 3 " +
+    "WHERE collection.state = 0 AND (menu.state = 4 OR menu.state = 5) " +
     "AND menu_pic.step = 0 GROUP BY any_id ORDER BY COUNT(any_id) DESC, menu.modified_time DESC LIMIT 8"
     let params = []
     return mysqlHelper.execute1(sql, params)

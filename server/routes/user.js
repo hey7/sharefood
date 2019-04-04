@@ -13,6 +13,7 @@ var express = require('express'),
 //103：用户不存在
 //104：用户名或密码有误
 //105：密码错误
+//106：该账号被封
 //999：上传图片成功
 //999：登录成功
 //999：获得用户成功
@@ -46,6 +47,7 @@ router.post('/register', async function (req, res) {
     var username = req.body['username'],
         password = req.body['password'],
         state = "0",
+        ban = "0",
         photo = config.default_user_photo,
         create_time = util.getNowFormatDate(),
         modified_time = util.getNowFormatDate();
@@ -59,6 +61,7 @@ router.post('/register', async function (req, res) {
         password: password,
         state: state,
         photo: photo,
+        ban: ban,
         create_time: create_time,
         modified_time: modified_time
     });
@@ -125,6 +128,14 @@ router.post('/login', async function (req, res) {
                 code: 104,
                 data: '',
                 msg: '用户名或密码有误'
+            })
+            return;
+        }
+        if (result.ban == 1) {
+            res.json({
+                code: 106,
+                data: '',
+                msg: '该账号被封'
             })
             return;
         }

@@ -143,6 +143,10 @@ export default {
           //用户名或密码有误
           this.$message.error(res.data.msg);
         }
+        if (res.data.code == 106) {
+          //用户名或密码有误
+          this.$message.error(res.data.msg);
+        }
         if (res.data.code == 999) {
           //登录成功
           this.$message.success(res.data.msg);

@@ -23,7 +23,7 @@ Comment.prototype.save = function save() {
 Comment.search = function search(state, any_id) {
     var sql = "SELECT c.*, u1.username AS user_id1, u2.username AS user_id_from1, u3.username AS user_id_to1, u2.photo " +
         "FROM `comment` c LEFT JOIN `user` u1 ON u1.user_id = c.user_id LEFT JOIN `user` u2 ON u2.user_id = c.user_id_from " +
-        "LEFT JOIN `user` u3 ON u3.user_id = c.user_id_to WHERE c.ban = 0 AND c.state = ? AND any_id = ? ORDER BY create_time";
+        "LEFT JOIN `user` u3 ON u3.user_id = c.user_id_to WHERE (c.ban = 0 OR c.ban = 1) AND c.state = ? AND any_id = ? ORDER BY create_time";
     let params = [state, any_id]
     return mysqlHelper.execute1(sql, params)
 }
