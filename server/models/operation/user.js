@@ -24,7 +24,7 @@ User.getUserNumByName = function getUserNumByName(username) {
 //保存用户
 User.prototype.save = function save() {
     var sql = "INSERT INTO user(user_id,username,password,phone,photo,sex,signature,state,ban,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?,?)";
-    let params = [this.username, this.password,this.phone,this.photo,this.sex,this.signature,this.state,this.ban,this.create_time,this.modified_time]
+    let params = [this.username, this.password, this.phone, this.photo, this.sex, this.signature, this.state, this.ban, this.create_time, this.modified_time]
     return mysqlHelper.execute1(sql, params)
 }
 
@@ -45,14 +45,63 @@ User.getUserByUserId = function getUserByUserId(user_id) {
 //更新User
 User.prototype.updateUserByUserId = function updateUserByUserId() {
     let sql = "UPDATE user SET phone = ?,photo = ?,sex = ?,signature = ?,modified_time = ? WHERE user_id = ?";
-    let params = [this.phone,this.photo,this.sex,this.signature,this.modified_time,this.user_id]
+    let params = [this.phone, this.photo, this.sex, this.signature, this.modified_time, this.user_id]
     return mysqlHelper.execute1(sql, params)
 }
 
 //修改密码
 User.prototype.updataPassword = function updataPassword() {
     let sql = "UPDATE user SET password = ?,modified_time = ? WHERE user_id = ?";
-    let params = [this.password,this.modified_time,this.user_id]
+    let params = [this.password, this.modified_time, this.user_id]
+    return mysqlHelper.execute1(sql, params)
+}
+
+//查询用户(条件、分页)
+User.searchUser = function searchUser(user, Param) {
+    let sql = "SELECT * FROM `user` WHERE state = 0 ";
+    let params = []
+    if (user.user_id != null && user.user_id != '') {
+        sql = sql + 'AND user_id=? '
+        params.push(user.user_id)
+    }
+    if (user.username != null && user.username != '') {
+        sql = sql + 'AND username=? '
+        params.push(user.username)
+    }
+    if (user.ban != null && user.ban != '') {
+        sql = sql + 'AND ban=? '
+        params.push(user.ban)
+    }
+    sql = sql + 'limit ?, ?'
+
+    params.push((Param.pageNum - 1) * Param.pageSize)
+    params.push(Param.pageSize)
+    return mysqlHelper.execute1(sql, params)
+}
+
+//查询用户总页数(条件)
+User.searchUserCount = function searchUserCount(user) {
+    let sql = "SELECT COUNT(*) AS count FROM `user` WHERE state = 0 ";
+    let params = []
+    if (user.user_id != null && user.user_id != '') {
+        sql = sql + 'AND user_id=? '
+        params.push(user.user_id)
+    }
+    if (user.username != null && user.username != '') {
+        sql = sql + 'AND username=? '
+        params.push(user.username)
+    }
+    if (user.ban != null && user.ban != '') {
+        sql = sql + 'AND ban=? '
+        params.push(user.ban)
+    }
+    return mysqlHelper.single1(sql, params)
+}
+
+//更改状态
+User.prototype.updataBan = function updataBan() {
+    let sql = "UPDATE user SET ban = ?,modified_time = ? WHERE user_id = ?";
+    let params = [this.ban, this.modified_time, this.user_id]
     return mysqlHelper.execute1(sql, params)
 }
 

@@ -1,4 +1,4 @@
-export default function getNowFormatDate(dateParameter, status) { // status:  0为日期+时间   1为日期
+export default function getNowFormatDate(dateParameter, status) { // status:  0为日期+时间   1为日期  2为年+月
   var date = new Date(dateParameter)
   var seperator1 = '-'
   var seperator2 = ':'
@@ -32,6 +32,9 @@ export default function getNowFormatDate(dateParameter, status) { // status:  0�
   }
   if (status.toString() === '1') {
     currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+  }
+  if (status.toString() === '2') {
+    currentdate = date.getFullYear() + seperator1 + month
   }
   return currentdate
 }

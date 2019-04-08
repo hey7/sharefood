@@ -1,26 +1,28 @@
 <!--首页：轮播图-->
 <template>
-    <div class="carousel">
-        <div class="block content">
-            <el-carousel height="400px">
-            <el-carousel-item v-for="item in lunbo" :key="item">
-                <img :src="item" alt="">
-            </el-carousel-item>
-            </el-carousel>
-        </div>
+  <div class="carousel">
+    <div class="block content">
+      <el-carousel height="400px">
+        <el-carousel-item v-for="(item, index) in carousel" :key="index">
+          <img :src="'/api'+item.url" alt>
+        </el-carousel-item>
+      </el-carousel>
     </div>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      lunbo: [
-        'static/images/index/lunbo1.jpg',
-        'static/images/index/lunbo2.jpg',
-        'static/images/index/lunbo3.jpg',
-        'static/images/index/lunbo4.jpg'
-      ]
+      carousel: []
     };
+  },
+  created() {
+    this.axios.post("/api/exhibition/getAllCarousel", "").then(res => {
+      if (res.data.code == 999) {
+        this.carousel = res.data.data;
+      }
+    });
   }
 };
 </script>

@@ -18,6 +18,8 @@ var express = require('express'),
 //999：登录成功
 //999：获得用户成功
 //999：修改信息成功
+//999：重置密码成功
+//999：更改成功
 
 //上传图片
 router.post('/imgUpload', function (req, res) {
@@ -48,6 +50,7 @@ router.post('/register', async function (req, res) {
         password = req.body['password'],
         state = "0",
         ban = "0",
+        sex = "2",
         photo = config.default_user_photo,
         create_time = util.getNowFormatDate(),
         modified_time = util.getNowFormatDate();
@@ -62,6 +65,7 @@ router.post('/register', async function (req, res) {
         state: state,
         photo: photo,
         ban: ban,
+        sex: sex,
         create_time: create_time,
         modified_time: modified_time
     });
@@ -158,7 +162,6 @@ router.post('/login', async function (req, res) {
 
 //更新用户信息
 router.post('/editUser', async function (req, res) {
-
     var user_id = JSON.parse(req.cookies.user).user_id,
         photo = req.body['photo'],
         sex = req.body['sex'],
@@ -239,6 +242,107 @@ router.post('/updataPassword', async function (req, res) {
         return;
     }
 });
+
+//////////////////////////////////
+
+//查询用户（条件查询）
+router.post('/searchUserBycondition', async function (req, res) {
+    var user_id = req.body['user_id'],
+        username = req.body['username'],
+        ban = req.body['ban'],
+        mParam = JSON.parse(req.body['mParam'])
+
+    var user = new User({
+        user_id: user_id,
+        username: username,
+        ban: ban
+    });
+
+    try {
+        var result1 = await User.searchUserCount(user)
+        var result = await User.searchUser(user, mParam)
+
+        res.json({
+            code: 999,
+            data: result,
+            total: result1.count,
+            msg: '查询成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 100,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
+//重置密码
+router.post('/restPassWord', async function (req, res) {
+    var user_id = req.body['user_id'],
+        modified_time = util.getNowFormatDate(),
+        password = config.default_user_password,
+        password = crypto.createHash('md5').update(password).digest('hex');
+
+    var user = new User({
+        user_id: user_id,
+        password: password,
+        modified_time: modified_time
+    });
+
+    try {
+        var result = await user.updataPassword()
+
+        res.json({
+            code: 999,
+            data: '',
+            msg: '重置密码成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 100,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
+//更改状态
+router.post('/updateUserBan', async function (req, res) {
+    var user_id = req.body['user_id'],
+        ban = req.body['ban'],
+        modified_time = util.getNowFormatDate()
+
+
+    var user = new User({
+        user_id: user_id,
+        ban: ban,
+        modified_time: modified_time
+    });
+
+    try {
+        var result = await user.updataBan()
+
+        res.json({
+            code: 999,
+            data: '',
+            msg: '更改成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 100,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
 
 // //注册
 // router.post('/register', function (req, res) {

@@ -1,8 +1,11 @@
 <!--内容展示页-->
 <template>
-  <div class="contentDisplay">
-    轮播图展示
-    <el-button type="primary" size="mini" @click="addCarousel()">添加步骤</el-button>
+  <div class="editContentDisplay">
+    <div class="title">
+      <span>编辑轮播图</span>
+    </div>
+
+    <el-button type="primary" size="mini" @click="addCarousel()" class="addCarousel-button">添加轮播图</el-button>
 
     <el-row>
       <el-col :span="8" v-for="(item, index) in carousel">
@@ -20,6 +23,15 @@
         </div>
       </el-col>
     </el-row>
+
+    <el-row type="flex" justify="center">
+      <el-col :span="2">
+        <el-button @click="saveCarousel" type="primary">保存</el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button @click="$router.go(-1)">取消</el-button>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -28,19 +40,36 @@ export default {
   data() {
     return {
       imageUrl: "",
-      carousel: [{ url: ""}] //轮播图
+      carousel: [{ url: "" }] //轮播图
     };
   },
+  created() {
+    this.axios.post("/api/exhibition/getAllCarousel", "").then(res => {
+      if (res.data.code == 999) {
+        this.carousel = res.data.data;
+      }
+    });
+  },
   methods: {
-    handleAvatarSuccess(res, index) {
+    handleAvatarSuccess(res, index) {   //上传图片成功
       this.carousel[index].url = res.data.uploadPath;
-      console.log("this.carousel", this.carousel);
     },
-    addCarousel() {
+    addCarousel() {   //增加
       this.carousel.push({ url: "" });
     },
-    delCarousel(index) {
+    delCarousel(index) {    //删除
       this.carousel.splice(index, 1);
+    },
+    saveCarousel() {    //保存
+      var data = this.qs.stringify({
+        carousel: JSON.stringify(this.carousel)
+      });
+      this.axios.post("/api/exhibition/updataCarousel", data).then(res => {
+        if (res.data.code == 999) {
+          this.$message.success(res.data.msg);
+          this.$router.push("/systemSetting/contentDisplay");
+        }
+      });
     }
   }
 };
@@ -52,8 +81,20 @@ export default {
     margin-bottom: 0;
   }
 }
-.contentDisplay {
+.editContentDisplay {
   position: relative;
+  .title {
+    padding: 15px 10px 10px 0;
+    margin-bottom: 15px;
+    span {
+      font-size: 18px;
+      font-weight: bolder;
+      padding-right: 20px;
+    }
+  }
+  .addCarousel-button {
+    margin-bottom: 10px;
+  }
   .carousel {
     height: 150px;
     width: 330px;

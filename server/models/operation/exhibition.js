@@ -14,14 +14,14 @@ Exhibition.prototype.save = function save() {
 }
 
 //查询所有轮播图
-Exhibition.prototype.searchAll = function searchAll() {
-    var sql = "SELECT path FROM exhibition";
+Exhibition.searchAll = function searchAll() {
+    var sql = "SELECT path AS url FROM exhibition";
     let params = []
     return mysqlHelper.execute1(sql, params)
 }
 
 //删除所有轮播图
-Exhibition.prototype.deleteAll = function deleteAll() {
+Exhibition.deleteAll = function deleteAll() {
     var sql = "DELETE FROM exhibition";
     let params = []
     return mysqlHelper.execute1(sql, params)

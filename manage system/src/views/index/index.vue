@@ -20,9 +20,17 @@
           :collapse-transition="false"
           router
         >
-          <el-menu-item index="/overview">
+          <el-menu-item index="/dashbord">
             <i class="el-icon-menu"></i>
             <span slot="title">概览</span>
+          </el-menu-item>
+          <el-menu-item index="/userSettng">
+            <i class="el-icon-menu"></i>
+            <span slot="title">用户管理</span>
+          </el-menu-item>
+          <el-menu-item index="/ingredientSetting">
+            <i class="el-icon-menu"></i>
+            <span slot="title">食材管理</span>
           </el-menu-item>
 
           <el-submenu index="1">
@@ -112,7 +120,8 @@ export default {
       min-width: 1070px;
       position: absolute;
       top: 0;
-      left: 0;
+      left: 10px;
+      right: 20px;
     }
   }
 }

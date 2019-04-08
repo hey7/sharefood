@@ -11,25 +11,59 @@ const router = new Router({
   routes: [{
       path: '/',
       component: () => import('@/views/index/index.vue'),
-      redirect: '/index',
+      redirect: '/dashbord',
     }, {
       path: '/index', //首页
       component: () => import('@/views/index/index.vue'),
-      children: [{
-          //概览
-          path: '/overview',
-          component: () => import('@/views/overview/overview.vue'),
+      children: [
+        //概览
+        {
+          path: '/dashbord',
+          component: () => import('@/views/dashbord/dashbord.vue'),
         },
+        //用户管理
+        {
+          path: '/userSettng',
+          component: () => import('@/views/userSetting/userSettng.vue'),
+        },
+        //食材管理
+        {
+          //展示页
+          path: '/ingredientSetting',
+          component: () => import('@/views/ingredientSetting/ingredientSetting.vue'),
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          //编辑页
+          path: '/ingredientSetting/editIngredient',
+          component: () => import('@/views/ingredientSetting/editIngredient.vue'),
+        },
+        {
+          //详情页
+          path: '/ingredientSetting/detailIngredient',
+          component: () => import('@/views/ingredientSetting/detailIngredient.vue'),
+        },
+
         //系统设置
         {
           //内容展示页
           path: '/systemSetting/contentDisplay',
-          component: () => import('@/views/systemSetting/contentDisplay.vue'),
+          component: () => import('@/views/systemSetting/contentDisplay/contentDisplay.vue'),
+        },
+        {
+          //内容展示页编辑页
+          path: '/systemSetting/contentDisplay/editContentDisplay',
+          component: () => import('@/views/systemSetting/contentDisplay/editContentDisplay.vue'),
         },
         {
           //字典页
           path: '/systemSetting/dictionary',
-          component: () => import('@/views/systemSetting/dictionary.vue'),
+          component: () => import('@/views/systemSetting/dictionary/dictionary.vue'),
+          meta: {
+            keepAlive: true // 需要缓存
+          }
         }
       ]
     },
