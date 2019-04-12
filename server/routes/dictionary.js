@@ -215,4 +215,46 @@ router.post('/updateDictionaryName', async function (req, res) {
     }
 });
 
+//获取菜谱分类用于审核菜谱分类(得到的参数是“菜谱分类”)
+router.post('/getChildsByDictionaryName', async function (req, res) {
+    var name = req.body['name']
+    try {
+        var result = [];
+
+        var secondResult = await Dictionary.getDictionaryByName(name)
+
+        for (var i of secondResult) {
+            var a = {
+                value: i.dictionary_id,
+                label: i.name
+            }
+            if (i.isLeaf == 0) {
+                a.children = []
+                var thirdResult = await Dictionary.getDictionaryByUpperid(i.dictionary_id)
+                for(var j of thirdResult){
+                    a.children.push({
+                        value: j.dictionary_id,
+                        label: j.name,
+                    })
+                }
+            }
+            result.push(a)
+        }
+        res.json({
+            code: 999,
+            data: result,
+            msg: '查询字典成功'
+        })
+        return;
+
+    } catch (err) {
+        res.json({
+            code: 300,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
 module.exports = router;

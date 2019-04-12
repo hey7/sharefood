@@ -115,6 +115,9 @@
         <el-table-column label="创建时间">
           <template slot-scope="scope">{{dateFormat(scope.row.create_time,0)}}</template>
         </el-table-column>
+        <el-table-column label="修改时间">
+          <template slot-scope="scope">{{dateFormat(scope.row.modified_time,0)}}</template>
+        </el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
             <el-switch
@@ -134,6 +137,7 @@
     <div class="page">
       <el-pagination
         @current-change="handleCurrentChange"
+        :current-page="mParam.pageNum"
         :page-size="mParam.pageSize"
         layout="total, prev, pager, next, jumper"
         :total="total"

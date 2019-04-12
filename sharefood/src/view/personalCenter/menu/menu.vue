@@ -4,7 +4,12 @@
     <div class="title">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tab">
         <el-tab-pane label="我的菜谱" name="first">
-          <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==3">
+          <div
+            class="content"
+            v-for="(menu, index) in menus"
+            :key="index"
+            v-if="menu.state==4||menu.state==5"
+          >
             <img :src="'/api'+menu.path" alt class="menupic">
             <div class="menuname">{{menu.menuname}}</div>
             <div class="love">
@@ -36,7 +41,12 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="退稿箱" name="third">
-          <div class="content" v-for="(menu, index) in menus" :key="index" v-if="menu.state==2">
+          <div
+            class="content"
+            v-for="(menu, index) in menus"
+            :key="index"
+            v-if="menu.state==2||menu.state==3"
+          >
             <img :src="'/api'+menu.path" alt class="menupic">
             <div class="menuname">{{menu.menuname}}</div>
             <div class="love">
@@ -134,11 +144,11 @@ export default {
         query: { menu_id: menu_id }
       });
     },
-    editMenu(menu_id){
+    editMenu(menu_id) {
       this.$router.push({
-        path:"/personalCenter/editMenu",
+        path: "/personalCenter/editMenu",
         query: { menu_id: menu_id }
-      })
+      });
     }
   },
   created() {

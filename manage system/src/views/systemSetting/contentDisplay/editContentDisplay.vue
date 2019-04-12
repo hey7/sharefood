@@ -51,16 +51,20 @@ export default {
     });
   },
   methods: {
-    handleAvatarSuccess(res, index) {   //上传图片成功
+    handleAvatarSuccess(res, index) {
+      //上传图片成功
       this.carousel[index].url = res.data.uploadPath;
     },
-    addCarousel() {   //增加
+    addCarousel() {
+      //增加
       this.carousel.push({ url: "" });
     },
-    delCarousel(index) {    //删除
+    delCarousel(index) {
+      //删除
       this.carousel.splice(index, 1);
     },
-    saveCarousel() {    //保存
+    saveCarousel() {
+      //保存
       var data = this.qs.stringify({
         carousel: JSON.stringify(this.carousel)
       });

@@ -45,6 +45,25 @@ const router = new Router({
           path: '/ingredientSetting/detailIngredient',
           component: () => import('@/views/ingredientSetting/detailIngredient.vue'),
         },
+        //菜谱管理
+        {
+          //展示页
+          path: '/menuSetting',
+          component: () => import('@/views/menuSetting/menuSetting.vue'),
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          //详情页
+          path: '/menuSetting/detailMenu',
+          component: () => import('@/views/menuSetting/detailMenu.vue'),
+        },
+        {
+          //审核页
+          path: '/menuSetting/checkMenu',
+          component: () => import('@/views/menuSetting/checkMenu.vue'),
+        },
 
         //系统设置
         {

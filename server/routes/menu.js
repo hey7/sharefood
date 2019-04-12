@@ -20,6 +20,7 @@ var express = require('express'),
 //999 删除菜谱成功
 //999 查询菜谱详情成功
 //999 查询成功
+//999 审核成功
 
 //上传图片
 router.post('/imgUpload', function (req, res) {
@@ -42,131 +43,6 @@ router.post('/imgUpload', function (req, res) {
             msg: '上传图片成功'
         })
     });
-});
-
-//获取详细菜谱
-router.post('/getdetailMenu', async function (req, res) {
-    var menu_id = req.body['menu_id'];
-
-    var data = {
-        menuname: '',
-        chengpintu: [],
-        descript: '',
-        type: {},
-        groups: {},
-        steps: [],
-        trick: '',
-        iscreate: '',
-        state: ''
-    }
-
-    try {
-        var result;
-
-        //获取菜谱
-        result = await Menu.getMenuByMenuId(menu_id)
-        data.menuname = result.menuname
-        data.descript = result.descript
-        data.trick = result.trick
-        data.iscreate = result.iscreate
-        data.state = result.state
-
-        //获取菜谱分类
-        result = await Menu_type.getMenuTypeByMenuId(menu_id)
-        for (var row of result) {
-            if (data.type[row.top_id]) {
-                if (data.type[row.top_id] instanceof Array) {
-                    data.type[row.top_id].push({
-                        type: row.type,
-                        name: row.name
-                    })
-                } else {
-                    var aar = [];
-                    aar.push(data.type[row.top_id])
-                    aar.push({
-                        type: row.type,
-                        name: row.name
-                    })
-                    data.type[row.top_id] = aar
-                }
-            } else {
-                data.type[row.top_id] = [{
-                    type: row.type,
-                    name: row.name
-                }]
-            }
-        }
-
-
-
-        //获取菜谱食材
-        result = await Menu_ingredient.getMenuIngredientByMenuId(menu_id)
-        for (var row of result) {
-            if (data.groups[row.groupname]) {
-                if (data.groups[row.groupname] instanceof Array) {
-                    data.groups[row.groupname].push({
-                        ingredientname: row.ingredientname,
-                        amount: row.amount
-                    })
-                } else {
-                    var aar = [];
-                    aar.push(data.groups[row.groupname])
-                    aar.push({
-                        ingredientname: row.ingredientname,
-                        amount: row.amount
-                    })
-                    data.groups[row.groupname] = aar
-                }
-            } else {
-                data.groups[row.groupname] = [{
-                    ingredientname: row.ingredientname,
-                    amount: row.amount
-                }]
-            }
-        }
-
-        var arr = []
-        for (var i in data.groups) {
-            arr.push({
-                groupname: i,
-                ingredient: data.groups[i]
-            })
-        }
-        data.groups = arr;
-
-        //获取菜谱成品图
-        result = await Menu_pic.getMenuPicByMenuId(menu_id);
-        for (var row of result) {
-            data.chengpintu.push({
-                url: row.path
-            })
-        }
-
-        //获取菜谱步骤
-        result = await Menu_pic.getMenuStepByMenuId(menu_id);
-        for (var row of result) {
-            data.steps.push({
-                path: row.path,
-                descript: row.descript
-            })
-        }
-
-        res.json({
-            code: 999,
-            data: data,
-            msg: '查询菜谱详情成功'
-        })
-
-    } catch (err) {
-        res.json({
-            code: 200,
-            data: '',
-            msg: err
-        })
-        return;
-    }
-
-
 });
 
 //保存菜谱
@@ -301,14 +177,208 @@ router.post('/createMenu', async function (req, res) {
 
 });
 
-//删除用户的菜谱(菜谱改状态)
-router.post('/deleteMenu', async function (req, res) {
-    var menu_id = req.body['menu_id']
+
+
+//获取详细菜谱
+router.post('/getdetailMenu', async function (req, res) {
+    var menu_id = req.body['menu_id'];
+
+    var data = {
+        menuname: '',
+        chengpintu: [],
+        descript: '',
+        type: {},
+        groups: {},
+        steps: [],
+        trick: '',
+        iscreate: '',
+        state: ''
+    }
 
     try {
         var result;
 
-        result = await Menu.deleteMenuByMenuId(menu_id)
+        //获取菜谱
+        result = await Menu.getMenuByMenuId(menu_id)
+        data.menuname = result.menuname
+        data.descript = result.descript
+        data.trick = result.trick
+        data.iscreate = result.iscreate
+        data.state = result.state
+
+        //获取菜谱分类
+        result = await Menu_type.getMenuTypeByMenuId(menu_id, 0)
+        for (var row of result) {
+            if (data.type[row.top_id]) {
+                if (data.type[row.top_id] instanceof Array) {
+                    data.type[row.top_id].push({
+                        type: row.type,
+                        name: row.name
+                    })
+                } else {
+                    var aar = [];
+                    aar.push(data.type[row.top_id])
+                    aar.push({
+                        type: row.type,
+                        name: row.name
+                    })
+                    data.type[row.top_id] = aar
+                }
+            } else {
+                data.type[row.top_id] = [{
+                    type: row.type,
+                    name: row.name
+                }]
+            }
+        }
+
+
+
+        //获取菜谱食材
+        result = await Menu_ingredient.getMenuIngredientByMenuId(menu_id)
+        for (var row of result) {
+            if (data.groups[row.groupname]) {
+                if (data.groups[row.groupname] instanceof Array) {
+                    data.groups[row.groupname].push({
+                        ingredient_id: row.ingredient_id,
+                        ingredientname: row.ingredientname,
+                        amount: row.amount
+                    })
+                } else {
+                    var aar = [];
+                    aar.push(data.groups[row.groupname])
+                    aar.push({
+                        ingredient_id: row.ingredient_id,
+                        ingredientname: row.ingredientname,
+                        amount: row.amount
+                    })
+                    data.groups[row.groupname] = aar
+                }
+            } else {
+                data.groups[row.groupname] = [{
+                    ingredient_id: row.ingredient_id,
+                    ingredientname: row.ingredientname,
+                    amount: row.amount
+                }]
+            }
+        }
+
+        var arr = []
+        for (var i in data.groups) {
+            arr.push({
+                groupname: i,
+                ingredient: data.groups[i]
+            })
+        }
+        data.groups = arr;
+
+        //获取菜谱成品图
+        result = await Menu_pic.getMenuPicByMenuId(menu_id);
+        for (var row of result) {
+            data.chengpintu.push({
+                url: row.path
+            })
+        }
+
+        //获取菜谱步骤
+        result = await Menu_pic.getMenuStepByMenuId(menu_id);
+        for (var row of result) {
+            data.steps.push({
+                path: row.path,
+                descript: row.descript
+            })
+        }
+
+        res.json({
+            code: 999,
+            data: data,
+            msg: '查询菜谱详情成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 200,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+
+
+});
+
+//获得点赞，收藏，userId,username等基本信息
+router.post('/getInfoOfMenu', async function (req, res) {
+    var menu_id = req.body['menu_id'],
+        user_id = JSON.parse(req.cookies.user).user_id
+
+    try {
+        var result
+
+        var love = new Love({
+            user_id: user_id,
+            any_id: menu_id,
+            state: 0,
+        });
+
+        var collection = new Collection({
+            user_id: user_id,
+            any_id: menu_id,
+            state: 0,
+        })
+
+        result = await love.getIsLove()
+        var alreadyLoveShow = (result.num) > 0 ? true : false
+
+
+        result = await collection.getIsCollection()
+        var alreadyCollectionShow = (result.num) > 0 ? true : false
+
+        result = await love.getLoveNum()
+        var loveNum = result.num
+
+        result = await collection.getCollectionNum()
+        var collectionNum = result.num
+
+        result = await Menu.getMenuInfoByMenuId(menu_id)
+        var user_id = result.user_id
+        var username = result.username
+
+        res.json({
+            code: 999,
+            data: {
+                alreadyLoveShow: alreadyLoveShow,
+                alreadyCollectionShow: alreadyCollectionShow,
+                loveNum: loveNum,
+                collectionNum: collectionNum,
+                user_id: user_id,
+                username: username
+            },
+            msg: '查询成功'
+        })
+
+
+    } catch (err) {
+        res.json({
+            code: 200,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
+
+
+//删除用户的菜谱(菜谱改状态)
+router.post('/deleteMenu', async function (req, res) {
+    var menu_id = req.body['menu_id'],
+        modified_time = util.getNowFormatDate()
+
+    try {
+        var result;
+
+        result = await Menu.updateState(6, modified_time, menu_id)
         res.json({
             code: 999,
             data: '',
@@ -381,7 +451,7 @@ router.post('/getdetailMenuByedit', async function (req, res) {
         data.state = result.state
 
         //获取菜谱分类
-        result = await Menu_type.getMenuTypeByMenuId(menu_id)
+        result = await Menu_type.getMenuTypeByMenuId(menu_id, 0)
         var arr = [];
         for (var row of result) {
             switch (row.type) {
@@ -573,7 +643,7 @@ router.post('/editMenu', async function (req, res) {
             }
         }
 
-        result = await Menu_type.deleteMenuTypeByMenuId(menu_id)
+        result = await Menu_type.deleteMenuTypeByMenuId(menu_id, 0)
 
         for (let dictionary_id of dictionary_ids) { //保存分类
             var menu_type = new Menu_type({
@@ -600,6 +670,8 @@ router.post('/editMenu', async function (req, res) {
     }
 
 });
+
+
 
 //首页展示的3类菜谱（最新，一种收藏最多，总共收藏最多）
 router.post('/getMenuIndexShow', async function (req, res) {
@@ -629,56 +701,33 @@ router.post('/getMenuIndexShow', async function (req, res) {
     }
 });
 
-//获得点赞，收藏，userId,username等基本信息
-router.post('/getInfoOfMenu', async function (req, res) {
+
+/////////////////////////
+//查询菜谱（条件查询）
+router.post('/searchMenuBycondition', async function (req, res) {
     var menu_id = req.body['menu_id'],
-        user_id = JSON.parse(req.cookies.user).user_id
+        menuname = req.body['menuname'],
+        username = req.body['username'],
+        user_id = req.body['user_id'],
+        state = req.body['state'],
+        mParam = JSON.parse(req.body['mParam'])
+
+    var menu = new Menu({
+        menu_id: menu_id,
+        user_id: user_id,
+        menuname: menuname,
+        state: state
+    });
 
     try {
-        var result
-
-        var love = new Love({
-            user_id: user_id,
-            any_id: menu_id,
-            state: 0,
-        });
-
-        var collection = new Collection({
-            user_id: user_id,
-            any_id: menu_id,
-            state: 0,
-        })
-
-        result = await love.getIsLove()
-        var alreadyLoveShow = (result.num) > 0 ? true : false
-
-
-        result = await collection.getIsCollection()
-        var alreadyCollectionShow = (result.num) > 0 ? true : false
-
-        result = await love.getLoveNum()
-        var loveNum = result.num
-
-        result = await collection.getCollectionNum()
-        var collectionNum = result.num
-
-        result = await Menu.getMenuInfoByMenuId(menu_id)
-        var user_id = result.user_id
-        var username = result.username
-
+        var result1 = await Menu.searchMenuCount(menu, username)
+        var result = await Menu.searchMenu(menu, username, mParam)
         res.json({
             code: 999,
-            data: {
-                alreadyLoveShow: alreadyLoveShow,
-                alreadyCollectionShow: alreadyCollectionShow,
-                loveNum: loveNum,
-                collectionNum: collectionNum,
-                user_id: user_id,
-                username: username
-            },
+            data: result,
+            total: result1.count,
             msg: '查询成功'
         })
-
 
     } catch (err) {
         res.json({
@@ -690,7 +739,238 @@ router.post('/getInfoOfMenu', async function (req, res) {
     }
 });
 
+//获取详细菜谱
+router.post('/searchMenu', async function (req, res) {
+    var menu_id = req.body['menu_id'];
 
+    var data = {
+        menu: '',
+        chengpintu: [],
+        type: {},
+        groups: {},
+        steps: [],
+        tags: []
+    }
+
+    try {
+        var result;
+
+        //获取菜谱
+        result = await Menu.getMenuInfoByMenuId(menu_id)
+        data.menu = result
+
+        //获取菜谱分类
+        result = await Menu_type.getMenuTypeByMenuId(menu_id, 0)
+        for (var row of result) {
+            if (data.type[row.top_id]) {
+                if (data.type[row.top_id] instanceof Array) {
+                    data.type[row.top_id].push({
+                        type: row.type,
+                        name: row.name
+                    })
+                } else {
+                    var aar = [];
+                    aar.push(data.type[row.top_id])
+                    aar.push({
+                        type: row.type,
+                        name: row.name
+                    })
+                    data.type[row.top_id] = aar
+                }
+            } else {
+                data.type[row.top_id] = [{
+                    type: row.type,
+                    name: row.name
+                }]
+            }
+        }
+
+        //获取菜谱分类
+        result = await Menu_type.getMenuTypeByMenuId(menu_id, 1)
+        for (var row of result) {
+            data.tags.push({
+                value: row.dictionary_id,
+                label: row.name,
+                type: ""
+            })
+        }
+
+        //获取菜谱食材
+        result = await Menu_ingredient.getMenuIngredientByMenuId(menu_id)
+        for (var row of result) {
+            if (data.groups[row.groupname]) {
+                if (data.groups[row.groupname] instanceof Array) {
+                    data.groups[row.groupname].push({
+                        ingredientname: row.ingredientname,
+                        amount: row.amount
+                    })
+                } else {
+                    var aar = [];
+                    aar.push(data.groups[row.groupname])
+                    aar.push({
+                        ingredientname: row.ingredientname,
+                        amount: row.amount
+                    })
+                    data.groups[row.groupname] = aar
+                }
+            } else {
+                data.groups[row.groupname] = [{
+                    ingredientname: row.ingredientname,
+                    amount: row.amount
+                }]
+            }
+        }
+
+        var arr = []
+        for (var i in data.groups) {
+            arr.push({
+                groupname: i,
+                ingredient: data.groups[i]
+            })
+        }
+        data.groups = arr;
+
+        //获取菜谱成品图
+        result = await Menu_pic.getMenuPicByMenuId(menu_id);
+        for (var row of result) {
+            data.chengpintu.push({
+                url: row.path
+            })
+        }
+
+        //获取菜谱步骤
+        result = await Menu_pic.getMenuStepByMenuId(menu_id);
+        for (var row of result) {
+            data.steps.push({
+                path: row.path,
+                descript: row.descript
+            })
+        }
+
+        res.json({
+            code: 999,
+            data: data,
+            msg: '查询菜谱详情成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 200,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+
+
+});
+
+//审核菜谱
+router.post('/checkMenu', async function (req, res) {
+    var menu_id = req.body['menu_id'],
+        state = req.body['state'],
+        tags = JSON.parse(req.body['tags']),
+        modified_time = util.getNowFormatDate()
+
+    try {
+        var result = await Menu.updateState(state, modified_time, menu_id)
+
+        if (tags) { //通过了(添加菜谱分类)
+            for (let tag of tags) { //保存分类
+                var menu_type = new Menu_type({
+                    menu_id: menu_id,
+                    dictionary_id: tag.value,
+                    state: 1
+                })
+                await menu_type.save()
+            }
+        }
+
+        res.json({
+            code: 999,
+            data: '',
+            msg: '审核成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 200,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
+//获取菜谱分类
+router.post('/searchMenuType', async function (req, res) {
+    var menu_id = req.body['menu_id'];
+
+    try {
+
+        var tags = []
+        //获取菜谱分类
+        var result = await Menu_type.getMenuTypeByMenuId(menu_id, 1)
+        for (var row of result) {
+            tags.push({
+                value: row.dictionary_id,
+                label: row.name,
+                type: ""
+            })
+        }
+
+        res.json({
+            code: 999,
+            data: tags,
+            msg: '查询菜谱详情成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 200,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+
+
+});
+
+//修改菜谱分类（先删后存）
+router.post('/updataMenuType', async function (req, res) {
+    var menu_id = req.body['menu_id'];
+    tags = JSON.parse(req.body['tags'])
+
+    try {
+        //删除
+        result = await Menu_type.deleteMenuTypeByMenuId(menu_id, 1)
+        for (let tag of tags) { //保存分类
+            var menu_type = new Menu_type({
+                menu_id: menu_id,
+                dictionary_id: tag.value,
+                state: 1
+            })
+            await menu_type.save()
+        }
+
+        res.json({
+            code: 999,
+            data: '',
+            msg: '修改菜谱分类成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 200,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+
+
+});
 
 
 // //保存菜谱

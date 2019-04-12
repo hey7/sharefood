@@ -34,34 +34,60 @@
           <p class="i-name">修改时间：</p>
           <p class="i-val">{{dateFormat(ingredient.modified_time,0)}}</p>
         </div>
-
-        <div class="info-item-depict">
-          <p class="i-name">食材简介：</p>
-          <p class="i-val">{{ingredient.introduction}}</p>
-        </div>
-        <div class="info-item-depict">
-          <p class="i-name">营养价值：</p>
-          <p class="i-val">{{ingredient.nutrition}}</p>
-        </div>
-        <div class="info-item-depict">
-          <p class="i-name">食用功效：</p>
-          <p class="i-val">{{ingredient.effect}}</p>
-        </div>
-        <div class="info-item-depict">
-          <p class="i-name">适用人群：</p>
-          <p class="i-val">{{ingredient.apply}}</p>
-        </div>
-        <div class="info-item-depict">
-          <p class="i-name">禁忌人群：</p>
-          <p class="i-val">{{ingredient.taboo}}</p>
-        </div>
+        <!-- <div class="info-item-depict">
+          <p class="i-name"></p>
+          <p class="i-val" ></p>
+        </div>-->
       </div>
+
+      <div class="depict">
+        <el-row class="depict-item">
+          <el-col :span="2">
+            <div class="name">食材简介：</div>
+          </el-col>
+          <el-col :span="22">
+            <div v-html="ingredient.introduction" class="val"></div>
+          </el-col>
+        </el-row>
+        <el-row class="depict-item">
+          <el-col :span="2">
+            <div class="name">营养价值：</div>
+          </el-col>
+          <el-col :span="22">
+            <div v-html="ingredient.nutrition" class="val"></div>
+          </el-col>
+        </el-row>
+        <el-row class="depict-item">
+          <el-col :span="2">
+            <div class="name">食用功效：</div>
+          </el-col>
+          <el-col :span="22">
+            <div v-html="ingredient.effect"></div>
+          </el-col>
+        </el-row>
+        <el-row class="depict-item">
+          <el-col :span="2">
+            <div class="name">适用人群：</div>
+          </el-col>
+          <el-col :span="22">
+            <div v-html="ingredient.apply"></div>
+          </el-col>
+        </el-row>
+        <el-row class="depict-item">
+          <el-col :span="2">
+            <div class="name">禁忌人群：</div>
+          </el-col>
+          <el-col :span="22">
+            <div v-html="ingredient.taboo"></div>
+          </el-col>
+        </el-row>
+      </div>
+      <el-row type="flex" justify="center">
+        <el-col :span="2">
+          <el-button @click="$router.go(-1)">返回</el-button>
+        </el-col>
+      </el-row>
     </div>
-    <el-row type="flex" justify="center">
-      <el-col :span="2">
-        <el-button @click="$router.go(-1)">返回</el-button>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -89,6 +115,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+
 .jiange {
   margin-bottom: 10px;
 }
@@ -104,10 +131,11 @@ export default {
     }
   }
   .content {
+    font-size: 14px;
     .info-cont {
+      margin-bottom: 10px;
       flex-wrap: wrap;
       display: flex;
-      font-size: 14px;
       .info-item {
         flex: 0 1 33%;
         height: 42px;
@@ -116,17 +144,23 @@ export default {
       .info-item-depict {
         flex: 0 1 100%;
         min-height: 42px;
-        line-height: 42px;
       }
       .i-name {
         display: inline-block;
         flex: 0 0 auto;
-
         color: #808080;
       }
       .i-val {
         display: inline-block;
         flex: 1;
+      }
+    }
+    .depict {
+      .depict-item {
+        margin-bottom: 25px;
+      }
+      .name {
+        color: #808080;
       }
     }
   }

@@ -24,15 +24,17 @@ Menu.prototype.update = function update() {
     let params = [this.menuname, this.iscreate, this.trick, this.descript, this.state, this.modified_time, this.menu_id]
     return mysqlHelper.execute1(sql, params)
 }
-//根据menu_id删除菜谱
-Menu.deleteMenuByMenuId = function deleteMenuByMenuId(menu_id) {
-    let sql = "UPDATE menu SET menu.state = 6 WHERE menu_id = ?";
-    let params = [menu_id]
+
+//修改菜谱状态
+Menu.updateState = function updateState(state, modified_time, menu_id) {
+    var sql = "UPDATE menu SET state = ?,modified_time = ? WHERE menu_id = ?";
+    let params = [state, modified_time, menu_id]
     return mysqlHelper.execute1(sql, params)
 }
+
 //根据Userid查菜谱(第一张成品图和menu)
 Menu.getMenuByUserId = function getMenuByUserId(user_id) {
-    let sql = "SELECT menu.*,menu_pic.path FROM menu LEFT JOIN menu_pic ON menu.menu_id = menu_pic.menu_id where menu.user_id = ? AND menu_pic.step = 0 GROUP BY modified_time DESC";
+    let sql = "SELECT menu.*,menu_pic.path,(select count(*) from collection c where c.any_id = menu.menu_id AND c.state = 0) AS collection,(select count(*) from love l where l.any_id = menu.menu_id AND l.state = 0) AS love FROM menu LEFT JOIN menu_pic ON menu.menu_id = menu_pic.menu_id where menu.user_id = ? AND menu_pic.step = 0 ORDER BY modified_time DESC";
     let params = [user_id]
     return mysqlHelper.execute1(sql, params)
 }
@@ -64,24 +66,95 @@ Menu.getOneWeekMenu = function getOneWeekMenu() {
 //最受欢迎
 Menu.getPopularMenu = function getPopularMenu() {
     let sql = "SELECT menu.menu_id,menu_pic.path, menu.menuname, `user`.username FROM collection LEFT JOIN menu ON any_id = menu.menu_id " +
-    "LEFT JOIN `user` ON menu.user_id = `user`.user_id LEFT JOIN menu_pic ON any_id = menu_pic.menu_id " +
-    "WHERE collection.state = 0 AND (menu.state = 4 OR menu.state = 5) " +
-    "AND menu_pic.step = 0 GROUP BY any_id ORDER BY COUNT(any_id) DESC, menu.modified_time DESC LIMIT 8"
+        "LEFT JOIN `user` ON menu.user_id = `user`.user_id LEFT JOIN menu_pic ON any_id = menu_pic.menu_id " +
+        "WHERE collection.state = 0 AND (menu.state = 4 OR menu.state = 5) " +
+        "AND menu_pic.step = 0 GROUP BY any_id ORDER BY COUNT(any_id) DESC, menu.modified_time DESC LIMIT 8"
     let params = []
     return mysqlHelper.execute1(sql, params)
 }
 
 //根据menu_id查菜谱基本信息
 Menu.getMenuInfoByMenuId = function getMenuInfoByMenuId(menu_id) {
-    let sql = "SELECT menu.user_id, `user`.username FROM menu LEFT JOIN `user` ON menu.user_id = `user`.user_id WHERE menu_id = ?";
+    let sql = "SELECT menu.*, `user`.username FROM menu LEFT JOIN `user` ON menu.user_id = `user`.user_id WHERE menu_id = ?";
     let params = [menu_id]
     return mysqlHelper.single1(sql, params)
 }
 
-//SELECT any_id, menu_pic.path, menu.menuname, `user`.username, COUNT(any_id) as count FROM collection LEFT JOIN menu ON any_id = menu.menu_id
-// LEFT JOIN `user` ON menu.user_id = `user`.user_id LEFT JOIN menu_pic ON any_id = menu_pic.menu_id
-// WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= collection.create_time AND collection.state = 0
-// AND menu_pic.step = 0 GROUP BY any_id ORDER BY count DESC LIMIT 8
+//查询食材(条件、分页)
+Menu.searchMenu = function searchMenu(menu, username, Param) {
+    let sql = "SELECT m.menu_id,m.menuname,m.user_id,u.username,m.state,m.create_time,m.modified_time FROM menu m LEFT JOIN `user` u ON m.user_id = u.user_id WHERE 1=1 ";
+    let params = []
+    if (username != null && username != '') {
+        sql = sql + 'AND username=? '
+        params.push(username)
+    }
+    if (menu.menu_id != null && menu.menu_id != '') {
+        sql = sql + 'AND menu_id=? '
+        params.push(menu.menu_id)
+    }
+    if (menu.user_id != null && menu.user_id != '') {
+        sql = sql + 'AND m.user_id=? '
+        params.push(menu.user_id)
+    }
+    if (menu.menuname != null && menu.menuname != '') {
+        sql = sql + 'AND menuname=? '
+        params.push(menu.menuname)
+    }
+    if (menu.state != null && menu.state != '') {
+        if (menu.state == '2||3') {
+            sql = sql + 'AND (m.state = 2 OR m.state = 3)'
+        } else if (menu.state == '4||5') {
+            sql = sql + 'AND (m.state = 4 OR m.state = 5)'
+        } else {
+            sql = sql + 'AND m.state=? '
+            params.push(menu.state)
+        }
+    } else {
+        sql = sql + 'AND (m.state <> 0 AND m.state <> 6)'
+    }
+    sql = sql + 'limit ?, ?'
+
+    params.push((Param.pageNum - 1) * Param.pageSize)
+    params.push(Param.pageSize)
+    return mysqlHelper.execute1(sql, params)
+}
+
+//查询菜谱总页数(条件)
+Menu.searchMenuCount = function searchMenuCount(menu, username) {
+    let sql = "SELECT COUNT(*) AS count FROM menu m LEFT JOIN `user` u ON m.user_id = u.user_id WHERE 1=1 ";
+    let params = []
+    if (username != null && username != '') {
+        sql = sql + 'AND username=? '
+        params.push(username)
+    }
+    if (menu.menu_id != null && menu.menu_id != '') {
+        sql = sql + 'AND menu_id=? '
+        params.push(menu.menu_id)
+    }
+    if (menu.user_id != null && menu.user_id != '') {
+        sql = sql + 'AND m.user_id=? '
+        params.push(menu.user_id)
+    }
+    if (menu.menuname != null && menu.menuname != '') {
+        sql = sql + 'AND menuname=? '
+        params.push(menu.menuname)
+    }
+    if (menu.state != null && menu.state != '') {
+        if (menu.state == '2||3') {
+            sql = sql + 'AND (m.state = 2 OR m.state = 3)'
+        } else if (menu.state == '4||5') {
+            sql = sql + 'AND (m.state = 4 OR m.state = 5)'
+        } else {
+            sql = sql + 'AND m.state=? '
+            params.push(menu.state)
+        }
+    } else {
+        sql = sql + 'AND (m.state <> 0 AND m.state <> 6)'
+    }
+    return mysqlHelper.single1(sql, params)
+}
+
+
 
 
 // //保存菜谱

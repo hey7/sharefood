@@ -37,7 +37,12 @@
       <el-row>
         <el-col :span="4" v-for="(item2, index2) in item1.ingredient" :key="'2-'+index2">
           <div class="item">
-            <div class="ingredientname">{{item2.ingredientname}}</div>
+            <div
+              class="ingredientnameLink"
+              v-if="ingredientLinkShow"
+              @click="detailIngredient(item2.ingredient_id)"
+            >{{item2.ingredientname}}</div>
+            <div class="ingredientname" v-else>{{item2.ingredientname}}</div>
             <div class="amount">{{item2.amount}}</div>
           </div>
         </el-col>
@@ -49,7 +54,7 @@
         <el-col :span="4" v-for="(item3, index3) in type" :key="'3-'+index3">
           <div class="item">
             <div class="name">
-              <span v-for="(item4, index4) in item3" :key="'4-'+index4">{{item4.name}} </span>
+              <span v-for="(item4, index4) in item3" :key="'4-'+index4">{{item4.name}}</span>
             </div>
             <div class="typee">{{item3[0].type}}</div>
           </div>
@@ -74,7 +79,7 @@
       </el-row>
     </div>
 
-    <div class="title" v-if="trick.split(' ').join('').length !== 0" >
+    <div class="title" v-if="trick.split(' ').join('').length !== 0">
       <img src="/static/images/menu/round.png" alt>
       <span>小窍门</span>
     </div>
@@ -95,28 +100,40 @@ export default {
       steps: "",
       trick: "", //小窍门
       iscreate: "", //是否原创
-      state: "" //菜谱状态
+      state: "", //菜谱状态
+
+      //是否展示食材链接
+      ingredientLinkShow: false
     };
   },
   created() {
+    if (this.$route.path == "/detailMenu") {
+      this.ingredientLinkShow = true;
+    }
     var data = this.qs.stringify({
       menu_id: this.$route.query.menu_id
     });
-    this.axios
-      .post("/api/menu/getdetailMenu", data)
-      .then(res => {
-        if (res.data.code == 999) {
-          var data = res.data.data;
-          this.menuname = data.menuname;
-          this.iscreate = data.iscreate;
-          this.chengpintu = data.chengpintu;
-          this.descript = data.descript;
-          this.groups = data.groups;
-          this.type = data.type;
-          this.steps = data.steps;
-          this.trick = data.trick;
-        }
+    this.axios.post("/api/menu/getdetailMenu", data).then(res => {
+      if (res.data.code == 999) {
+        var data = res.data.data;
+        this.menuname = data.menuname;
+        this.iscreate = data.iscreate;
+        this.chengpintu = data.chengpintu;
+        this.descript = data.descript;
+        this.groups = data.groups;
+        this.type = data.type;
+        this.steps = data.steps;
+        this.trick = data.trick;
+      }
+    });
+  },
+  methods: {
+    detailIngredient(ingredient_id) {
+      this.$router.push({
+        path: "/detailIngredient",
+        query: { ingredient_id: ingredient_id }
       });
+    }
   }
 };
 </script>
@@ -181,6 +198,19 @@ export default {
     .item {
       text-align: center;
       height: 70px;
+      .ingredientnameLink {
+        font-size: 20px;
+        height: 40px;
+        line-height: 45px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #666;
+        cursor: pointer;
+        &:hover {
+          color: #ff6767;
+        }
+      }
       .ingredientname,
       .name {
         font-size: 20px;
@@ -212,7 +242,7 @@ export default {
       width: 34px;
       margin-bottom: 10px;
     }
-    img{
+    img {
       width: 180px;
       height: 150px;
     }

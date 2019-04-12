@@ -70,8 +70,8 @@ export default {
     handleClick(tab, event) {
       // console.log(tab, event);
     },
-    detailMenu(menu_id){
-       this.$router.push({
+    detailMenu(menu_id) {
+      this.$router.push({
         path: "/detailMenu",
         query: { menu_id: menu_id }
       });
@@ -90,10 +90,10 @@ export default {
 .menu {
   width: 100%;
   min-width: 1170px;
+  margin-top: 20px;
   .content {
     width: 1170px;
     position: relative;
-    margin-top: 10px;
     margin: 0 auto;
     .right {
       position: absolute;
@@ -111,7 +111,7 @@ export default {
       .show-menu-item {
         width: 235px;
         height: 280px;
-        margin:10px auto 0;
+        margin: 10px auto 0;
         &:hover {
           -moz-box-shadow: 0 0 10px #ff6767;
           -webkit-box-shadow: 0 0 10px #ff6767;
@@ -130,17 +130,13 @@ export default {
           }
         }
         .username {
-          margin-top: 5px;
+          margin-top: 8px;
           text-align: center;
           color: #999;
           font-size: 12px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          cursor: pointer;
-          &:hover {
-            color: #ff6767;
-          }
         }
       }
     }

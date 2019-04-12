@@ -44,14 +44,16 @@
             <span class="date">{{dateFormat(item1.create_time, 0)}}</span>
             <span class="comm">{{item1.content}}</span>
             <div class="operation">
-              <span @click="reports(item1.comment_id)">举报</span>
               <span
                 v-if="user.user_id === item1.user_id_from"
                 @click="delComment(item1.comment_id)"
               >删除</span>
+              <span v-if="user.user_id !== item1.user_id_from" @click="reports(item1.comment_id)">举报</span>
               <!-- <span v-else @click="responseComment(item1.user_id_from1)">回复</span> -->
-              <span v-else @click="dialogVisible2 = true,user_id_to = item1.user_id_from,top_id=item1.comment_id">回复</span>
-              
+              <span
+                v-if="user.user_id !== item1.user_id_from"
+                @click="dialogVisible2 = true,user_id_to = item1.user_id_from,top_id=item1.comment_id"
+              >回复</span>
             </div>
           </div>
         </div>
@@ -67,12 +69,18 @@
               <span class="date">{{dateFormat(item2.create_time, 0)}}</span>
               <span class="comm">{{item2.content}}</span>
               <div class="operation">
-                <span @click="reports(item2.comment_id)">举报</span>
                 <span
                   v-if="user.user_id === item2.user_id_from"
                   @click="delComment(item2.comment_id)"
                 >删除</span>
-                <span v-else @click="dialogVisible2 = true,user_id_to = item2.user_id_from,top_id=item2.top_id">回复</span>
+                <span
+                  v-if="user.user_id !== item2.user_id_from"
+                  @click="reports(item2.comment_id)"
+                >举报</span>
+                <span
+                  v-if="user.user_id !== item2.user_id_from"
+                  @click="dialogVisible2 = true,user_id_to = item2.user_id_from,top_id=item2.top_id"
+                >回复</span>
               </div>
             </div>
           </div>
@@ -153,9 +161,8 @@ export default {
       //回复(弹窗)
       dialogVisible2: false,
       resComment: "",
-      user_id_to:'',  //向谁回复
-      top_id:''
-
+      user_id_to: "", //向谁回复
+      top_id: ""
     };
   },
   methods: {
@@ -262,7 +269,7 @@ export default {
       });
     },
     responseComment() {
-      console.log(this.user_id_to)
+      console.log(this.user_id_to);
       //回复评论
       var data = this.qs.stringify({
         any_id: this.$route.query.menu_id,

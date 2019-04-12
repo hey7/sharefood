@@ -10,6 +10,55 @@ var express = require('express'),
 //999：查询成功
 //999：修改成功
 
+//首页食材展示(时令食材【这个月的食材、并且菜谱运用最高的前14个】)
+router.post('/getIngredientIndexShow', async function (req, res) {
+    var now = new Date().getMonth() + 1;
+    try {
+        var result = await Ingredient.getIngredientShow(now)
+
+        res.json({
+            code: 999,
+            data: result,
+            msg: '获得菜谱成功'
+        })
+        return;
+
+    } catch (err) {
+        res.json({
+            code: 900,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
+//查询食材详情
+router.post('/getdetailIngredient', async function (req, res) {
+    var ingredient_id = req.body['ingredient_id']
+
+    try {
+        var ingredient = await Ingredient.getIngredientByIngredientId(ingredient_id)
+        var menus = await Ingredient.getMenuByIngredientId(ingredient_id)
+        res.json({
+            code: 999,
+            data: {
+                ingredient: ingredient,
+                menus: menus
+            },
+            msg: '查询成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 900,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
 ////////////////
 //上传图片
 router.post('/imgUpload', function (req, res) {
@@ -33,7 +82,6 @@ router.post('/imgUpload', function (req, res) {
         })
     });
 });
-
 
 //查询食材（条件查询）
 router.post('/searchIngredientBycondition', async function (req, res) {
@@ -68,7 +116,7 @@ router.post('/searchIngredientBycondition', async function (req, res) {
     }
 });
 
-//查询食材
+//查询食材详情
 router.post('/searchIngredient', async function (req, res) {
     var ingredient_id = req.body['ingredient_id']
 
@@ -112,5 +160,31 @@ router.post('/editIngredient', async function (req, res) {
         })
         return;
     }
+});
+
+
+//删除食材（改状态）
+router.post('/deleteIngredient', async function (req, res) {
+    var ingredient_id = req.body['ingredient_id'],
+        modified_time = util.getNowFormatDate()
+
+    try {
+        result = await Ingredient.deleteIngredientByIngredientId(modified_time, ingredient_id)
+        res.json({
+            code: 999,
+            data: '',
+            msg: '删除食材成功'
+        })
+
+    } catch (err) {
+        res.json({
+            code: 900,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+
+
 });
 module.exports = router;

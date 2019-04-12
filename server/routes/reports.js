@@ -20,6 +20,7 @@ router.post('/addreports', async function (req, res) {
             user_id: user_id,
             any_id: any_id,
             state: state,
+            deal: 0,
             create_time: create_time,
         });
 
@@ -38,7 +39,6 @@ router.post('/addreports', async function (req, res) {
                 msg: '已举报'
             })
         }
-        console.log(result)
 
     } catch (err) {
         res.json({

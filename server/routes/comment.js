@@ -91,7 +91,7 @@ router.post('/delComment', async function (req, res) {
     var comment_id = req.body['comment_id']
 
     try {
-        var result = await Reports.delReports(comment_id)
+        var result = await Reports.delReports(comment_id,0)
         var result = await Comment.deleteComment(comment_id)
 
         res.json({

@@ -73,11 +73,19 @@
         <el-table-column label="创建时间">
           <template slot-scope="scope">{{dateFormat(scope.row.create_time,0)}}</template>
         </el-table-column>
+        <el-table-column label="修改时间">
+          <template slot-scope="scope">{{dateFormat(scope.row.modified_time,0)}}</template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="detail(scope.row.ingredient_id)">详情</el-button>
             <el-button type="text" size="small" @click="edit(scope.row.ingredient_id)">编辑</el-button>
-            <el-button v-if="scope.row.state == 0" type="text" size="small">删除</el-button>
+            <el-button
+              v-if="scope.row.state == 0"
+              type="text"
+              size="small"
+              @click="del(scope.row.ingredient_id)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -87,6 +95,7 @@
     <div class="page">
       <el-pagination
         @current-change="handleCurrentChange"
+        :current-page="mParam.pageNum"
         :page-size="mParam.pageSize"
         layout="total, prev, pager, next, jumper"
         :total="total"
@@ -157,6 +166,18 @@ export default {
         path: "/ingredientSetting/editIngredient",
         query: { ingredient_id: ingredient_id }
       });
+    },
+    del(ingredient_id) {  //删除
+      var data = this.qs.stringify({
+        ingredient_id: ingredient_id
+      });
+      this.axios
+        .post("/api/ingredient/deleteIngredient", data)
+        .then(res => {
+          if (res.data.code == 999) {
+             this.$message.success(res.data.msg);
+          }
+        });
     }
   }
 };

@@ -6,7 +6,6 @@
     <carousel></carousel>
     <c-menu></c-menu>
     <ingredient></ingredient>
-    <community></community>
   </div>
 </template>
 
@@ -16,7 +15,6 @@ import Search from "./comp/search";
 import Carousel from "./comp/carousel";
 import Menu from "./comp/menu";
 import Ingredient from "./comp/ingredient";
-import Community from "./comp/community";
 
 export default {
   components: {
@@ -24,8 +22,7 @@ export default {
     search: Search, //导航
     carousel: Carousel, //轮播图
     "c-menu": Menu, //菜谱
-    ingredient: Ingredient, //食材
-    community: Community //社区
+    ingredient: Ingredient //食材
   }
 };
 </script>

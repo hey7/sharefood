@@ -29,6 +29,10 @@ const router = new Router({
       component: () => import('@/view/menu/detailMenu.vue'),
     },
     {
+      path: '/detailIngredient',  //食材详情
+      component: () => import('@/view/ingredient/detailIngredient.vue'),
+    },
+    {
       path: '/personalCenter',    //个人中心
       component: () => import('@/view/personalCenter/personalCenter.vue'),
       children: [{
