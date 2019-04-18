@@ -13,30 +13,35 @@ const router = new Router({
       component: () => import('@/view/index/index.vue'),
       redirect: '/index',
     }, {
-      path: '/index',   //首页
+      path: '/index', //首页
       component: () => import('@/view/index/index.vue'),
     },
     {
-      path: '/login',   //登录
+      path: '/login', //登录
       component: () => import('@/view/loginRegister/loginRegister.vue'),
     },
     {
-      path: '/register',  //注册
+      path: '/register', //注册
       component: () => import('@/view/loginRegister/loginRegister.vue'),
     },
     {
-      path: '/detailMenu',  //菜谱详情
+      path: '/menuIndex', //菜谱首页
+      component: () => import('@/view/menu/menuIndex.vue'),
+    },
+    {
+      path: '/detailMenu', //菜谱详情
       component: () => import('@/view/menu/detailMenu.vue'),
     },
     {
-      path: '/detailIngredient',  //食材详情
+      path: '/detailIngredient', //食材详情
       component: () => import('@/view/ingredient/detailIngredient.vue'),
     },
+    //个人中心
     {
-      path: '/personalCenter',    //个人中心
+      path: '/personalCenter',
       component: () => import('@/view/personalCenter/personalCenter.vue'),
       children: [{
-        //菜谱
+          //菜谱
           path: '/personalCenter/menu',
           component: () => import('@/view/personalCenter/menu/menu.vue'),
         }, {
@@ -51,16 +56,22 @@ const router = new Router({
           path: '/personalCenter/detailMenu',
           component: () => import('@/view/personalCenter/menu/detailMenu.vue'),
         },
-        
+
         //账户设置
         {
           path: '/personalCenter/mySetting',
           component: () => import('@/view/personalCenter/mySetting.vue'),
         },
+        //我的收藏
+        {
+          path: '/personalCenter/myCollection',
+          component: () => import('@/view/personalCenter/myCollection.vue'),
+        },
         {
           path: '/personalCenter/aa',
           component: () => import('@/view/personalCenter/comp/aa.vue'),
-        } 
+        },
+
       ]
     }
   ],

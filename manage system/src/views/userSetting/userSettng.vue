@@ -56,6 +56,9 @@
         :header-cell-style="{
             'background-color': '#fafafa'
         }"
+        :row-key="getRowKeys"
+        :expand-row-keys="expands"
+        @expand-change="expandSelect"
       >
         <el-table-column type="expand">
           <template slot-scope="props">
@@ -163,6 +166,12 @@ export default {
       mParam: {
         pageSize: 5,
         pageNum: 1
+      },
+
+      //每次只展开一行，数值的元素是row的key值
+      expands: [],
+      getRowKeys(row) {
+        return row.user_id;
       }
     };
   },
@@ -219,6 +228,18 @@ export default {
           this.getUserData();
         }
       });
+    },
+    expandSelect(row, expandedRows) {
+      //每次只展开一行
+      var that = this;
+      if (expandedRows.length) {
+        that.expands = [];
+        if (row) {
+          that.expands.push(row.user_id);
+        }
+      } else {
+        that.expands = [];
+      }
     }
   }
 };

@@ -9,7 +9,7 @@
       >
         <el-menu-item index="1" class="font">时令食材</el-menu-item>
       </el-menu>
-      <div class="right">食材首页</div>
+      <div class="right"></div>
       <div class="show-ingredient">
         <el-row>
           <el-col :span="4" v-for="(item,index) in ingredient" :key="index">

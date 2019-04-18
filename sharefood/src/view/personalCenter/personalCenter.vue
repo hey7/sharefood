@@ -14,7 +14,7 @@
           <el-menu-item index="/personalCenter/menu">
             <span slot="title">菜谱</span>
           </el-menu-item>
-          <el-menu-item index="/personalCenter/aa">
+          <el-menu-item index="/personalCenter/myCollection">
             <span slot="title">收藏</span>
           </el-menu-item>
           <el-menu-item index="/personalCenter/aa">
@@ -76,6 +76,7 @@ export default {
       bottom: 0;
       overflow: auto;
       .view {
+        width: 100%;
         min-width: 1070px;
         position: absolute;
         top: 0;

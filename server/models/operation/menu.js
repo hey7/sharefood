@@ -73,6 +73,30 @@ Menu.getPopularMenu = function getPopularMenu() {
     return mysqlHelper.execute1(sql, params)
 }
 
+//根据种类查询菜谱
+Menu.searchMenuBytype = function searchMenuBytype(type) {
+    let sql = "SELECT mt.menu_id ,mp.path, m.menuname,u.username FROM menu_type mt LEFT JOIN menu m ON mt.menu_id = m.menu_id LEFT JOIN `user` u ON m.user_id = u.user_id LEFT JOIN menu_pic mp ON mt.menu_id = mp.menu_id  where (m.state = 4 OR m.state = 5) AND mp.step = 0 ";
+    let params = []
+    var sql1 = ""
+
+    for (let index = 0; index < type.length; index++) {
+        if (index == 0) {
+            sql = sql + 'AND mt.dictionary_id = ? '
+        } else {
+            sql = sql + 'AND mt.menu_id IN ( SELECT menu_id FROM menu_type WHERE menu_type.dictionary_id = ? '
+            sql1 = sql1 + " ) "
+        }
+        if (index == type.length - 1) {
+            sql = sql + sql1
+        }
+        params.push(type[index])
+    }
+
+    sql = sql + 'GROUP BY mt.menu_id'
+
+    return mysqlHelper.execute1(sql, params)
+}
+
 //根据menu_id查菜谱基本信息
 Menu.getMenuInfoByMenuId = function getMenuInfoByMenuId(menu_id) {
     let sql = "SELECT menu.*, `user`.username FROM menu LEFT JOIN `user` ON menu.user_id = `user`.user_id WHERE menu_id = ?";

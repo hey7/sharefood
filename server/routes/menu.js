@@ -702,6 +702,30 @@ router.post('/getMenuIndexShow', async function (req, res) {
 });
 
 
+//菜谱首页用于种类查找
+router.post('/getAllMenuByType', async function (req, res) {
+    var type = JSON.parse(req.body['type'])
+    try {
+        var result = await Menu.searchMenuBytype(type)
+
+        res.json({
+            code: 999,
+            data: result,
+            msg: '获得菜谱成功'
+        })
+        return;
+
+    } catch (err) {
+        res.json({
+            code: 200,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
+
 /////////////////////////
 //查询菜谱（条件查询）
 router.post('/searchMenuBycondition', async function (req, res) {

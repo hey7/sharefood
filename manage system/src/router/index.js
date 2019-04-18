@@ -64,7 +64,15 @@ const router = new Router({
           path: '/menuSetting/checkMenu',
           component: () => import('@/views/menuSetting/checkMenu.vue'),
         },
-
+        //社区管理
+        {
+          //展示页
+          path: '/communitySetting',
+          component: () => import('@/views/communitySetting/communitySetting.vue'),
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
         //系统设置
         {
           //内容展示页

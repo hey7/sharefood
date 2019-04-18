@@ -18,7 +18,13 @@
             </div>
             <div class="item item1">
               <img src="static/images/loginregister/password.png" alt class="image">
-              <el-input v-model="login.password" placeholder="请输入密码" class="input" type="password" maxlength="20"></el-input>
+              <el-input
+                v-model="login.password"
+                placeholder="请输入密码"
+                class="input"
+                type="password"
+                maxlength="20"
+              ></el-input>
             </div>
             <el-button type="primary" class="button" @click="loginClick">登录</el-button>
           </div>
@@ -57,7 +63,7 @@
 
 <script>
 export default {
-  inject:['reload'],
+  inject: ["reload"],
   data() {
     return {
       //图片随窗口变化自适应
@@ -104,17 +110,26 @@ export default {
       this.activeName = "second";
     }
   },
-
+  sockets: {
+    connect: function() {
+      //与socket.io连接后回调（不能改）
+      console.log("socket connected=", this.$socket.id);
+    }
+    // click2: function(data) {
+    //   //这里是监听connect事件
+    //   console.log("后台的数据" + data);
+    // }
+  },
   methods: {
     //Tabs 标签页 切换，清空错误提示
     handleClick(tab, event) {
-      if(tab.name ===  "first"){
-         this.$router.push("/login");
+      if (tab.name === "first") {
+        this.$router.push("/login");
       }
-      if(tab.name ===  "second"){
-         this.$router.push("/register");
+      if (tab.name === "second") {
+        this.$router.push("/register");
       }
-      this.reload()
+      this.reload();
     },
 
     //登录按钮
@@ -151,6 +166,7 @@ export default {
           //登录成功
           this.$message.success(res.data.msg);
           this.$store.dispatch("setUser", res.data.data); //存入vuex
+          this.$socket.emit("new user", res.data.data.user_id); //socket
           this.$router.push({
             path: this.$route.query.redirect || "/index"
           });
@@ -192,7 +208,7 @@ export default {
           //注册成功，请登录
           this.$message.success(res.data.msg);
           this.$router.push("/login");
-          this.reload()
+          this.reload();
         }
       });
     }

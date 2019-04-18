@@ -4,21 +4,31 @@
       <img src="static/images/index/logo.jpg" alt>
     </div>
     <div class="navigation">
-      <el-row  type="flex" justify="center">
+      <el-row type="flex" justify="center">
         <el-col :span="4">
-          <div><router-link to="/index" tag="li" style="color:#ff6767">首页</router-link></div>
+          <div>
+            <router-link to="/index" tag="li" style="color:#ff6767">首页</router-link>
+          </div>
         </el-col>
         <el-col :span="4">
-          <div><router-link to="/index" tag="li">菜谱</router-link></div>
+          <div>
+            <router-link to="/index" tag="li">菜谱</router-link>
+          </div>
         </el-col>
         <el-col :span="4">
-          <div><router-link to="/index" tag="li">食材</router-link></div>
+          <div>
+            <router-link to="/index" tag="li">食材</router-link>
+          </div>
         </el-col>
-         <el-col :span="4">
-          <div><router-link to="/index" tag="li">社区</router-link></div>
+        <el-col :span="4">
+          <div>
+            <router-link to="/index" tag="li">社区</router-link>
+          </div>
         </el-col>
-         <el-col :span="4">
-          <div><router-link to="/index" tag="li">个人中心</router-link></div>
+        <el-col :span="4">
+          <div>
+            <router-link to="/index" tag="li">个人中心</router-link>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -50,8 +60,8 @@ export default {};
     width: 600px;
     text-align: center;
     active:hover {
-        color: #ff6767;
-      }
+      color: #ff6767;
+    }
     // overflow: hidden;
     li {
       cursor: pointer;

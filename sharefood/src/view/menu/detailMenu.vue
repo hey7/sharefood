@@ -222,6 +222,12 @@ export default {
       });
       this.axios.post("/api/comment/addComment", data).then(res => {
         if (res.data.code == 999) {
+          this.$socket.emit(
+            "new comment",
+            this.user.username,
+            this.user_id,
+            this.comment
+          ); //socket
           this.$message.success(res.data.msg);
           this.dialogVisible1 = false;
           this.comment = "";
@@ -269,7 +275,6 @@ export default {
       });
     },
     responseComment() {
-      console.log(this.user_id_to);
       //回复评论
       var data = this.qs.stringify({
         any_id: this.$route.query.menu_id,
@@ -281,6 +286,12 @@ export default {
       });
       this.axios.post("/api/comment/addComment", data).then(res => {
         if (res.data.code == 999) {
+          this.$socket.emit(
+            "new comment",
+            this.user.username,
+            this.user_id_to,
+            this.resComment
+          ); //socket
           this.$message.success(res.data.msg);
           this.dialogVisible2 = false;
           this.resComment = "";

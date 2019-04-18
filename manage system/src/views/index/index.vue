@@ -36,6 +36,10 @@
             <i class="el-icon-menu"></i>
             <span slot="title">菜谱管理</span>
           </el-menu-item>
+          <el-menu-item index="/communitySetting">
+            <i class="el-icon-menu"></i>
+            <span slot="title">社区管理</span>
+          </el-menu-item>
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-setting"></i>

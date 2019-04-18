@@ -30,6 +30,75 @@ Reports.delReports = function delReports(any_id, state) {
     return mysqlHelper.execute1(sql, params)
 }
 
+//查询评论举报(条件、分页)
+Reports.searchReports = function searchReports(reports, commentState, buser_id, busername, Param) {
+    let sql = "SELECT r.*, c.content, c.state AS commentState, c.user_id_from AS buser_id, u.username AS busername, COUNT(r.any_id) AS reportsCount " +
+        "FROM reports r LEFT JOIN `comment` c ON r.any_id = c.comment_id LEFT JOIN `user` u ON c.user_id_from = u.user_id WHERE r.state = 0 ";
+    let params = []
+
+    if (reports.any_id != null && reports.any_id != '') {
+        sql = sql + 'AND r.any_id = ? '
+        params.push(reports.any_id)
+    }
+    if (reports.deal != null && reports.deal != '') {
+        sql = sql + 'AND deal = ? '
+        params.push(reports.deal)
+    }
+    if (commentState != null && commentState != '') {
+        sql = sql + 'AND c.state = ? '
+        params.push(commentState)
+    }
+    if (buser_id != null && buser_id != '') {
+        sql = sql + 'AND c.user_id_from =? '
+        params.push(buser_id)
+    }
+    if (busername != null && busername != '') {
+        sql = sql + 'AND u.username =? '
+        params.push(busername)
+    }
+    sql = sql + 'GROUP BY r.any_id limit ?, ?'
+
+    params.push((Param.pageNum - 1) * Param.pageSize)
+    params.push(Param.pageSize)
+
+    return mysqlHelper.execute1(sql, params)
+}
+
+//查询评论举报总页数(条件)
+Reports.searchReportsCount = function searchReportsCount(reports, commentState, buser_id, busername) {
+    let sql = "select COUNT(*) AS count from (SELECT COUNT(*) FROM reports r LEFT JOIN `comment` c ON r.any_id = c.comment_id LEFT JOIN `user` u ON c.user_id_from = u.user_id WHERE r.state = 0 ";
+    let params = []
+
+    if (reports.any_id != null && reports.any_id != '') {
+        sql = sql + 'AND r.any_id = ? '
+        params.push(reports.any_id)
+    }
+    if (reports.deal != null && reports.deal != '') {
+        sql = sql + 'AND deal = ? '
+        params.push(reports.deal)
+    }
+    if (commentState != null && commentState != '') {
+        sql = sql + 'AND c.state = ? '
+        params.push(commentState)
+    }
+    if (buser_id != null && buser_id != '') {
+        sql = sql + 'AND c.user_id_from =? '
+        params.push(buser_id)
+    }
+    if (busername != null && busername != '') {
+        sql = sql + 'AND u.username =? '
+        params.push(busername)
+    }
+    sql = sql + 'GROUP BY r.any_id)as tmp'
+    return mysqlHelper.single1(sql, params)
+}
+
+//更改deal
+Reports.updataDeal = function updataDeal(deal, any_id) {
+    var sql = "UPDATE reports SET deal = ? WHERE any_id = ?";
+    let params = [deal, any_id]
+    return mysqlHelper.execute1(sql, params)
+}
 
 
 module.exports = Reports;

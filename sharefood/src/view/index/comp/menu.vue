@@ -49,7 +49,9 @@
         </el-tab-pane>
       </el-tabs>
 
-      <div class="right">菜谱首页</div>
+      <div class="right">
+        <el-button type="text" @click="toMenuIndex">菜谱首页</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -67,6 +69,9 @@ export default {
     };
   },
   methods: {
+    toMenuIndex() {
+      this.$router.push("/menuIndex");
+    },
     handleClick(tab, event) {
       // console.log(tab, event);
     },
@@ -98,12 +103,8 @@ export default {
     .right {
       position: absolute;
       right: 20px;
-      top: 15px;
-      font-size: 16px;
-      &:hover {
-        color: #ff6767;
-        cursor: pointer;
-      }
+      top: 0;
+      font-size: 20px;
     }
     .show-menu {
       width: 1170px;

@@ -34,5 +34,12 @@ Comment.deleteComment = function deleteComment(comment_id) {
     return mysqlHelper.execute1(sql, params)
 }
 
+//更改ban
+Comment.updataBan = function updataBan(ban,comment_id) {
+    var sql = "UPDATE `comment` SET ban = ? WHERE comment_id = ?";
+    let params = [ban,comment_id]
+    return mysqlHelper.execute1(sql, params)
+}
+
 
 module.exports = Comment;

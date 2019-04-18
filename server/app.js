@@ -11,11 +11,13 @@ var app = express();
 
 //跨域
 app.use(cors({
-  origin: ['http://localhost:8080','http://127.0.0.1:8080'],
-  credentials: true,  //允许跨域携带cookie
+  origin: ['http://localhost:8080', 'http://127.0.0.1:8080'],
+  credentials: true, //允许跨域携带cookie
   methods: ['GET', 'POST'], //只允许GET和Post请求
   alloweHeaders: ['Conten-Type', 'Authorization'] //只允许带着两种头的连接访问
 }));
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,14 +48,14 @@ var ingredient = require('./routes/ingredient')
 
 //暴露API接口
 app.use('/user', user);
-app.use('/menu',menu);
-app.use('/dictionary',dictionary);
-app.use('/comment',comment);
-app.use('/collection',collection);
-app.use('/love',love);
-app.use('/reports',reports);
-app.use('/exhibition',exhibition);
-app.use('/ingredient',ingredient);
+app.use('/menu', menu);
+app.use('/dictionary', dictionary);
+app.use('/comment', comment);
+app.use('/collection', collection);
+app.use('/love', love);
+app.use('/reports', reports);
+app.use('/exhibition', exhibition);
+app.use('/ingredient', ingredient);
 
 
 // catch 404 and forward to error handler
