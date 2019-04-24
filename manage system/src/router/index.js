@@ -11,16 +11,11 @@ const router = new Router({
   routes: [{
       path: '/',
       component: () => import('@/views/index/index.vue'),
-      redirect: '/dashbord',
+      redirect: '/userSettng',
     }, {
       path: '/index', //首页
       component: () => import('@/views/index/index.vue'),
       children: [
-        //概览
-        {
-          path: '/dashbord',
-          component: () => import('@/views/dashbord/dashbord.vue'),
-        },
         //用户管理
         {
           path: '/userSettng',

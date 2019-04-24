@@ -118,7 +118,12 @@ router.post('/createMenu', async function (req, res) {
         for (let [index, group] of groups.entries()) {
             for (let ingredient of group.ingredient) {
                 //食材中有没有，没有存，有取，取ingredient_id
-                result = await Ingredient.getIngredientByIngredientName(ingredient.ingredientname)
+                result = await Ingredient.searchIngredient(
+                    new Ingredient({
+                        ingredientname: ingredient.ingredientname
+                    }), '')
+                result = result[0]
+
                 var ingredient_id
 
 
@@ -315,29 +320,31 @@ router.post('/getInfoOfMenu', async function (req, res) {
     try {
         var result
 
-        var love = new Love({
+        result = await Love.getLoveNum(new Love({
             user_id: user_id,
             any_id: menu_id,
-            state: 0,
-        });
-
-        var collection = new Collection({
-            user_id: user_id,
-            any_id: menu_id,
-            state: 0,
-        })
-
-        result = await love.getIsLove()
+            state: "0",
+        }))
         var alreadyLoveShow = (result.num) > 0 ? true : false
 
 
-        result = await collection.getIsCollection()
+        result = await Collection.getCollectionNum(new Collection({
+            user_id: user_id,
+            any_id: menu_id,
+            state: "0",
+        }))
         var alreadyCollectionShow = (result.num) > 0 ? true : false
 
-        result = await love.getLoveNum()
+        result = await Love.getLoveNum(new Love({
+            any_id: menu_id,
+            state: "0",
+        }))
         var loveNum = result.num
 
-        result = await collection.getCollectionNum()
+        result = await Collection.getCollectionNum(new Collection({
+            any_id: menu_id,
+            state: "0",
+        }))
         var collectionNum = result.num
 
         result = await Menu.getMenuInfoByMenuId(menu_id)
@@ -376,9 +383,14 @@ router.post('/deleteMenu', async function (req, res) {
         modified_time = util.getNowFormatDate()
 
     try {
-        var result;
+        var menu = new Menu({
+            menu_id: menu_id,
+            state: "6",
+            modified_time: modified_time,
+        });
 
-        result = await Menu.updateState(6, modified_time, menu_id)
+        var result = await menu.update()
+
         res.json({
             code: 999,
             data: '',
@@ -614,7 +626,12 @@ router.post('/editMenu', async function (req, res) {
         for (let [index, group] of groups.entries()) {
             for (let ingredient of group.ingredient) {
                 //食材中有没有，没有存，有取，取ingredient_id
-                result = await Ingredient.getIngredientByIngredientName(ingredient.ingredientname)
+                result = await Ingredient.searchIngredient(
+                    new Ingredient({
+                        ingredientname: ingredient.ingredientname
+                    }), '')
+                result = result[0]
+
                 var ingredient_id
 
                 if (!result) { //食材中没有，存
@@ -726,6 +743,29 @@ router.post('/getAllMenuByType', async function (req, res) {
 });
 
 
+//查询已审核完的自己的菜谱
+router.post('/searchMenuBychecked', async function (req, res) {
+    var user_id = JSON.parse(req.cookies.user).user_id
+
+    try {
+        var result = await Menu.searchMenuBychecked(user_id)
+
+        res.json({
+            code: 999,
+            data: result,
+            msg: '获得菜谱成功'
+        })
+        return;
+
+    } catch (err) {
+        res.json({
+            code: 200,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
 /////////////////////////
 //查询菜谱（条件查询）
 router.post('/searchMenuBycondition', async function (req, res) {
@@ -893,11 +933,19 @@ router.post('/searchMenu', async function (req, res) {
 router.post('/checkMenu', async function (req, res) {
     var menu_id = req.body['menu_id'],
         state = req.body['state'],
-        tags = JSON.parse(req.body['tags']),
-        modified_time = util.getNowFormatDate()
+        modified_time = util.getNowFormatDate(),
+
+        tags = JSON.parse(req.body['tags'])
+
 
     try {
-        var result = await Menu.updateState(state, modified_time, menu_id)
+        var menu = new Menu({
+            menu_id: menu_id,
+            state: state,
+            modified_time: modified_time,
+        });
+
+        var result = await menu.update()
 
         if (tags) { //通过了(添加菜谱分类)
             for (let tag of tags) { //保存分类

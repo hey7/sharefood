@@ -56,6 +56,28 @@ const router = new Router({
           path: '/personalCenter/detailMenu',
           component: () => import('@/view/personalCenter/menu/detailMenu.vue'),
         },
+        //私信
+        {
+          path: '/personalCenter/myPrivateLetter',
+          component: () => import('../view/personalCenter/myPrivateLetter'),
+        },
+        //通知
+        {
+          path: '/personalCenter/myNotice',
+          component: () => import('../view/personalCenter/myNotice/myNotice')
+        },
+
+        //审核
+        {
+          path: '/personalCenter/myNotice/checked',
+          component: () => import('../view/personalCenter/myNotice/checked')
+        },
+        //举报
+        {
+          path: '/personalCenter/myNotice/reports',
+          component: () => import('../view/personalCenter/myNotice/reports'),
+        },
+
 
         //账户设置
         {
@@ -92,7 +114,14 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       Message.warning('请先登录');
-      next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
+      var url = ''
+      if (JSON.stringify(to.query) !== '{}') {
+        url = url + "?"
+        for (var i in to.query) {
+          url = url + i + "=" + to.query[i] + "&"
+        }
+      }
+      next(`/login?redirect=${to.path}` + url) // 否则全部重定向到登录页
     }
   }
 })

@@ -20,10 +20,6 @@
           :collapse-transition="false"
           router
         >
-          <el-menu-item index="/dashbord">
-            <i class="el-icon-menu"></i>
-            <span slot="title">概览</span>
-          </el-menu-item>
           <el-menu-item index="/userSettng">
             <i class="el-icon-menu"></i>
             <span slot="title">用户管理</span>
@@ -99,6 +95,8 @@ export default {
     z-index: 1000;
     text-align: center;
     line-height: 100px;
+    cursor: pointer;
+    background: #ccc;
   }
   .operation1 {
     left: 64px;

@@ -41,7 +41,10 @@ router.post('/getAlldictionaryByName', async function (req, res) {
 //查询所有顶级分类
 router.post('/getAllTopDictionary', async function (req, res) {
     try {
-        var result = await Dictionary.getTopDictionary()
+        var result = await Dictionary.searchDictionary(new Dictionary({
+            top_id: "0"
+        }), '')
+
         res.json({
             code: 999,
             data: result,
@@ -63,7 +66,9 @@ router.post('/getAllTopDictionary', async function (req, res) {
 router.post('/getChildsByDictionaryid', async function (req, res) {
     var upper_id = req.body['upper_id']
     try {
-        var result = await Dictionary.getDictionaryByUpperid(upper_id)
+        var result = await Dictionary.searchDictionary(new Dictionary({
+            upper_id: upper_id
+        }), '')
 
         for (var i in result) {
             if (result[i].isLeaf == 0) {
@@ -110,7 +115,10 @@ router.post('/addDictionary', async function (req, res) {
     try {
         var result
         if (state == 0) {
-            result = await Dictionary.getDictionaryByDictionaryid(upper_id)
+            result = await Dictionary.searchDictionary(new Dictionary({
+                dictionary_id: upper_id
+            }), '')
+            result = result[0]
             if (result.state == 1) {
                 res.json({
                     code: 302,
@@ -121,7 +129,13 @@ router.post('/addDictionary', async function (req, res) {
             }
         }
         result = await dictionary.save()
-        result = await Dictionary.updateisLeaf(0, upper_id)
+
+        var dictionary1 = new Dictionary({
+            dictionary_id: upper_id,
+            isLeaf: "0",
+            modified_time: modified_time
+        });
+        result = await dictionary1.updateDictionary()
 
         res.json({
             code: 999,
@@ -147,20 +161,38 @@ router.post('/updateDictionaryState', async function (req, res) {
         upper_id = req.body['upper_id'],
         modified_time = util.getNowFormatDate();
 
+    var dictionary = new Dictionary({
+        dictionary_id: dictionary_id,
+        state: state,
+        modified_time: modified_time
+    });
     try {
         var result
+        var dictionary1
+
         if (state == 1) { //改为禁用（下面全禁）
-            result = await Dictionary.updateState(state, modified_time, dictionary_id)
-            result = await Dictionary.getDictionaryByUpperid(dictionary_id)
+            result = await dictionary.updateDictionary()
+            result = await Dictionary.searchDictionary(new Dictionary({
+                upper_id: dictionary_id
+            }), '')
             if (result.length !== 0) {
                 for (var i in result) {
-                    await Dictionary.updateState(state, modified_time, result[i].dictionary_id)
+                    dictionary1 = new Dictionary({
+                        dictionary_id: result[i].dictionary_id,
+                        state: state,
+                        modified_time: modified_time
+                    });
+
+                    await dictionary1.updateDictionary()
                 }
             }
         } else { //改为启用(上级是启用的，才能启用)
-            result = await Dictionary.getDictionaryByDictionaryid(upper_id)
+            result = await Dictionary.searchDictionary(new Dictionary({
+                dictionary_id: upper_id
+            }), '')
+            result = result[0]
             if (result.state == 0) {
-                result = await Dictionary.updateState(state, modified_time, dictionary_id)
+                result = await dictionary.updateDictionary()
             } else {
                 res.json({
                     code: 301,
@@ -195,8 +227,14 @@ router.post('/updateDictionaryName', async function (req, res) {
         name = req.body['name'],
         modified_time = util.getNowFormatDate();
 
+    var dictionary = new Dictionary({
+        dictionary_id: dictionary_id,
+        name: name,
+        modified_time: modified_time
+    });
+
     try {
-        var result = Dictionary.updateName(name, modified_time, dictionary_id)
+        var result = await dictionary.updateDictionary()
 
         res.json({
             code: 999,
@@ -230,8 +268,10 @@ router.post('/getChildsByDictionaryName', async function (req, res) {
             }
             if (i.isLeaf == 0) {
                 a.children = []
-                var thirdResult = await Dictionary.getDictionaryByUpperid(i.dictionary_id)
-                for(var j of thirdResult){
+                var thirdResult = await Dictionary.searchDictionary(new Dictionary({
+                    upper_id: i.dictionary_id
+                }), '')
+                for (var j of thirdResult) {
                     a.children.push({
                         value: j.dictionary_id,
                         label: j.name,

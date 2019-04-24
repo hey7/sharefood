@@ -8,19 +8,25 @@ function Collection(collection) {
     this.create_time = collection.create_time;
 };
 
-//该用户是否收藏过某
-Collection.prototype.getIsCollection = function getIsCollection() {
-    let sql = "SELECT COUNT(1) AS num FROM collection WHERE user_id=? AND any_id =? AND state =?"
-    let params = [this.user_id, this.any_id, this.state]
+//查询收藏数
+Collection.getCollectionNum = function getCollectionNum(collection) {
+    let sql = "SELECT COUNT(1) AS num FROM collection WHERE 1=1 ";
+    let params = []
+    if (collection.user_id != null && collection.user_id != '') {
+        sql = sql + 'AND user_id=? '
+        params.push(collection.user_id)
+    }
+    if (collection.any_id != null && collection.any_id != '') {
+        sql = sql + 'AND any_id=? '
+        params.push(collection.any_id)
+    }
+    if (collection.state != null && collection.state != '') {
+        sql = sql + 'AND state=? '
+        params.push(collection.state)
+    }
     return mysqlHelper.single1(sql, params)
 }
 
-//某总共收藏数
-Collection.prototype.getCollectionNum = function getCollectionNum() {
-    let sql = "SELECT COUNT(1) AS num FROM collection WHERE any_id =? AND state =?"
-    let params = [this.any_id, this.state]
-    return mysqlHelper.single1(sql, params)
-}
 
 //增加收藏
 Collection.prototype.addCollection = function addCollection() {
@@ -28,7 +34,6 @@ Collection.prototype.addCollection = function addCollection() {
     let params = [this.user_id, this.any_id, this.state, this.create_time]
     return mysqlHelper.execute1(sql, params)
 }
-
 
 //查找该用户收藏（菜谱的）
 Collection.searchMenuCollection = function searchMenuCollection(user_id, menuname) {
@@ -38,10 +43,11 @@ Collection.searchMenuCollection = function searchMenuCollection(user_id, menunam
     let params = [user_id]
     if (menuname != null && menuname != '') {
         sql = sql + "AND m.menuname like ? "
-        params.push( "%"+menuname+"%")
+        params.push("%" + menuname + "%")
     }
     sql = sql + 'ORDER BY c.create_time DESC'
 
     return mysqlHelper.execute1(sql, params)
 }
+
 module.exports = Collection;

@@ -8,17 +8,22 @@ function Love(love) {
     this.create_time = love.create_time;
 };
 
-//该用户是否点赞过某
-Love.prototype.getIsLove = function getIsLove() {
-    let sql = "SELECT COUNT(1) AS num FROM love WHERE user_id=? AND any_id =? AND state =?"
-    let params = [this.user_id, this.any_id, this.state]
-    return mysqlHelper.single1(sql, params)
-}
-
-//某总共收藏数
-Love.prototype.getLoveNum = function getLoveNum() {
-    let sql = "SELECT COUNT(1) AS num FROM love WHERE any_id =? AND state =?"
-    let params = [this.any_id, this.state]
+//某总共点赞数
+Love.getLoveNum = function getLoveNum(love) {
+    let sql = "SELECT COUNT(1) AS num FROM love WHERE 1=1 "
+    let params = []
+    if (love.user_id != null && love.user_id != '') {
+        sql = sql + 'AND user_id=? '
+        params.push(love.user_id)
+    }
+    if (love.any_id != null && love.any_id != '') {
+        sql = sql + 'AND any_id=? '
+        params.push(love.any_id)
+    }
+    if (love.state != null && love.state != '') {
+        sql = sql + 'AND state=? '
+        params.push(love.state)
+    }
     return mysqlHelper.single1(sql, params)
 }
 

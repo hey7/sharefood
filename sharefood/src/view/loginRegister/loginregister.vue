@@ -110,16 +110,6 @@ export default {
       this.activeName = "second";
     }
   },
-  sockets: {
-    connect: function() {
-      //与socket.io连接后回调（不能改）
-      console.log("socket connected=", this.$socket.id);
-    }
-    // click2: function(data) {
-    //   //这里是监听connect事件
-    //   console.log("后台的数据" + data);
-    // }
-  },
   methods: {
     //Tabs 标签页 切换，清空错误提示
     handleClick(tab, event) {
@@ -147,7 +137,8 @@ export default {
       //登录
       var data = this.qs.stringify({
         username: this.login.username,
-        password: this.login.password
+        password: this.login.password,
+        state: 0
       });
       this.axios.post("/api/user/login", data).then(res => {
         if (res.data.code == 103) {
@@ -160,6 +151,10 @@ export default {
         }
         if (res.data.code == 106) {
           //用户名或密码有误
+          this.$message.error(res.data.msg);
+        }
+         if (res.data.code == 107) {
+          //此账号已在别处登录
           this.$message.error(res.data.msg);
         }
         if (res.data.code == 999) {

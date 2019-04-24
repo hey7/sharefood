@@ -20,15 +20,33 @@ Menu.prototype.save = function save() {
 }
 //修改菜谱
 Menu.prototype.update = function update() {
-    var sql = "UPDATE menu SET menuname = ?,iscreate = ?,trick = ?,descript = ?,state = ?,modified_time = ? WHERE menu_id = ?";
-    let params = [this.menuname, this.iscreate, this.trick, this.descript, this.state, this.modified_time, this.menu_id]
-    return mysqlHelper.execute1(sql, params)
-}
+    let sql = "UPDATE menu SET modified_time = ? ";
+    let params = []
+    params.push(this.modified_time)
 
-//修改菜谱状态
-Menu.updateState = function updateState(state, modified_time, menu_id) {
-    var sql = "UPDATE menu SET state = ?,modified_time = ? WHERE menu_id = ?";
-    let params = [state, modified_time, menu_id]
+    if (this.menuname != null && this.menuname != '') {
+        sql = sql + ', menuname = ? '
+        params.push(this.menuname)
+    }
+    if (this.iscreate != null && this.iscreate != '') {
+        sql = sql + ', iscreate = ? '
+        params.push(this.iscreate)
+    }
+    if (this.trick != null && this.trick != '') {
+        sql = sql + ', trick = ? '
+        params.push(this.trick)
+    }
+    if (this.descript != null && this.descript != '') {
+        sql = sql + ', descript = ? '
+        params.push(this.descript)
+    }
+    if (this.state != null && this.state != '') {
+        sql = sql + ', state = ? '
+        params.push(this.state)
+    }
+    sql = sql + 'WHERE menu_id = ?'
+    params.push(this.menu_id)
+
     return mysqlHelper.execute1(sql, params)
 }
 
@@ -179,8 +197,26 @@ Menu.searchMenuCount = function searchMenuCount(menu, username) {
 }
 
 
+//查询本人未读菜谱数(状态为2和4)
+Menu.searchMenuNum = function searchMenuNum(user_id) {
+    var sql = "SELECT COUNT(*) AS count FROM menu WHERE user_id = ? AND (state = 2 OR state = 4)";
+    let params = [user_id]
+    return mysqlHelper.single1(sql, params)
+}
 
+//更改状态（改为已读）
+Menu.updataStatebychecked = function updataStatebychecked(state,modified_time,user_id,state1) {
+    var sql = "UPDATE menu SET state = ?,modified_time = ? WHERE user_id = ? AND state = ?";
+    let params = [state,modified_time,user_id,state1]
+    return mysqlHelper.execute1(sql, params)
+}
 
+//查询已审核完的自己的菜谱
+Menu.searchMenuBychecked = function searchMenuBychecked(user_id) {
+    var sql = " SELECT m.*, mp.path FROM menu m LEFT JOIN menu_pic mp ON m.menu_id = mp.menu_id WHERE m.user_id = ? AND (m.state=2 OR m.state=3 OR m.state=4 OR m.state=5) AND mp.step = 0 ORDER BY m.modified_time DESC";
+    let params = [user_id]
+    return mysqlHelper.execute1(sql, params)
+}
 // //保存菜谱
 // Menu.prototype.save = function save(callback) {
 //     var sql = "INSERT INTO menu(menu_id,user_id,menuname,iscreate,love,trick,descript,state,collection,weekcollection,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?,?,?)";

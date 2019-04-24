@@ -38,7 +38,12 @@ router.post('/getdetailIngredient', async function (req, res) {
     var ingredient_id = req.body['ingredient_id']
 
     try {
-        var ingredient = await Ingredient.getIngredientByIngredientId(ingredient_id)
+        result = await Ingredient.searchIngredient(
+            new Ingredient({
+                ingredient_id: ingredient_id
+            }), '')
+        var ingredient = result[0]
+
         var menus = await Ingredient.getMenuByIngredientId(ingredient_id)
         res.json({
             code: 999,
@@ -121,7 +126,12 @@ router.post('/searchIngredient', async function (req, res) {
     var ingredient_id = req.body['ingredient_id']
 
     try {
-        var result = await Ingredient.getIngredientByIngredientId(ingredient_id)
+        result = await Ingredient.searchIngredient(
+            new Ingredient({
+                ingredient_id: ingredient_id
+            }), '')
+        var result = result[0]
+       
         res.json({
             code: 999,
             data: result,
@@ -166,10 +176,16 @@ router.post('/editIngredient', async function (req, res) {
 //删除食材（改状态）
 router.post('/deleteIngredient', async function (req, res) {
     var ingredient_id = req.body['ingredient_id'],
-        modified_time = util.getNowFormatDate()
-
+        modified_time = util.getNowFormatDate(),
+        state = "2"
     try {
-        result = await Ingredient.deleteIngredientByIngredientId(modified_time, ingredient_id)
+        var ingredient = new Ingredient({
+            ingredient_id: ingredient_id,
+            modified_time: modified_time,
+            state: state
+        })
+
+        var result = await ingredient.update()
         res.json({
             code: 999,
             data: '',

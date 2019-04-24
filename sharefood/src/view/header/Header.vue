@@ -59,6 +59,7 @@ export default {
   methods: {
     logout() {
       //退出
+      this.$socket.emit("del user", this.user.user_id); //socket
       this.$store.dispatch("setUser", ""); //存入vuex
       this.$router.push("/index");
     }

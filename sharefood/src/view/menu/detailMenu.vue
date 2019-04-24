@@ -39,8 +39,15 @@
         <div class="mainComment">
           <img :src="'/api' + item1.photo" alt>
           <div class="text">
-            <span class="user" v-if="item1.user_id_from ==user_id">作者</span>
-            <span class="user" v-else>{{item1.user_id_from1}}</span>
+            <span class="user" v-if="item1.user_id_from ==user.user_id">我</span>
+            <span
+              class="user"
+              v-if="item1.user_id_from ==user_id&&item1.user_id_from !=user.user_id"
+            >作者</span>
+            <span
+              class="user"
+              v-if="item1.user_id_from !=user_id&&item1.user_id_from !=user.user_id"
+            >{{item1.user_id_from1}}</span>
             <span class="date">{{dateFormat(item1.create_time, 0)}}</span>
             <span class="comm">{{item1.content}}</span>
             <div class="operation">
@@ -61,11 +68,25 @@
         <div v-if="item1.children.length!=0">
           <div class="mainComment" v-for="(item2, index2) in item1.children" :key="'2-'+index2">
             <div class="text">
-              <span class="user" v-if="item2.user_id_from ==user_id">作者</span>
-              <span class="user" v-else>{{item2.user_id_from1}}</span>
+              <span class="user" v-if="item2.user_id_from ==user.user_id">我</span>
+              <span
+                class="user"
+                v-if="item2.user_id_from ==user_id&&item2.user_id_from !=user.user_id"
+              >作者</span>
+              <span
+                class="user"
+                v-if="item2.user_id_from !=user_id&&item2.user_id_from !=user.user_id"
+              >{{item2.user_id_from1}}</span>
               <span class="huifu">回复</span>
-              <span class="user" v-if="item2.user_id_to ==user_id">作者</span>
-              <span class="user" v-else>{{item2.user_id_to1}}</span>
+              <span class="user" v-if="item2.user_id_to ==user.user_id">我</span>
+              <span
+                class="user"
+                v-if="item2.user_id_to ==user_id&&item2.user_id_to !=user.user_id"
+              >作者</span>
+              <span
+                class="user"
+                v-if="item2.user_id_to !=user_id&&item2.user_id_to !=user.user_id"
+              >{{item2.user_id_to1}}</span>
               <span class="date">{{dateFormat(item2.create_time, 0)}}</span>
               <span class="comm">{{item2.content}}</span>
               <div class="operation">

@@ -11,37 +11,37 @@ function Dictionary(dictionary) {
     this.modified_time = dictionary.modified_time;
 };
 
+//查询字典(条件、分页)
+Dictionary.searchDictionary = function searchDictionary(dictionary, Param) {
+    let sql = "SELECT * FROM dictionary WHERE 1=1 ";
+    let params = []
+
+    if (dictionary.dictionary_id != null && dictionary.dictionary_id != '') {
+        sql = sql + 'AND dictionary_id=? '
+        params.push(dictionary.dictionary_id)
+    }
+    if (dictionary.top_id != null && dictionary.top_id != '') {
+        sql = sql + 'AND top_id=? '
+        params.push(dictionary.top_id)
+    }
+    if (dictionary.upper_id != null && dictionary.upper_id != '') {
+        sql = sql + 'AND upper_id=? '
+        params.push(dictionary.upper_id)
+    }
+
+    if (Param != null && Param != '') {
+        sql = sql + 'limit ?, ?'
+        params.push((Param.pageNum - 1) * Param.pageSize)
+        params.push(Param.pageSize)
+    }
+    return mysqlHelper.execute1(sql, params)
+}
+
 //根据name查询Dictionary
 Dictionary.getDictionaryByName = function getDictionaryByName(name) {
     let sql = "SELECT * FROM dictionary WHERE upper_id IN ( SELECT dictionary_id FROM dictionary WHERE name = ? )"
     let params = [name]
     return mysqlHelper.execute1(sql, params)
-}
-
-//查询所有顶级分类
-Dictionary.getTopDictionary = function getTopDictionary() {
-    let sql = "SELECT * FROM dictionary WHERE top_id=0"
-    let params = []
-    return mysqlHelper.execute1(sql, params)
-}
-
-//根据topid查询Dictionary
-Dictionary.getDictionaryByTopid = function getDictionaryByTopid(top_id) {
-    let sql = "SELECT * FROM dictionary WHERE top_id = ?"
-    let params = [top_id]
-    return mysqlHelper.execute1(sql, params)
-}
-//根据upperid查询Dictionary
-Dictionary.getDictionaryByUpperid = function getDictionaryByUpperid(upper_id) {
-    let sql = "SELECT * FROM dictionary WHERE upper_id = ?"
-    let params = [upper_id]
-    return mysqlHelper.execute1(sql, params)
-}
-//根据dictionary_id查询Dictionary
-Dictionary.getDictionaryByDictionaryid = function getDictionaryByDictionaryid(dictionary_id) {
-    let sql = "SELECT * FROM dictionary WHERE dictionary_id = ?"
-    let params = [dictionary_id]
-    return mysqlHelper.single1(sql, params)
 }
 
 //保存Dictionary
@@ -51,22 +51,28 @@ Dictionary.prototype.save = function save() {
     return mysqlHelper.execute1(sql, params)
 }
 
-//更改DictionaryState
-Dictionary.updateState = function updateState(state, modified_time, dictionary_id) {
-    var sql = "UPDATE dictionary SET state = ?,modified_time = ? WHERE dictionary_id = ?";
-    let params = [state, modified_time, dictionary_id]
+//更改Dictionary
+Dictionary.prototype.updateDictionary = function updateDictionary() {
+    let sql = "UPDATE dictionary SET modified_time = ? ";
+    let params = []
+    params.push(this.modified_time)
+    if (this.state != null && this.state != '') {
+        sql = sql + ', state = ? '
+        params.push(this.state)
+    }
+    if (this.isLeaf != null && this.isLeaf != '') {
+        sql = sql + ', isLeaf = ? '
+        params.push(this.isLeaf)
+    }
+    if (this.name != null && this.name != '') {
+        sql = sql + ', name = ? '
+        params.push(this.name)
+    }
+
+    sql = sql + 'WHERE dictionary_id = ?'
+    params.push(this.dictionary_id)
+
     return mysqlHelper.execute1(sql, params)
 }
-//更改DictionaryisLeaf
-Dictionary.updateisLeaf = function updateisLeaf(isLeaf, dictionary_id) {
-    var sql = "UPDATE dictionary SET isLeaf = ? WHERE dictionary_id = ?";
-    let params = [isLeaf, dictionary_id]
-    return mysqlHelper.execute1(sql, params)
-}
-//更改DictionaryName
-Dictionary.updateName = function updateName(name, modified_time, dictionary_id) {
-    var sql = "UPDATE dictionary SET name = ?,modified_time = ? WHERE dictionary_id = ?";
-    let params = [name, modified_time, dictionary_id]
-    return mysqlHelper.execute1(sql, params)
-}
+
 module.exports = Dictionary;

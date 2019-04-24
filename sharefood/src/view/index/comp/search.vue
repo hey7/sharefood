@@ -4,7 +4,7 @@
       <img src="static/images/index/logo.jpg" alt>
     </div>
     <div class="navigation">
-      <el-row type="flex" justify="center">
+      <!-- <el-row type="flex" justify="center">
         <el-col :span="4">
           <div>
             <router-link to="/index" tag="li" style="color:#ff6767">首页</router-link>
@@ -30,7 +30,7 @@
             <router-link to="/index" tag="li">个人中心</router-link>
           </div>
         </el-col>
-      </el-row>
+      </el-row> -->
     </div>
   </div>
 </template>

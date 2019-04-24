@@ -15,20 +15,6 @@ function Ingredient(ingredient) {
     this.modified_time = ingredient.modified_time;
 };
 
-//根据IngredientName查询Ingredient
-Ingredient.getIngredientByIngredientName = function getIngredientByIngredientName(ingredientname) {
-    let sql = "SELECT * FROM ingredient WHERE ingredientname = ?";
-    let params = [ingredientname]
-    return mysqlHelper.single1(sql, params)
-}
-
-//根据IngredientId查询Ingredient
-Ingredient.getIngredientByIngredientId = function getIngredientByIngredientId(ingredient_id) {
-    let sql = "SELECT * FROM ingredient WHERE ingredient_id = ?";
-    let params = [ingredient_id]
-    return mysqlHelper.single1(sql, params)
-}
-
 //保存食材
 Ingredient.prototype.save = function save() {
     var sql = "INSERT INTO ingredient(ingredient_id,ingredientname,state,introduction,nutrition,effect,apply,taboo,path,season,create_time,modified_time) VALUES(0,?,?,?,?,?,?,?,?,?,?,?)";
@@ -54,10 +40,11 @@ Ingredient.searchIngredient = function searchIngredient(ingredient, Param) {
     } else {
         sql = sql + 'AND (state = 0 OR state = 1)'
     }
-    sql = sql + 'limit ?, ?'
-
-    params.push((Param.pageNum - 1) * Param.pageSize)
-    params.push(Param.pageSize)
+    if (Param != null && Param != '') {
+        sql = sql + 'limit ?, ?'
+        params.push((Param.pageNum - 1) * Param.pageSize)
+        params.push(Param.pageSize)
+    }
     return mysqlHelper.execute1(sql, params)
 }
 
@@ -84,15 +71,48 @@ Ingredient.searchIngredientCount = function searchIngredientCount(ingredient) {
 
 //修改菜谱
 Ingredient.prototype.update = function update() {
-    var sql = "UPDATE ingredient SET ingredientname = ?,state = ?,introduction = ?,nutrition = ?,effect = ?,apply = ? ,taboo = ? ,path = ? ,season = ?, modified_time = ? WHERE ingredient_id = ?";
-    let params = [this.ingredientname, this.state, this.introduction, this.nutrition, this.effect, this.apply, this.taboo, this.path, this.season, this.modified_time, this.ingredient_id]
-    return mysqlHelper.execute1(sql, params)
-}
+    let sql = "UPDATE ingredient SET modified_time = ? ";
+    let params = []
+    params.push(this.modified_time)
+    if (this.ingredientname != null && this.ingredientname != '') {
+        sql = sql + ', ingredientname = ? '
+        params.push(this.ingredientname)
+    }
+    if (this.state != null && this.state != '') {
+        sql = sql + ', state = ? '
+        params.push(this.state)
+    }
+    if (this.introduction != null && this.introduction != '') {
+        sql = sql + ', introduction = ? '
+        params.push(this.introduction)
+    }
+    if (this.nutrition != null && this.nutrition != '') {
+        sql = sql + ', nutrition = ? '
+        params.push(this.nutrition)
+    }
+    if (this.effect != null && this.effect != '') {
+        sql = sql + ', effect = ? '
+        params.push(this.effect)
+    }
+    if (this.apply != null && this.apply != '') {
+        sql = sql + ', apply = ? '
+        params.push(this.apply)
+    }
+    if (this.taboo != null && this.taboo != '') {
+        sql = sql + ', taboo = ? '
+        params.push(this.taboo)
+    }
+    if (this.path != null && this.path != '') {
+        sql = sql + ', path = ? '
+        params.push(this.path)
+    }
+    if (this.season != null && this.season != '') {
+        sql = sql + ', season = ? '
+        params.push(this.season)
+    }
+    sql = sql + 'WHERE ingredient_id = ?'
+    params.push(this.ingredient_id)
 
-//修改状态
-Ingredient.deleteIngredientByIngredientId = function deleteIngredientByIngredientId(modified_time,ingredient_id) {
-    var sql = "UPDATE ingredient SET state = 2 ,modified_time = ? WHERE ingredient_id = ?";
-    let params = [modified_time,ingredient_id]
     return mysqlHelper.execute1(sql, params)
 }
 

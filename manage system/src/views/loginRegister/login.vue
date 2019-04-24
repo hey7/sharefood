@@ -47,7 +47,8 @@ export default {
       this.loading = true; // loading打开
       var data = this.qs.stringify({
         username: this.login.username,
-        password: this.login.password
+        password: this.login.password,
+        state: 1
       });
       this.axios.post("/api/user/login", data).then(res => {
         this.loading = false; // loading关闭
