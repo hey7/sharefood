@@ -14,6 +14,7 @@ const router = new Router({
       redirect: '/userSettng',
     }, {
       path: '/index', //首页
+      redirect: '/userSettng',
       component: () => import('@/views/index/index.vue'),
       children: [
         //用户管理

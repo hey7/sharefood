@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="descript">
+    <div class="descript" v-if="descript.split(' ').join('').length !== 0">
       <span class="yin">“</span>
       <span class="content">{{descript}}</span>
       <span class="yin">”</span>
@@ -39,7 +39,7 @@
           <div class="item">
             <div
               class="ingredientnameLink"
-              v-if="ingredientLinkShow"
+              v-if="ingredientLinkShow&&item2.state=='1'"
               @click="detailIngredient(item2.ingredient_id)"
             >{{item2.ingredientname}}</div>
             <div class="ingredientname" v-else>{{item2.ingredientname}}</div>

@@ -32,7 +32,7 @@ Comment.search = function search(state, any_id) {
 Comment.searchToMy = function searchToMy(state, user_id_to) {
     var sql = "SELECT c.*, u1.username AS user_id1, u2.username AS user_id_from1, u2.photo, m.menuname FROM `comment` c " +
         "LEFT JOIN `user` u1 ON u1.user_id = c.user_id LEFT JOIN `user` u2 ON u2.user_id = c.user_id_from LEFT JOIN  menu m ON m.menu_id = c.any_id " +
-        "WHERE (c.ban = 0 OR c.ban = 1) AND c.state = ? AND c.user_id_to = ? ORDER BY create_time";
+        "WHERE (c.ban = 0 OR c.ban = 1) AND c.state = ? AND c.user_id_to = ? ORDER BY create_time DESC";
     let params = [state, user_id_to]
     return mysqlHelper.execute1(sql, params)
 }

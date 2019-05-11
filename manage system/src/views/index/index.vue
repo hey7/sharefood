@@ -21,19 +21,19 @@
           router
         >
           <el-menu-item index="/userSettng">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-user-solid"></i>
             <span slot="title">用户管理</span>
           </el-menu-item>
-          <el-menu-item index="/ingredientSetting">
-            <i class="el-icon-menu"></i>
-            <span slot="title">食材管理</span>
-          </el-menu-item>
           <el-menu-item index="/menuSetting">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-notebook-1"></i>
             <span slot="title">菜谱管理</span>
           </el-menu-item>
+          <el-menu-item index="/ingredientSetting">
+            <i class="el-icon-cherry"></i>
+            <span slot="title">食材管理</span>
+          </el-menu-item>
           <el-menu-item index="/communitySetting">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-s-comment"></i>
             <span slot="title">社区管理</span>
           </el-menu-item>
           <el-submenu index="1">
@@ -96,7 +96,6 @@ export default {
     text-align: center;
     line-height: 100px;
     cursor: pointer;
-    background: #ccc;
   }
   .operation1 {
     left: 64px;

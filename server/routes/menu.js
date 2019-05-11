@@ -247,7 +247,8 @@ router.post('/getdetailMenu', async function (req, res) {
                     data.groups[row.groupname].push({
                         ingredient_id: row.ingredient_id,
                         ingredientname: row.ingredientname,
-                        amount: row.amount
+                        amount: row.amount,
+                        state: row.state
                     })
                 } else {
                     var aar = [];
@@ -255,7 +256,8 @@ router.post('/getdetailMenu', async function (req, res) {
                     aar.push({
                         ingredient_id: row.ingredient_id,
                         ingredientname: row.ingredientname,
-                        amount: row.amount
+                        amount: row.amount,
+                        state: row.state
                     })
                     data.groups[row.groupname] = aar
                 }
@@ -263,7 +265,8 @@ router.post('/getdetailMenu', async function (req, res) {
                 data.groups[row.groupname] = [{
                     ingredient_id: row.ingredient_id,
                     ingredientname: row.ingredientname,
-                    amount: row.amount
+                    amount: row.amount,
+                    state: row.state
                 }]
             }
         }

@@ -52,7 +52,7 @@ Menu.prototype.update = function update() {
 
 //根据Userid查菜谱(第一张成品图和menu)
 Menu.getMenuByUserId = function getMenuByUserId(user_id) {
-    let sql = "SELECT menu.*,menu_pic.path,(select count(*) from collection c where c.any_id = menu.menu_id AND c.state = 0) AS collection,(select count(*) from love l where l.any_id = menu.menu_id AND l.state = 0) AS love FROM menu LEFT JOIN menu_pic ON menu.menu_id = menu_pic.menu_id where menu.user_id = ? AND menu_pic.step = 0 ORDER BY modified_time DESC";
+    let sql = "SELECT menu.*,menu_pic.path,(select count(*) from collection c where c.any_id = menu.menu_id AND c.state = 0) AS collection,(select count(*) from love l where l.any_id = menu.menu_id AND l.state = 0) AS love FROM menu LEFT JOIN menu_pic ON menu.menu_id = menu_pic.menu_id where menu.user_id = ? AND menu_pic.step = 0 Group By menu_id ORDER BY modified_time DESC";
     let params = [user_id]
     return mysqlHelper.execute1(sql, params)
 }
@@ -66,7 +66,7 @@ Menu.getMenuByMenuId = function getMenuByMenuId(menu_id) {
 
 //查8个最新菜谱
 Menu.getNewMenu = function getNewMenu() {
-    let sql = "SELECT menu.menu_id,menu.menuname, menu_pic.path,`user`.username FROM menu LEFT JOIN menu_pic ON menu.menu_id = menu_pic.menu_id LEFT JOIN `user` ON menu.user_id = `user`.user_id WHERE menu_pic.step = 0 AND (menu.state = 4 OR menu.state = 5) ORDER BY menu.modified_time DESC LIMIT 8";
+    let sql = "SELECT menu.menu_id,menu.menuname, menu_pic.path,`user`.username FROM menu LEFT JOIN menu_pic ON menu.menu_id = menu_pic.menu_id LEFT JOIN `user` ON menu.user_id = `user`.user_id WHERE menu_pic.step = 0 AND (menu.state = 4 OR menu.state = 5) GROUP BY menu.menu_id ORDER BY menu.modified_time DESC LIMIT 8";
     let params = []
     return mysqlHelper.execute1(sql, params)
 }
@@ -213,7 +213,7 @@ Menu.updataStatebychecked = function updataStatebychecked(state,modified_time,us
 
 //查询已审核完的自己的菜谱
 Menu.searchMenuBychecked = function searchMenuBychecked(user_id) {
-    var sql = " SELECT m.*, mp.path FROM menu m LEFT JOIN menu_pic mp ON m.menu_id = mp.menu_id WHERE m.user_id = ? AND (m.state=2 OR m.state=3 OR m.state=4 OR m.state=5) AND mp.step = 0 ORDER BY m.modified_time DESC";
+    var sql = "SELECT m.*, mp.path FROM menu m LEFT JOIN menu_pic mp ON m.menu_id = mp.menu_id WHERE m.user_id = ? AND (m.state=2 OR m.state=3 OR m.state=4 OR m.state=5) AND mp.step = 0 GROUP BY m.menu_id ORDER BY m.modified_time DESC";
     let params = [user_id]
     return mysqlHelper.execute1(sql, params)
 }

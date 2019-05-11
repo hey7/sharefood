@@ -34,7 +34,7 @@
           <div class="form">
             <div class="item item2">
               <img src="static/images/loginregister/username.png" alt class="image">
-              <el-input v-model="register.username" placeholder="请输入用户名" class="input"></el-input>
+              <el-input v-model="register.username" placeholder="请输入用户名" class="input" maxlength="20"></el-input>
             </div>
             <div class="item item2">
               <img src="static/images/loginregister/password.png" alt class="image">
@@ -43,6 +43,7 @@
                 placeholder="请输入密码"
                 class="input"
                 type="password"
+                maxlength="20"
               ></el-input>
             </div>
             <div class="item item2">
@@ -51,6 +52,7 @@
                 placeholder="请输入确认密码"
                 class="input"
                 type="password"
+                maxlength="20"
               ></el-input>
             </div>
             <el-button type="primary" class="button" @click="registerClick">注册</el-button>
@@ -150,7 +152,7 @@ export default {
           this.$message.error(res.data.msg);
         }
         if (res.data.code == 106) {
-          //用户名或密码有误
+          //该账号被封
           this.$message.error(res.data.msg);
         }
          if (res.data.code == 107) {

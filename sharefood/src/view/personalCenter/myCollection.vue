@@ -2,7 +2,7 @@
 <template>
   <div class="myCollection">
     <div class="search">
-      <el-input placeholder="请输入菜谱名称" v-model="menuname" class="input-with-select">
+      <el-input placeholder="请输入菜谱名称" v-model="menuname" class="input-with-select" maxlength="20">
         <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
       </el-input>
     </div>
@@ -12,11 +12,18 @@
           <el-card :body-style="{ padding: '0px' }">
             <img :src="'/api'+item.path" class="image" width="100%" height="250px">
             <div style="padding: 0 10px;">
-              <span style="font-size:20px ;font-weight: bold">{{item.menuname}}</span>
+              <span
+                style="font-size:20px ;font-weight: bold;cursor: pointer;"
+                @click="detailMenu(item.any_id)"
+              >{{item.menuname}}</span>
               <span style="margin-left:10px; color:#999">by {{item.username}}</span>
               <div class="bottom clearfix">
                 <span class="time">{{dateFormat(item.create_time,0) }}</span>
-                <el-button type="text" class="button" @click="detailMenu(item.any_id)">详情</el-button>
+                <el-button
+                  type="text"
+                  class="button"
+                  @click="delCollection(item.collection_id,index)"
+                >取消收藏</el-button>
               </div>
             </div>
           </el-card>
@@ -35,7 +42,7 @@ export default {
     };
   },
   created() {
-    this.search()
+    this.search();
   },
   methods: {
     dateFormat,
@@ -51,6 +58,17 @@ export default {
       this.$router.push({
         path: "/detailMenu",
         query: { menu_id: menu_id }
+      });
+    },
+    delCollection(collection_id, index) {
+      var data = this.qs.stringify({
+        collection_id: collection_id
+      });
+      this.axios.post("/api/collection/delCollection", data).then(res => {
+        if (res.data.code == 999) {
+          this.$message.success(res.data.msg);
+          this.collection.splice(index, 1);
+        }
       });
     }
   }

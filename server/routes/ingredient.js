@@ -12,10 +12,14 @@ var express = require('express'),
 
 //首页食材展示(时令食材【这个月的食材、并且菜谱运用最高的前14个】)
 router.post('/getIngredientIndexShow', async function (req, res) {
-    var now = new Date().getMonth() + 1;
-    try {
-        var result = await Ingredient.getIngredientShow(now)
+    var now = new Date().getMonth();
+    var now1 = new Date().getMonth() + 1;
+    var now2 = new Date().getMonth() + 2;
 
+    try {
+        var result = await Ingredient.getIngredientShow(now,now1,now2)
+
+        console.log(result,now,now1,now2)
         res.json({
             code: 999,
             data: result,

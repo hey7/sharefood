@@ -4,7 +4,7 @@
     <!-- 菜谱名称 -->
     菜谱名称
     <span class="xing">*</span>：
-    <el-input v-model="menuname" placeholder="请输入菜谱名称" size="small" class="caipu-input"></el-input>
+    <el-input v-model="menuname" placeholder="请输入菜谱名称" size="small" class="caipu-input" maxlength="20"></el-input>
     <br>
     <div class="jiange"></div>
     <!-- 成品图片 -->
@@ -34,6 +34,7 @@
       placeholder="请输入菜谱描述，最多输入200字"
       v-model="descript"
       class="caipumiaoshu-input"
+      maxlength="200"
     ></el-input>
     <br>
     <div class="jiange"></div>
@@ -107,8 +108,9 @@
           placeholder="食材名"
           size="small"
           class="shicaiming-input"
+          maxlength="20"
         ></el-input>
-        <el-input v-model="item2.amount" placeholder="用量" size="small" class="yongliang-input"></el-input>
+        <el-input v-model="item2.amount" placeholder="用量" size="small" class="yongliang-input" maxlength="20"></el-input>
         <el-button size="mini" @click="delIngredient(index1,index2)">x</el-button>
         <el-button size="mini" @click="addIngredient(index1,index2)">+</el-button>
         <div class="jiange"></div>
@@ -139,6 +141,7 @@
         :placeholder="(index3+1)+'、请输入做法说明菜谱描述，最多输入200字'"
         v-model="item3.descript"
         class="buzhou-input"
+        maxlength="200"
       ></el-input>
       <el-button size="mini" @click="delSteps(index3)" class="buzhou-button">x</el-button>
     </div>
@@ -149,7 +152,7 @@
     <br>
     <div class="jiange"></div>
 
-    <el-input type="textarea" :rows="4" placeholder="最多输入200字" v-model="trick" style="width:600px"></el-input>
+    <el-input type="textarea" :rows="4" placeholder="最多输入200字" v-model="trick" style="width:600px" maxlength="200"></el-input>
     <br>
     <div class="jiange"></div>
 
@@ -179,7 +182,7 @@
       :modal-append-to-body="false"
     >
       <span>食材组名：</span>
-      <el-input v-model="shicaizuming" placeholder="请输入内容" size="small" style="width:200px"></el-input>
+      <el-input v-model="shicaizuming" placeholder="请输入内容" size="small" style="width:200px" maxlength="20"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible1 = false">取 消</el-button>
         <el-button type="primary" @click="addGroup">确 定</el-button>

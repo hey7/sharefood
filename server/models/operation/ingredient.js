@@ -37,9 +37,7 @@ Ingredient.searchIngredient = function searchIngredient(ingredient, Param) {
     if (ingredient.state != null && ingredient.state != '') {
         sql = sql + 'AND state=? '
         params.push(ingredient.state)
-    } else {
-        sql = sql + 'AND (state = 0 OR state = 1)'
-    }
+    } 
     if (Param != null && Param != '') {
         sql = sql + 'limit ?, ?'
         params.push((Param.pageNum - 1) * Param.pageSize)
@@ -63,8 +61,6 @@ Ingredient.searchIngredientCount = function searchIngredientCount(ingredient) {
     if (ingredient.state != null && ingredient.state != '') {
         sql = sql + 'AND state=? '
         params.push(ingredient.state)
-    } else {
-        sql = sql + 'AND (state = 0 OR state = 1)'
     }
     return mysqlHelper.single1(sql, params)
 }
@@ -117,9 +113,9 @@ Ingredient.prototype.update = function update() {
 }
 
 //查询食材（首页）
-Ingredient.getIngredientShow = function getIngredientShow(season) {
-    let sql = "SELECT i.* FROM ingredient i LEFT JOIN menu_ingredient mi ON mi.ingredient_id = i.ingredient_id WHERE season = ? AND state = 1 GROUP BY mi.ingredient_id ORDER BY COUNT(mi.ingredient_id) DESC LIMIT 0,14"
-    let params = [season]
+Ingredient.getIngredientShow = function getIngredientShow(season,season1,season2) {
+    let sql = "SELECT i.* FROM ingredient i LEFT JOIN menu_ingredient mi ON mi.ingredient_id = i.ingredient_id WHERE (season = ? OR season = ? OR season = ?) AND state = 1 GROUP BY mi.ingredient_id ORDER BY COUNT(mi.ingredient_id) DESC LIMIT 0,6"
+    let params = [season,season1,season2]
     return mysqlHelper.execute1(sql, params)
 }
 
@@ -127,7 +123,7 @@ Ingredient.getIngredientShow = function getIngredientShow(season) {
 Ingredient.getMenuByIngredientId = function getMenuByIngredientId(ingredient_id) {
     let sql = "SELECT m.menu_id, m.menuname, menu_pic.path, `user`.username FROM menu_ingredient mi LEFT JOIN menu m ON m.menu_id = mi.menu_id " +
         "LEFT JOIN menu_pic ON m.menu_id = menu_pic.menu_id LEFT JOIN `user` ON m.user_id = `user`.user_id WHERE ingredient_id = ? AND menu_pic.step = 0 " +
-        "AND (m.state = 4 OR m.state = 5) ORDER BY m.modified_time"
+        "AND (m.state = 4 OR m.state = 5) GROUP BY m.menu_id ORDER BY m.modified_time"
     let params = [ingredient_id]
     return mysqlHelper.execute1(sql, params)
 }

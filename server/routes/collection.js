@@ -7,6 +7,7 @@ var express = require('express'),
 //500: 其他错
 //999: 收藏成功
 //999：查询菜谱收藏成功
+//999：已取消收藏
 
 
 //增加收藏
@@ -31,7 +32,7 @@ router.post('/addCollection', async function (req, res) {
         })
     } catch (err) {
         res.json({
-            code: 200,
+            code: 500,
             data: '',
             msg: err
         })
@@ -44,20 +45,43 @@ router.post('/getMenuCollection', async function (req, res) {
     var user_id = JSON.parse(req.cookies.user).user_id,
         menuname = req.body['menuname']
 
-        try {
-            var result = await Collection.searchMenuCollection(user_id,menuname)
-            res.json({
-                code: 999,
-                data: result,
-                msg: '查询菜谱收藏成功'
-            })
-        } catch (err) {
-            res.json({
-                code: 500,
-                data: '',
-                msg: err
-            })
-            return;
-        }
+    try {
+        var result = await Collection.searchMenuCollection(user_id, menuname)
+        res.json({
+            code: 999,
+            data: result,
+            msg: '查询菜谱收藏成功'
+        })
+    } catch (err) {
+        res.json({
+            code: 500,
+            data: '',
+            msg: err
+        })
+        return;
+    }
 });
+
+//取消收藏
+router.post('/delCollection', async function (req, res) {
+    var collection_id = req.body['collection_id']
+
+    try {
+
+        var result = await Collection.delCollection(collection_id)
+        res.json({
+            code: 999,
+            data: '',
+            msg: '已取消收藏'
+        })
+    } catch (err) {
+        res.json({
+            code: 500,
+            data: '',
+            msg: err
+        })
+        return;
+    }
+});
+
 module.exports = router;

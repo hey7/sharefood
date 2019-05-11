@@ -18,7 +18,7 @@ router.post('/getAlldictionaryByName', async function (req, res) {
         var oneResult
         for (var i in nameArr) {
             var name = nameArr[i]
-            oneResult = await Dictionary.getDictionaryByName(name)
+            oneResult = await Dictionary.getDictionaryByName(name,0)
             result[name] = oneResult
         }
         res.json({
@@ -197,7 +197,7 @@ router.post('/updateDictionaryState', async function (req, res) {
                 res.json({
                     code: 301,
                     data: '',
-                    msg: '启动失败：上级为禁用状态'
+                    msg: '启用失败：上级为禁用状态'
                 })
                 return;
             }
@@ -259,7 +259,7 @@ router.post('/getChildsByDictionaryName', async function (req, res) {
     try {
         var result = [];
 
-        var secondResult = await Dictionary.getDictionaryByName(name)
+        var secondResult = await Dictionary.getDictionaryByName(name,0)
 
         for (var i of secondResult) {
             var a = {

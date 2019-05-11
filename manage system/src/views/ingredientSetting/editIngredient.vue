@@ -49,7 +49,7 @@
 
       <el-row type="flex">
         <el-col :span="2">
-          <p class="i-name">食材简介：</p>
+          <p class="i-name">认识选购：</p>
         </el-col>
         <el-col :span="6">
           <p class="i-val">
@@ -59,7 +59,7 @@
               placeholder="最多输入200字"
               v-model="ingredient.introduction"
               style="width:600px"
-              maxlength="200"
+              maxlength="5000"
             ></el-input>
           </p>
         </el-col>
@@ -77,7 +77,7 @@
               placeholder="最多输入200字"
               v-model="ingredient.nutrition"
               style="width:600px"
-              maxlength="200"
+              maxlength="5000"
             ></el-input>
           </p>
         </el-col>
@@ -95,7 +95,7 @@
               placeholder="最多输入200字"
               v-model="ingredient.effect"
               style="width:600px"
-              maxlength="200"
+              maxlength="5000"
             ></el-input>
           </p>
         </el-col>
@@ -199,6 +199,7 @@ export default {
       this.axios.post("/api/ingredient/editIngredient", data).then(res => {
         if (res.data.code == 999) {
           this.$message.success(res.data.msg);
+          this.$router.go(-1)
         } else {
           this.$message.error("请输入完整食材");
         }

@@ -7,7 +7,7 @@
         <img :src="ingredient.path" alt height="100px" width="100px" v-if="ingredient.state==1">
         <img src="" alt height="100px" width="100px" v-else>
         <div class="ingredientname">{{ingredient.ingredientname}}</div>
-        <div class="text">为你介绍{{ingredient.ingredientname}}营养与选购，以及鸡肉的{{menus.length}}种做法</div>
+        <div class="text">为你介绍{{ingredient.ingredientname}}营养与选购，以及{{ingredient.ingredientname}}的{{menus.length}}种做法</div>
       </div>
       <div class="title">
         <el-tabs v-model="activeName" @tab-click="handleClick" class="tab">

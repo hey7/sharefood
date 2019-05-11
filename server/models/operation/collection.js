@@ -37,7 +37,7 @@ Collection.prototype.addCollection = function addCollection() {
 
 //查找该用户收藏（菜谱的）
 Collection.searchMenuCollection = function searchMenuCollection(user_id, menuname) {
-    let sql = "SELECT c.create_time,c.any_id, m.menuname,mp.path,u.username FROM collection c LEFT JOIN menu m ON m.menu_id = c.any_id " +
+    let sql = "SELECT c.collection_id,c.create_time,c.any_id, m.menuname,mp.path,u.username FROM collection c LEFT JOIN menu m ON m.menu_id = c.any_id " +
         "LEFT JOIN menu_pic mp ON c.any_id = mp.menu_id LEFT JOIN `user` u ON u.user_id = m.user_id WHERE mp.step = 0 AND c.state = 0 " +
         "AND c.user_id=? "
     let params = [user_id]
@@ -45,8 +45,15 @@ Collection.searchMenuCollection = function searchMenuCollection(user_id, menunam
         sql = sql + "AND m.menuname like ? "
         params.push("%" + menuname + "%")
     }
-    sql = sql + 'ORDER BY c.create_time DESC'
+    sql = sql + 'GROUP BY c.collection_id ORDER BY c.create_time DESC'
+    console.log('sql',sql)
+    return mysqlHelper.execute1(sql, params)
+}
 
+//删除收藏
+Collection.delCollection = function delCollection(collection_id) {
+    let sql = "DELETE FROM collection WHERE collection_id = ?";
+    let params = [collection_id]
     return mysqlHelper.execute1(sql, params)
 }
 

@@ -24,7 +24,7 @@
             </el-radio-group>
 
             <div class="heading">手机号</div>
-            <el-input v-model="phone" placeholder="请输入内容" class="phone-input"></el-input>
+            <el-input v-model="phone" placeholder="请输入内容" class="phone-input" maxlength="11"></el-input>
 
             <div class="heading">个性签名</div>
             <el-input

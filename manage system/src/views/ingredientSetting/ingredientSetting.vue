@@ -37,6 +37,7 @@
                 <el-option :label="'全部'" :value="''"></el-option>
                 <el-option :label="'未维护'" :value="0"></el-option>
                 <el-option :label="'已发布'" :value="1"></el-option>
+                <el-option :label="'已删除'" :value="2"></el-option>
               </el-select>
             </el-col>
           </el-row>
@@ -66,6 +67,9 @@
             </div>
             <div v-if="scope.row.state==1">
               <i class="point success"></i>已发布
+            </div>
+            <div v-if="scope.row.state==2">
+              <i class="point info"></i>已删除
             </div>
           </template>
         </el-table-column>
@@ -127,6 +131,15 @@ export default {
   created() {
     this.getIngredientData();
   },
+  beforeRouteLeave(to, from, next) {
+    if (to.path === "/ingredientSetting/editIngredient") {
+      //后退刷新数据
+      from.meta.keepAlive = false;
+    } else {
+      from.meta.keepAlive = true;
+    }
+    next();
+  },
   methods: {
     dateFormat,
     search() {
@@ -167,17 +180,17 @@ export default {
         query: { ingredient_id: ingredient_id }
       });
     },
-    del(ingredient_id) {  //删除
+    del(ingredient_id) {
+      //删除
       var data = this.qs.stringify({
         ingredient_id: ingredient_id
       });
-      this.axios
-        .post("/api/ingredient/deleteIngredient", data)
-        .then(res => {
-          if (res.data.code == 999) {
-             this.$message.success(res.data.msg);
-          }
-        });
+      this.axios.post("/api/ingredient/deleteIngredient", data).then(res => {
+        if (res.data.code == 999) {
+          this.$message.success(res.data.msg);
+          this.getIngredientData();
+        }
+      });
     }
   }
 };
@@ -228,6 +241,9 @@ export default {
     }
     .error {
       background-color: #f56c6c;
+    }
+    .info {
+      background-color: #909399;
     }
   }
   .page {

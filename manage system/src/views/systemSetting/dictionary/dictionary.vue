@@ -114,7 +114,7 @@ export default {
       dialogFormVisible: false,
       upper_id: "",
       name: "",
-      state: 1,
+      state: "1",
 
       //显示数据
       topDictionary: [], //顶级字典

@@ -24,7 +24,9 @@
 
         <div class="info-item">
           <p class="i-name">状态：</p>
-          <p class="i-val">{{ingredient.state}}</p>
+          <p class="i-val" v-if="ingredient.state==0">未维护</p>
+          <p class="i-val" v-if="ingredient.state==1">已发布</p>
+          <p class="i-val" v-if="ingredient.state==2">已删除</p>
         </div>
         <div class="info-item">
           <p class="i-name">创建时间：</p>
@@ -82,11 +84,13 @@
           </el-col>
         </el-row>
       </div>
-      <el-row type="flex" justify="center">
-        <el-col :span="2">
-          <el-button @click="$router.go(-1)">返回</el-button>
-        </el-col>
-      </el-row>
+      <div class="button">
+        <el-row type="flex" justify="center">
+          <el-col :span="2">
+            <el-button @click="$router.go(-1)">返回</el-button>
+          </el-col>
+        </el-row>
+      </div>
     </div>
   </div>
 </template>
@@ -115,7 +119,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-
 .jiange {
   margin-bottom: 10px;
 }
@@ -162,6 +165,9 @@ export default {
       .name {
         color: #808080;
       }
+    }
+    .button {
+      margin-bottom: 20px;
     }
   }
 }

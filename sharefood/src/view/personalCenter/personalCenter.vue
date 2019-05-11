@@ -148,7 +148,7 @@ export default {
       bottom: 0;
       overflow: auto;
       .view {
-        width: 100%;
+        width: 98%;
         min-width: 1070px;
         position: absolute;
         top: 0;

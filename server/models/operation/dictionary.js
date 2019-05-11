@@ -38,9 +38,9 @@ Dictionary.searchDictionary = function searchDictionary(dictionary, Param) {
 }
 
 //根据name查询Dictionary
-Dictionary.getDictionaryByName = function getDictionaryByName(name) {
-    let sql = "SELECT * FROM dictionary WHERE upper_id IN ( SELECT dictionary_id FROM dictionary WHERE name = ? )"
-    let params = [name]
+Dictionary.getDictionaryByName = function getDictionaryByName(name,state) {
+    let sql = "SELECT * FROM dictionary WHERE upper_id IN ( SELECT dictionary_id FROM dictionary WHERE name = ? ) AND dictionary.state =?"
+    let params = [name,state]
     return mysqlHelper.execute1(sql, params)
 }
 

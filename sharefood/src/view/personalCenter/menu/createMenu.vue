@@ -107,8 +107,9 @@
           placeholder="食材名"
           size="small"
           class="shicaiming-input"
+          maxlength="20"
         ></el-input>
-        <el-input v-model="item2.amount" placeholder="用量" size="small" class="yongliang-input"></el-input>
+        <el-input v-model="item2.amount" placeholder="用量" size="small" class="yongliang-input" maxlength="20"></el-input>
         <el-button size="mini" @click="delIngredient(index1,index2)">x</el-button>
         <el-button size="mini" @click="addIngredient(index1,index2)">+</el-button>
         <div class="jiange"></div>

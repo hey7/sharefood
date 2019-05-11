@@ -165,6 +165,12 @@ export default {
       this.axios.post("/api/menu/getAllMenuByType", data).then(res => {
         this.menus = res.data.data;
       });
+    },
+    detailMenu(menu_id) {
+      this.$router.push({
+        path: "/detailMenu",
+        query: { menu_id: menu_id }
+      });
     }
   },
   created() {
@@ -219,6 +225,9 @@ export default {
       .name {
         text-align: right;
         padding-right: 5px;
+      }
+      .val {
+        display: inline-block;
       }
     }
     .show-menu {

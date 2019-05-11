@@ -121,7 +121,7 @@
         v-model="comment"
         placeholder="请输入内容（500字以内）"
         size="small"
-        maxlength="20"
+        maxlength="500"
       ></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible1 = false">取 消</el-button>
@@ -142,7 +142,7 @@
         v-model="resComment"
         placeholder="请输入内容（500字以内）"
         size="small"
-        maxlength="20"
+        maxlength="500"
       ></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible2 = false">取 消</el-button>

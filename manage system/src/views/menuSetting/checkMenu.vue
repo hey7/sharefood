@@ -99,7 +99,7 @@ export default {
       this.tags.splice(this.tags.indexOf(tag), 1);
     },
     submit() {
-      if (this.check == "") {
+      if (this.check === "") {
         this.$message.error("请审核后提交");
         return;
       }

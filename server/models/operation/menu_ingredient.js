@@ -18,7 +18,7 @@ Menu_ingredient.prototype.save = function save() {
 
 //根据MenuId查询食材
 Menu_ingredient.getMenuIngredientByMenuId = function getMenuByMenuId(menu_id) {
-    let sql = "SELECT groupname,ingredientname,amount,menu_ingredient.ingredient_id FROM menu_ingredient INNER JOIN ingredient ON ingredient.ingredient_id = menu_ingredient.ingredient_id WHERE menu_ingredient.menu_id = ? ORDER BY groupnum";
+    let sql = "SELECT groupname,ingredientname,amount,menu_ingredient.ingredient_id,ingredient.state FROM menu_ingredient INNER JOIN ingredient ON ingredient.ingredient_id = menu_ingredient.ingredient_id WHERE menu_ingredient.menu_id = ? ORDER BY groupnum";
     let params = [menu_id]
     return mysqlHelper.execute1(sql, params)
 }
