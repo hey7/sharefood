@@ -27,7 +27,7 @@
           <router-link to="/personalCenter/menu" tag="span">
             <li>个人中心</li>
           </router-link>
-          <li>我的空间</li>
+          <!-- <li>我的空间</li> -->
         </ul>
       </div>
     </div>
