@@ -53,6 +53,7 @@
 import Header from "../header/header";
 
 export default {
+  inject: ["reload"],
   data() {
     return {
       privateLetterNum: "",
@@ -88,6 +89,9 @@ export default {
       // console.log(key, keyPath);
     },
     select(index, indexPath) {
+      if (index === this.$route.path) {
+        this.reload();
+      }
       if (index === "/personalCenter/myPrivateLetter") {
         //已查阅所有评论
         if (this.privateLetterNum !== 0) {

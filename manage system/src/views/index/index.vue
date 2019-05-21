@@ -18,6 +18,7 @@
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
           :collapse-transition="false"
+          @select="select"
           router
         >
           <el-menu-item index="/userSettng">
@@ -63,6 +64,7 @@
 import Header from "../header/Header";
 
 export default {
+  inject: ["reload"],
   data() {
     return {
       isCollapse: true
@@ -71,7 +73,13 @@ export default {
   components: {
     "c-header": Header //头
   },
-  methods: {}
+  methods: {
+    select(index, indexPath) {
+      if (index === this.$route.path) {
+        this.reload();
+      }
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
