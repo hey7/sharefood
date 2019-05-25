@@ -46,7 +46,6 @@ Collection.searchMenuCollection = function searchMenuCollection(user_id, menunam
         params.push("%" + menuname + "%")
     }
     sql = sql + 'GROUP BY c.collection_id ORDER BY c.create_time DESC'
-    console.log('sql',sql)
     return mysqlHelper.execute1(sql, params)
 }
 

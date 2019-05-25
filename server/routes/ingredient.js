@@ -19,7 +19,6 @@ router.post('/getIngredientIndexShow', async function (req, res) {
     try {
         var result = await Ingredient.getIngredientShow(now,now1,now2)
 
-        console.log(result,now,now1,now2)
         res.json({
             code: 999,
             data: result,
